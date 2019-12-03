@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Description>The library assembly for Allie.Chat</Description>
+    <Copyright>Pixel Horror Studios Copyright 2019</Copyright>
+    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
+    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
+    <RepositoryType>Github Public</RepositoryType>
+    <Authors>Rob Engel - LiveOrDevTrying</Authors>
+    <Company>Pixel Horror Studios</Company>
+    <Version>1.0.1</Version>
+    <PackageIconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</PackageIconUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Companies\PixelHorrorStudios\Projects\PHS.Allie.Chat\Source\Allie.Chat.Public\Allie.Chat.Lib\Allie.Chat.Lib.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

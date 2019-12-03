@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>Rob Engel - LiveOrDevTrying</Authors>
+    <Company>Pixel Horror Studios</Company>
+    <Product>Allie.Chat.Lib</Product>
+    <Description>An authorization module for the Allie.Chat WebAPI .NET wrapper</Description>
+    <Copyright>Pixel Horror Studios Copyright 2019</Copyright>
+    <PackageProjectUrl>www.allie.chat</PackageProjectUrl>
+    <RepositoryUrl>www.github.com/liveordevtrying/alliechat</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,3204 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Allie.Chat.Lib</name>
+    </assembly>
+    <members>
+        <member name="T:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO">
+            <summary>
+            The Application User data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.Active">
+            <summary>
+            Is this user active?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.UserName">
+            <summary>
+            The Application User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxStreamCount">
+            <summary>
+            The Application User's maximum number of streams
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxBotCountPerProvider">
+            <summary>
+            The Application User's maximum number of bots per provider
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxCurrencies">
+            <summary>
+            The Application User's maximum number of currencies
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxCommandSets">
+            <summary>
+            The Application User's maximum number of command sets
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxClientApplications">
+            <summary>
+            The Application User's maximum number of Client Applications
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxApiResourceCount">
+            <summary>
+            The Application User's maximum number of Api Resources
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.BaseDTO">
+            <summary>
+            A base data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.BaseDTO.Id">
+            <summary>
+            The unique Id
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Bots.BotDiscordDTO">
+            <summary>
+            A Discord Bot data-transfer object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Bots.BotDTO">
+            <summary>
+            A base Bot data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Bots.BotDTO.Username">
+            <summary>
+            The username of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Bots.BotDTO.DisplayName">
+            <summary>
+            The display name of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Bots.BotDTO.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Bots.BotDTO.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Bots.BotTcpDTO">
+            <summary>
+            A Tcp Bot data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Bots.BotTcpDTO.AvatarUrl">
+            <summary>
+            The avatar url of the Bot User
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Bots.BotTwitchDTO">
+            <summary>
+            A Twitch Bot data-transfer object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Bots.BotWSDTO">
+            <summary>
+            A Websocket Bot data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Bots.BotWSDTO.AvatarUrl">
+            <summary>
+            The avatar url of the Bot User
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ClientApplications.ApiResourceDTO">
+            <summary>
+            An Api Resource data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ApiResourceDTO.Id">
+            <summary>
+            The Id of the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ApiResourceDTO.Name">
+            <summary>
+            The Api Resource's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ApiResourceDTO.DisplayName">
+            <summary>
+            The Api Resource's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ApiResourceDTO.Scopes">
+            <summary>
+            Array of scopes allowed by the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ApiResourceDTO.SecretCount">
+            <summary>
+            The number of secrets registered to the Api Resource
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationAuthCodeDTO">
+            <summary>
+            An Authorization Code Client Application data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationAuthCodeDTO.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationAuthCodeDTO.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationAuthCodeDTO.FrontChannelLogoutUri">
+            <summary>
+            The front channel logout Uri for the Authorization Code Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationAuthCodeDTO.SecretsCount">
+            <summary>
+            The number of secrets registered to the Authorization Code Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationAuthCodeDTO.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO">
+            <summary>
+            A Client Application base data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.Id">
+            <summary>
+            Unique Id of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientId">
+            <summary>
+            The ClientId of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientName">
+            <summary>
+            The Client Application's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.AuthTypes">
+            <summary>
+            The Client Application's authorization types
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientApplicationType">
+            <summary>
+            The Client Application type
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientUri">
+            <summary>
+            The Client Application's Uri
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.Scopes">
+            <summary>
+            Array of scopes allowed by the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.AllowOfflineAccess">
+            <summary>
+            Will oauth tokens be used for offline access?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.RequireConsent">
+            <summary>
+            Is consent required?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.EnableLocalLogin">
+            <summary>
+            Is local login enabled?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationImplicitDTO">
+            <summary>
+            An Implicit Client Application data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationImplicitDTO.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Implicit Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationImplicitDTO.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationImplicitDTO.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationPKCEDTO">
+            <summary>
+            A PKCE / Authorization Code Client Application data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationPKCEDTO.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after PKCE / Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationPKCEDTO.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationROPasswordDTO">
+            <summary>
+            A Resource Owner Password Credentials Client Application data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationROPasswordDTO.SecretsCount">
+            <summary>
+            The number of secrets registered to the Resource Owner Password Credentials Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationROPasswordDTO.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Commands.CommandDTO">
+            <summary>
+            A Command data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandDTO.CommandText">
+            <summary>
+            The text that can be used from any inbound route to trigger a Command Reply
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandDTO.Description">
+            <summary>
+            The description of the Command
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Commands.CommandReplyDTO">
+            <summary>
+            A Command Reply data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandReplyDTO.CommandReplyText">
+            <summary>
+            The Command Reply text to send to the outbound streams when a Command is triggered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Commands.CommandSetDTO">
+            <summary>
+            A Command Set data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandSetDTO.Name">
+            <summary>
+            The name of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandSetDTO.Description">
+            <summary>
+            The description of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandSetDTO.Prefix">
+            <summary>
+            The prefix that can be used from any inbound route that starts the Command and Command Reply
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandSetDTO.CommandsCount">
+            <summary>
+            The number of Commands registered to the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Commands.CommandSetDTO.StreamsCommandSets">
+            <summary>
+            The number of Streams that the Command Set is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Currencies.CurrencyDTO">
+            <summary>
+            A Currency data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Currencies.CurrencyDTO.CurrencyName">
+            <summary>
+            The name of the Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Currencies.CurrencyDTO.CurrencyDescription">
+            <summary>
+            The description of the Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Currencies.CurrencyDTO.StreamCurrencyCount">
+            <summary>
+            The number of Streams the Currency is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Currencies.CurrencyUserDTO">
+            <summary>
+            A Currency User data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Currencies.CurrencyUserDTO.Quantity">
+            <summary>
+            The amount of Currency currently accrued
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Paths.PathChannelDTO">
+            <summary>
+            A Path Channel data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Paths.PathChannelDTO.ChannelName">
+            <summary>
+            The name of the Channel
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Paths.PathDTO">
+            <summary>
+            A Path data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Paths.PathDTO.PathType">
+            <summary>
+            The Path type
+            Values: 0 - None, 1 - Server, 2 - Channel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Paths.PathDTO.PathTypeValue">
+            <summary>
+            The Path type
+            Values: "None", "Server", "Channel"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Paths.PathServerDTO">
+            <summary>
+            A Path Server data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Paths.PathServerDTO.ServerName">
+            <summary>
+            The name of the Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.ProviderDTO">
+            <summary>
+            A Provider data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ProviderDTO.ProviderType">
+            <summary>
+            The Provider Type
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ProviderDTO.ProviderTypeValue">
+            <summary>
+            The Provider type as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Routes.RouteDTO">
+            <summary>
+            A Route data-transfer objecte
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Routes.RouteDTO.RouteType">
+            <summary>
+            The Route type
+            Values: 0 - Inbound, 1 - Outbound
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Routes.RouteDTO.RouteTypeValue">
+            <summary>
+            The Route type
+            Values: "Inbound", "Outbound"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Servers.Channels.ServerChannelDiscordDTO">
+            <summary>
+            A Discord Server Channel data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.Channels.ServerChannelDiscordDTO.DiscordChannelId">
+            <summary>
+            The Id of the Channel from Discord
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Servers.Channels.ServerChannelDTO">
+            <summary>
+            A base Server Channel data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.Channels.ServerChannelDTO.Name">
+            <summary>
+            The name of the Server Channel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.Channels.ServerChannelDTO.ServerId">
+            <summary>
+            The Id of the associated Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Servers.ServerDiscordDTO">
+            <summary>
+            A Discord Server data-transfer object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Servers.ServerDTO">
+            <summary>
+            A Server data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.ServerDTO.Name">
+            <summary>
+            The name of the Server
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.ServerDTO.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.ServerDTO.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Servers.ServerTwitchDTO">
+            <summary>
+            A Twitch Server data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Servers.ServerTwitchDTO.TwitchDisplayName">
+            <summary>
+            The Server's Twitch display name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.StreamsCurrencies.StatusDTO">
+            <summary>
+            A Status data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.StreamsCurrencies.StatusDTO.StatusName">
+            <summary>
+            The name of the Status
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.StreamsCurrencies.StatusDTO.TimeSecLastActivityBeforeStatus">
+            <summary>
+            Time in seconds that elapses before this Status becomes active
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.StreamsCurrencies.StatusDTO.Quantity">
+            <summary>
+            The amount of Currency accrued per interval when the User is in this Status
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Streams.StreamCommandSetDTO">
+            <summary>
+            A StreamCommandSet data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCommandSetDTO.CommandSetId">
+            <summary>
+            The Id of the Command Set
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO">
+            <summary>
+            A StreamCurrency data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO.TimeSec">
+            <summary>
+            Interval in Seconds that Currency will be added to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO.Prefix">
+            <summary>
+            The Prefix that can be used from any inbound route to report a User's current currency
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyProviderDTO">
+            <summary>
+            A Stream Currency Provider data-transfer object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Streams.StreamDTO">
+            <summary>
+            A Stream data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamDTO.StreamName">
+            <summary>
+            The name of the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamDTO.HasCurrency">
+            <summary>
+            Does the Stream have Currencies?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamDTO.HasCommands">
+            <summary>
+            Does the Stream have Commands?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Users.UserDiscordDTO">
+            <summary>
+            A Discord User data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserDiscordDTO.DiscordId">
+            <summary>
+            The Id of the User from Discord
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Users.UserDTO">
+            <summary>
+            A base User data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserDTO.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserDTO.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserDTO.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserDTO.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserDTO.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Users.UserTcpDTO">
+            <summary>
+            A Tcp User data-transfer object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Users.UserTwitchDTO">
+            <summary>
+            A Twitch User data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Users.UserTwitchDTO.TwitchId">
+            <summary>
+            The Id assigned by Twitch
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.DTOs.Users.UserWSDTO">
+            <summary>
+            A WebSocket User data-transfer object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Enums.RouteType">
+            <summary>
+            The Route types
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.RouteType.Inbound">
+            <summary>
+            An inbound route
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.RouteType.Outbound">
+            <summary>
+            An outbound route
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Enums.PathType">
+            <summary>
+            The Path types
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.PathType.None">
+            <summary>
+            No server associated to Path e.g. Tcp or Websocket
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.PathType.Server">
+            <summary>
+            Server associated to Path e.g. Twitch
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.PathType.Channel">
+            <summary>
+            Server and Channel associated to Path e.g. Discord inbound
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.PathType.ChannelWebhook">
+            <summary>
+            Server and Channel associated to Outbound Discord Path
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Enums.ProviderType">
+            <summary>
+            The Provider type
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ProviderType.Twitch">
+            <summary>
+            Twitch.com
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ProviderType.Discord">
+            <summary>
+            Discord.com
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ProviderType.Tcp">
+            <summary>
+            Allie.Chat Tcp Provider
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ProviderType.Websocket">
+            <summary>
+            Allie.Chat Websocket Provider
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageBase">
+            <summary>
+            A base Message interface
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.UserSource">
+            <summary>
+            The User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageBase.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageDiscord">
+            <summary>
+            A Discord Message interface
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageDiscord.Channel">
+            <summary>
+            The Discord Channel where the Message was sent
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageGeneric`1">
+            <summary>
+            A base Generic Message interface
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageGeneric`1.User">
+            <summary>
+            The Bot User that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageServer`2">
+            <summary>
+            A base Server Message interface
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="S"></typeparam>
+        </member>
+        <member name="P:Allie.Chat.Lib.Interfaces.IMessageServer`2.Server">
+            <summary>
+            The Server where the Message was sent
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageTcp">
+            <summary>
+            A Tcp Message interface
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageTwitch">
+            <summary>
+            A Twitch Message interface
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Interfaces.IMessageWS">
+            <summary>
+            A Websocket Message interface
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.BaseRequest">
+            <summary>
+            A base Request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotCreateRequest">
+            <summary>
+            A base Bot create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotCreateRequest.UserId">
+            <summary>
+            The UserId of the Bot User
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotDiscordCreateRequest">
+            <summary>
+            A Discord Bot create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordCreateRequest.OAuthToken">
+            <summary>
+            The OAuth token provided by Discord
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordCreateRequest.RefreshToken">
+            <summary>
+            The refresh token provided by Discord
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordCreateRequest.ExpireDateTime">
+            <summary>
+            The expiration date and time of the OAuth token
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordCreateRequest.ServerDiscordId">
+            <summary>
+            The Id of the Discord Server that the Bot is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotDiscordUpdateRequest">
+            <summary>
+            A Discord Bot update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordUpdateRequest.Id">
+            <summary>
+            The Id of the existing Discord Bot
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordUpdateRequest.OAuthToken">
+            <summary>
+            The OAuth token provided by Discord
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordUpdateRequest.RefreshToken">
+            <summary>
+            The refresh token provided by Discord
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotDiscordUpdateRequest.ExpireDateTime">
+            <summary>
+            The expiration date and time of the OAuth token
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotTcpCreateRequest">
+            <summary>
+            A Tcp Bot create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTcpCreateRequest.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTcpCreateRequest.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTcpCreateRequest.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotTcpUpdateRequest">
+            <summary>
+            A Tcp Bot update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTcpUpdateRequest.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTcpUpdateRequest.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTcpUpdateRequest.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotTwitchCreateRequest">
+            <summary>
+            A Twitch Bot create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTwitchCreateRequest.OAuthToken">
+            <summary>
+            The OAuth token provided by Discord
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotTwitchCreateRequest.RefreshToken">
+            <summary>
+            The refresh token provided by Discord
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotUpdateRequest">
+            <summary>
+            A base Bot update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotUpdateRequest.Id">
+            <summary>
+            The Id of the existing Bot
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotWSCreateRequest">
+            <summary>
+            A Websocket Bot create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotWSCreateRequest.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotWSCreateRequest.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotWSCreateRequest.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Bots.BotWSUpdateRequest">
+            <summary>
+            A Websocket Bot update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotWSUpdateRequest.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotWSUpdateRequest.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Bots.BotWSUpdateRequest.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceCreateRequest">
+            <summary>
+            An Api Resource create or update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceCreateRequest.Name">
+            <summary>
+            The Api Resource's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceCreateRequest.DisplayName">
+            <summary>
+            The Api Resource's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceCreateRequest.Scopes">
+            <summary>
+            Array of scopes allowed by the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceCreateRequest.ApiSecrets">
+            <summary>
+            Api secrets to create for the Api Resource
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceUpdateRequest">
+            <summary>
+            An Api Resource create or update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceUpdateRequest.Id">
+            <summary>
+            The Id of the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceUpdateRequest.Name">
+            <summary>
+            The Api Resource's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceUpdateRequest.DisplayName">
+            <summary>
+            The Api Resource's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceUpdateRequest.Scopes">
+            <summary>
+            Array of scopes allowed by the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ApiResourceUpdateRequest.ApiSecrets">
+            <summary>
+            Api secrets to create for the Api Resource
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeCreateRequest">
+            <summary>
+            An Authorization Code Client Application create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeCreateRequest.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeCreateRequest.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeCreateRequest.FrontChannelLogoutUri">
+            <summary>
+            The front channel logout Uri for the Authorization Code Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeCreateRequest.ClientSecrets">
+            <summary>
+            Client secrets for the Resource Owner Password Credetials Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeCreateRequest.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeUpdateRequest">
+            <summary>
+            An Authorization Code Client Application update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeUpdateRequest.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeUpdateRequest.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeUpdateRequest.FrontChannelLogoutUri">
+            <summary>
+            The front channel logout Uri for the Authorization Code Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeUpdateRequest.ClientSecrets">
+            <summary>
+            Client secrets for the Resource Owner Password Credetials Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationAuthCodeUpdateRequest.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest">
+            <summary>
+            A Client Application base create or update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.ClientId">
+            <summary>
+            The ClientId of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.ClientName">
+            <summary>
+            The Client Application's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.ClientUri">
+            <summary>
+            The Client Application's Uri
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.Scopes">
+            <summary>
+            Array of scopes allowed by the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.AllowOfflineAccess">
+            <summary>
+            Will oauth tokens be used for offline access?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.RequireConsent">
+            <summary>
+            Is consent required?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationCreateRequest.EnableLocalLogin">
+            <summary>
+            Is local login enabled?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitCreateRequest">
+            <summary>
+            An Implicit Client Application create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitCreateRequest.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Implicit Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitCreateRequest.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitCreateRequest.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitUpdateRequest">
+            <summary>
+            An Implicit Client Application update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitUpdateRequest.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Implicit Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitUpdateRequest.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationImplicitUpdateRequest.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationPKCECreateRequest">
+            <summary>
+            A PKCE / Authorization Code Client Application create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationPKCECreateRequest.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after PKCE / Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationPKCECreateRequest.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationPKCEUpdateRequest">
+            <summary>
+            A PKCE / Authorization Code Client Application update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationPKCEUpdateRequest.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after PKCE / Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationPKCEUpdateRequest.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationROPasswordCreateRequest">
+            <summary>
+            A Resource Owner Password Credentials Client Application create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationROPasswordCreateRequest.ClientSecrets">
+            <summary>
+            Client secrets to create for the Resource Owner Password Credetials Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationROPasswordCreateRequest.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationROPasswordUpdateRequest">
+            <summary>
+            A Resource Owner Password Credentials Client Application update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationROPasswordUpdateRequest.ClientSecrets">
+            <summary>
+            Client secrets to create for the Resource Owner Password Credetials Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationROPasswordUpdateRequest.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest">
+            <summary>
+            A Client Application base update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.Id">
+            <summary>
+            The Id of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.ClientId">
+            <summary>
+            The ClientId of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.ClientName">
+            <summary>
+            The Client Application's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.ClientUri">
+            <summary>
+            The Client Application's Uri
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.Scopes">
+            <summary>
+            Array of scopes allowed by the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.AllowOfflineAccess">
+            <summary>
+            Will oauth tokens be used for offline access?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.RequireConsent">
+            <summary>
+            Is consent required?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.ClientApplications.ClientApplicationUpdateRequest.EnableLocalLogin">
+            <summary>
+            Is local login enabled?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.CommandCreateRequest">
+            <summary>
+            A Command create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandCreateRequest.CommandSetId">
+            <summary>
+            The Command Set Id to register the Command
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandCreateRequest.CommandText">
+            <summary>
+            The text that can be used from any inbound route to trigger a Command Reply
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandCreateRequest.Description">
+            <summary>
+            The description of the Command
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.CommandReplyCreateRequest">
+            <summary>
+            A Command Reply create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandReplyCreateRequest.CommandReplyText">
+            <summary>
+            The Command Reply text to send to the outbound streams when a Command is triggered
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandReplyCreateRequest.CommandId">
+            <summary>
+            The Id of the Command to register the Command Reply
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.CommandReplyUpdateRequest">
+            <summary>
+            A Command Reply update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandReplyUpdateRequest.CommandReplyText">
+            <summary>
+            The Command Reply text to send to the outbound streams when a Command is triggered
+            </summary>
+            [Required]
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.CommandSetCreateRequest">
+            <summary>
+            A Command Set create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandSetCreateRequest.Name">
+            <summary>
+            The name of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandSetCreateRequest.Description">
+            <summary>
+            The description of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandSetCreateRequest.Prefix">
+            <summary>
+            The prefix that can be used from any inbound route that starts the Command and Command Reply
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.CommandSetUpdateRequest">
+            <summary>
+            A Command Set update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandSetUpdateRequest.Name">
+            <summary>
+            The name of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandSetUpdateRequest.Description">
+            <summary>
+            The description of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandSetUpdateRequest.Prefix">
+            <summary>
+            The prefix that can be used from any inbound route that starts the Command and Command Reply
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.CommandUpdateRequest">
+            <summary>
+            A Command update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandUpdateRequest.Id">
+            <summary>
+            The Id of the existing command
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandUpdateRequest.CommandText">
+            <summary>
+            The text that can be used from any inbound route to trigger a Command Reply
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.CommandUpdateRequest.Description">
+            <summary>
+            The description of the Command
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Commands.StreamCommandSetCreateRequest">
+            <summary>
+            A StreamCommandSet create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.StreamCommandSetCreateRequest.StreamId">
+            <summary>
+            The Id of the Stream to register the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Commands.StreamCommandSetCreateRequest.CommandSetId">
+            <summary>
+            The Id of the Command Set to register to the Stream
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Currencies.CurrencyCreateRequest">
+            <summary>
+            A Currency create request 
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyCreateRequest.CurrencyName">
+            <summary>
+            The name of the Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyCreateRequest.CurrencyDescription">
+            <summary>
+            The description of the Currency
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Currencies.CurrencyUpdateRequest">
+            <summary>
+            A Currency update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyUpdateRequest.CurrencyName">
+            <summary>
+            The name of the Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyUpdateRequest.CurrencyDescription">
+            <summary>
+            The description of the Currency
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Currencies.CurrencyUsersTransactionRequest">
+            <summary>
+            A Currency Users Transaction request 
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyUsersTransactionRequest.CurrencyUserIds">
+            <summary>
+            The Ids of the Currencies Users to be updated
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyUsersTransactionRequest.QuantityToAdjust">
+            <summary>
+            The amount of Currency to reward / remove
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Currencies.CurrencyUserTransactionRequest">
+            <summary>
+            A Currency User Transaction request 
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyUserTransactionRequest.CurrencyUserId">
+            <summary>
+            The Id of the Currency User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Currencies.CurrencyUserTransactionRequest.QuantityToAdjust">
+            <summary>
+            The amount of Currency to reward / remove
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Paths.PathChannelCreateRequest">
+            <summary>
+            A Path Channel create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Paths.PathChannelCreateRequest.ChannelId">
+            <summary>
+            The Id of the Channel to register to the Path
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Paths.PathCreateRequest">
+            <summary>
+            A base Path create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Paths.PathCreateRequest.RouteId">
+            <summary>
+            The Id of the Route to register the path
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Paths.PathServerCreateRequest">
+            <summary>
+            A Path Server create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Paths.PathServerCreateRequest.ServerId">
+            <summary>
+            The Id of the Server to register the Path
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Routes.RouteCreateRequest">
+            <summary>
+            A Route create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Routes.RouteCreateRequest.StreamId">
+            <summary>
+            The Id of the Stream to register to the Route
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Routes.RouteCreateRequest.BotId">
+            <summary>
+            The Id of the Bot to register to the Route
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Routes.RouteCreateRequest.RouteType">
+            <summary>
+            The Route type
+            Values: 0 - Inbound, 1 - Outbound
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusCreateRequest">
+            <summary>
+            A Status create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusCreateRequest.StreamCurrencyId">
+            <summary>
+            The Id of the Currency Stream to register this Status
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusCreateRequest.StatusName">
+            <summary>
+            The name of the Status
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusCreateRequest.TimeSecLastActivityBeforeStatus">
+            <summary>
+            Time in seconds that elapses before this Status becomes active
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusCreateRequest.Quantity">
+            <summary>
+            The amount of Currency accrued per interval when the User is in this Status
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusUpdateRequest">
+            <summary>
+            A Status update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusUpdateRequest.StatusName">
+            <summary>
+            The name of the Status
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusUpdateRequest.TimeSecLastActivityBeforeStatus">
+            <summary>
+            Time in seconds that elapses before this Status becomes active
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.StreamsCurrencies.StatusUpdateRequest.Quantity">
+            <summary>
+            The amount of Currency accrued per interval when the User is in this Status
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Streams.StreamCreateRequest">
+            <summary>
+            A Stream create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCreateRequest.StreamName">
+            <summary>
+            The name of the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCreateRequest.HasCurrency">
+            <summary>
+            Does the Stream have Currencies?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCreateRequest.HasCommands">
+            <summary>
+            Does the Stream have Commands?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Streams.StreamCurrencyCreateRequest">
+            <summary>
+            A StreamCurrency create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyCreateRequest.TimeSec">
+            <summary>
+            Interval in Seconds that Currency will be added to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyCreateRequest.Prefix">
+            <summary>
+            The Prefix that can be used from any inbound route to report a User's current currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyCreateRequest.StreamId">
+            <summary>
+            The Id of the Stream to add the Currency 
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyCreateRequest.CurrencyId">
+            <summary>
+            The Id of the Currency to add to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyCreateRequest.ProviderIds">
+            <summary>
+            Array of Provider Ids that accrue Currency
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Streams.StreamCurrencyProviderCreateRequest">
+            <summary>
+            A StreamCurrencyProvider create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyProviderCreateRequest.StreamCurrencyId">
+            <summary>
+            The Id of the Currency Stream to register the Provider
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyProviderCreateRequest.ProviderId">
+            <summary>
+            The Id of the Provider to register to the Currency Stream
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Streams.StreamCurrencyUpdateRequest">
+            <summary>
+            A StreamCurrency update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyUpdateRequest.Id">
+            <summary>
+            The Id of the existing StreamCurrency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyUpdateRequest.TimeSec">
+            <summary>
+            Interval in Seconds that Currency will be added to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyUpdateRequest.Prefix">
+            <summary>
+            The Prefix that can be used from any inbound route to report a User's current currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamCurrencyUpdateRequest.ProviderIds">
+            <summary>
+            Array of Provider Ids that accrue Currency
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Streams.StreamUpdateRequest">
+            <summary>
+            A Stream update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamUpdateRequest.StreamName">
+            <summary>
+            The name of the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamUpdateRequest.HasCurrency">
+            <summary>
+            Does the Stream have Currencies?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Streams.StreamUpdateRequest.HasCommands">
+            <summary>
+            Does the Stream have Commands?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.UpdateRequest">
+            <summary>
+            A base Update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.UpdateRequest.Id">
+            <summary>
+            The Id of the existing object
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserCreateRequest">
+            <summary>
+            A base User create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserCreateRequest.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserCreateRequest.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserCreateRequest.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserCreateRequest.ProviderId">
+            <summary>
+            The Id of the User's provider
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserDiscordCreateRequest">
+            <summary>
+            A Discord User create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserDiscordCreateRequest.DiscordId">
+            <summary>
+            The Id of the User from Discord
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserDiscordUpdateRequest">
+            <summary>
+            A Discord User update request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserTcpCreateRequest">
+            <summary>
+            A Tcp User create request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserTcpUpdateRequest">
+            <summary>
+            A Tcp User update request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserTwitchCreateRequest">
+            <summary>
+            A Twitch User create request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserTwitchCreateRequest.TwitchId">
+            <summary>
+            The Id assigned by Twitch
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserTwitchUpdateRequest">
+            <summary>
+            A Twitch User update request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserUpdateRequest">
+            <summary>
+            A base User update request
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserUpdateRequest.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserUpdateRequest.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Requests.Users.UserUpdateRequest.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserWSCreateRequest">
+            <summary>
+            A WebSocket Users create request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Requests.Users.UserWSUpdateRequest">
+            <summary>
+            A WebSocket User update request
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Currencies.CurrenciesUserResponse">
+            <summary>
+            A Currencies Users response
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrenciesUserResponse.User">
+            <summary>
+            The User that owns the User Currencies
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrenciesUserResponse.CurrenciesUser">
+            <summary>
+            The User's Currencies
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Currencies.CurrenciesUsersResponse">
+            <summary>
+            A Currencies User response
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Responses.Currencies.CurrenciesUsersResponse.CurrencyUsers">
+            <summary>
+            The User and Currencies that owns the User User Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrenciesUsersResponse.RejectedIds">
+            <summary>
+            Ids 
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Currencies.CurrencyUserResponse">
+            <summary>
+            A Currency User response
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrencyUserResponse.User">
+            <summary>
+            The User that owns the User User Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrencyUserResponse.CurrencyUser">
+            <summary>
+            The User's Currency User
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Currencies.CurrencyUsersResponse">
+            <summary>
+            A Currency Users response
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrencyUsersResponse.RejectedIds">
+            <summary>
+            The Currency User Ids that could not be located
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Currencies.CurrencyUsersResponse.CurrencyUsers">
+            <summary>
+            The requested Currency Users
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Servers.ServersBaseResponse`1">
+            <summary>
+            A base Servers response
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Servers.ServersBaseResponse`1.Servers">
+            <summary>
+            The requested Servers data-transfer objects
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Servers.ServersBaseResponse`1.InvalidIds">
+            <summary>
+            Ids that did not return a Server by TwitchChannelId or Name
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Servers.ServersDiscordResponse">
+            <summary>
+            A Discord Servers response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Servers.ServersTwitchResponse">
+            <summary>
+            A Twitch Servers response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Users.UsersBaseResponse`1">
+            <summary>
+            A Users base response
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Users.UsersBaseResponse`1.Users">
+            <summary>
+            Thie Users requested
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Responses.Users.UsersBaseResponse`1.RejectedIds">
+            <summary>
+            The User Ids of users that were not located
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Users.UsersDiscordResponse">
+            <summary>
+            A Discord Users response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Users.UsersResponse">
+            <summary>
+            A generic Users response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Users.UsersTcpResponse">
+            <summary>
+            A Tcp Users response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Users.UsersTwitchResponse">
+            <summary>
+            A Twitch Users response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Responses.Users.UsersWSResponse">
+            <summary>
+            A WebSocket Users response
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Structs.MessageBase">
+            <summary>
+            A base Message struct
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.UserSource">
+            <summary>
+            The User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageBase.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Structs.MessageDiscord">
+            <summary>
+            A Discord Message struct
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.User">
+            <summary>
+            The Discord User that sent the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.UserSource">
+            <summary>
+            The Bot User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.Server">
+            <summary>
+            The Server where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.Channel">
+            <summary>
+            The Channel where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageDiscord.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Structs.MessageServer`2">
+            <summary>
+            A base Server Message struct
+            </summary>
+            <typeparam name="T">A User data-transfer object</typeparam>
+            <typeparam name="S">A Server data-transfer object</typeparam>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.User">
+            <summary>
+            The User that sent the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.UserSource">
+            <summary>
+            The Bot User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.Server">
+            <summary>
+            The Server where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageServer`2.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Structs.MessageTcp">
+            <summary>
+            A Tcp Message struct
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.User">
+            <summary>
+            The Tcp User that sent the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.UserSource">
+            <summary>
+            The Bot User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTcp.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Structs.MessageTwitch">
+            <summary>
+            A Twitch Message struct
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.User">
+            <summary>
+            The Twitch User that sent the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.UserSource">
+            <summary>
+            The Bot User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.Server">
+            <summary>
+            The Server where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageTwitch.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Structs.MessageWS">
+            <summary>
+            A Websocket Message struct
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.Message">
+            <summary>
+            The message text
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.ChatColor">
+            <summary>
+            The Chat Color of the Message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.User">
+            <summary>
+            The Websocket User that sent the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.UserSource">
+            <summary>
+            The Bot User that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.Stream">
+            <summary>
+            The Stream that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.Route">
+            <summary>
+            The outbound Route where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.Path">
+            <summary>
+            The Path where the message was sent
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.RouteSource">
+            <summary>
+            The inbound Route that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.PathSource">
+            <summary>
+            The Path that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.ServerSource">
+            <summary>
+            The Server that received the message
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.Structs.MessageWS.ChannelSource">
+            <summary>
+            The Channel that received the message
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM">
+            <summary>
+            The Application User ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.Active">
+            <summary>
+            Is this user active?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.UserName">
+            <summary>
+            The Application User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxStreamCount">
+            <summary>
+            The Application User's maximum number of streams
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxBotCountPerProvider">
+            <summary>
+            The Application User's maximum number of bots per provider
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxCurrencies">
+            <summary>
+            The Application User's maximum number of currencies
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxCommandSets">
+            <summary>
+            The Application User's maximum number of command sets
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxClientApplications">
+            <summary>
+            The Application User's maximum number of Client Applications
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxApiResourceCount">
+            <summary>
+            The Application User's maximum number of Api Resources
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.Currencies">
+            <summary>
+            The Application User's registered Currencies
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.Streams">
+            <summary>
+            The Application User's registered Streams
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.Bots">
+            <summary>
+            The Application User's registered Bots
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.CommandSets">
+            <summary>
+            The Application User's registered Command Sets
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.Users">
+            <summary>
+            The Application User's registered Users
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.BaseVM">
+            <summary>
+            A base ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.BaseVM.Id">
+            <summary>
+            The unique Id
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.BaseVM.Timestamp">
+            <summary>
+            The Timestamp when this object was created or modified
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotDiscordVM">
+            <summary>
+            A Discord Bot ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotDiscordVM.User">
+            <summary>
+            The Discord User the Discord Bot is registered to
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotDiscordVM.ServerDiscord">
+            <summary>
+            The Discord Server the Discord Bot is registered to
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM">
+            <summary>
+            A Tcp Bot ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.Username">
+            <summary>
+            The username of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.DisplayName">
+            <summary>
+            The display name of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.AvatarUrl">
+            <summary>
+            The avatar url of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.Token">
+            <summary>
+            The token for this Bot to log into the Tcp Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotTwitchVM">
+            <summary>
+            A Twitch Bot ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTwitchVM.User">
+            <summary>
+            The Twitch User the Twitch Bot is registered to
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotVM">
+            <summary>
+            A base Bot ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotVM.Routes">
+            <summary>
+            The Routes registered to the Bot
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotWSVM">
+            <summary>
+            A Websocket Bot ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.Username">
+            <summary>
+            The username of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.DisplayName">
+            <summary>
+            The display name of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.ProviderType">
+            <summary>
+            The Provider type of the Bot User
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.ProviderTypeValue">
+            <summary>
+            The Provider type of the Bot User as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.AvatarUrl">
+            <summary>
+            The avatar url of the Bot User
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.Token">
+            <summary>
+            The token for this Bot to log into the Tcp Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ClientApplications.ApiResourceVM">
+            <summary>
+            An Api Resource ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ApiResourceVM.Id">
+            <summary>
+            The Id of the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ApiResourceVM.Name">
+            <summary>
+            The Api Resource's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ApiResourceVM.DisplayName">
+            <summary>
+            The Api Resource's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ApiResourceVM.Scopes">
+            <summary>
+            Array of scopes allowed by the Api Resource
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ApiResourceVM.SecretCount">
+            <summary>
+            The number of secrets registered to the Api Resource
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationAuthCodeVM">
+            <summary>
+            An Authorization Code Client Application ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationAuthCodeVM.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationAuthCodeVM.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationAuthCodeVM.FrontChannelLogoutUri">
+            <summary>
+            The front channel logout Uri for the Authorization Code Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationAuthCodeVM.SecretsCount">
+            <summary>
+            The number of secrets registered to the Authorization Code Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationAuthCodeVM.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationImplicitVM">
+            <summary>
+            The Implicit Client Application ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationImplicitVM.RedirectUris">
+            <summary>
+            The Implicit Client Application's authorized redirect Uris
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationImplicitVM.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationImplicitVM.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationPKCEVM">
+            <summary>
+            A PKCE / Authorization Code Client Application ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationPKCEVM.RedirectUris">
+            <summary>
+            Allowed Redirect Uris after PKCE / Authorization Code Authorization
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationPKCEVM.PostLogoutRedirectUris">
+            <summary>
+            Allowed Uris to redirect the Application User after session logout
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationROPasswordVM">
+            <summary>
+            A Resource Owner Password Credentials Client Application ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationROPasswordVM.SecretsCount">
+            <summary>
+            The number of secrets registered to the Resource Owner Password Credentials Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationROPasswordVM.AllowedCorsOrigins">
+            <summary>
+            The application's authorized origin (operating Uri / domain)
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM">
+            <summary>
+            A Client Application base ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.Id">
+            <summary>
+            Unique Id of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientId">
+            <summary>
+            The ClientId of the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientName">
+            <summary>
+            The Client Application's name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.AuthTypes">
+            <summary>
+            The Client Application's authorization types
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientApplicationType">
+            <summary>
+            The Client Application type
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientUri">
+            <summary>
+            The Client Application's Uri
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.Scopes">
+            <summary>
+            Array of scopes allowed by the Client Application
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.AllowOfflineAccess">
+            <summary>
+            Will oauth tokens be used for offline access?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.RequireConsent">
+            <summary>
+            Is consent required?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.EnableLocalLogin">
+            <summary>
+            Is local login enabled?
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Commands.CommandReplyVM">
+            <summary>
+            A Command Reply ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandReplyVM.CommandReplyText">
+            <summary>
+            The Command Reply text to send to the outbound streams when a Command is triggered
+            </summary>>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandReplyVM.Command">
+            <summary>
+            The Command the Command Reply is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Commands.CommandSetVM">
+            <summary>
+            A Command Set ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandSetVM.Name">
+            <summary>
+            The name of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandSetVM.Description">
+            <summary>
+            The description of the Command Set
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandSetVM.Prefix">
+            <summary>
+            The prefix that can be used from any inbound route that starts the Command and Command Reply
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandSetVM.Commands">
+            <summary>
+            The Commands that are registered to this Command Set
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Commands.CommandVM">
+            <summary>
+            A Command ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandVM.CommandText">
+            <summary>
+            The text that can be used from any inbound route to trigger a Command Reply
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandVM.Description">
+            <summary>
+            The description of the Command
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandVM.CommandSet">
+            <summary>
+            The Command Set the Command is registered
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Commands.CommandVM.CommandReplies">
+            <summary>
+            The Command Replies registered to the Command
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM">
+            <summary>
+            A Currency User ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM.Currency">
+            <summary>
+            The Currency the User is accruing
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM.User">
+            <summary>
+            The User that is accruing the currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM.Quantity">
+            <summary>
+            The amount of Currency currently accrued
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM">
+            <summary>
+            A Currency ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.CurrencyName">
+            <summary>
+            The name of the currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.CurrencyDescription">
+            <summary>
+            The description of the currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.StreamCurrencyCount">
+            <summary>
+            The number of Streams the Currency is registered
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.StreamsCurrencies">
+            <summary>
+            The StreamCurrencies of the Streams this Currency is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Currencies.StreamCurrencyProviderVM">
+            <summary>
+            A Stream Currency Provider ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.StreamCurrencyProviderVM.Provider">
+            <summary>
+            The Provider that is registered to this Stream Currency Provider
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.StreamCurrencyProviderVM.StreamCurrency">
+            <summary>
+            The StreamCurrency that is registered to this Stream Currency Provider
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Paths.PathChannelVM">
+            <summary>
+            A Path Channel ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Paths.PathChannelVM.ServerChannel">
+            <summary>
+            The Channel registered to the Path
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Paths.PathServerVM">
+            <summary>
+            A Path Server ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Paths.PathServerVM.Server">
+            <summary>
+            The Server registered to the Path
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Paths.PathVM">
+            <summary>
+            A base Path ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Paths.PathVM.PathType">
+            <summary>
+            The Path type
+            Values: 0 - None, 1 - Server, 2 - Channel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Paths.PathVM.PathTypeValue">
+            <summary>
+            The Path type
+            Values: "None", "Server", "Channel"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Paths.PathVM.Route">
+            <summary>
+            The Route that the Path is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.ProviderVM">
+            <summary>
+            The Provider ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ProviderVM.ProviderType">
+            <summary>
+            The Provider type
+            Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ProviderVM.ProviderTypeValue">
+            <summary>
+            The Provider type as a string
+            Values: "Twitch", "Discord", "Tcp", "Websocket"
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Routes.RouteVM">
+            <summary>
+            A Route ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Routes.RouteVM.RouteType">
+            <summary>
+            The Route type
+            Values: 0 - Inbound, 1 - Outbound
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Routes.RouteVM.RouteTypeValue">
+            <summary>
+            The Route type
+            Values: "Inbound", "Outbound"
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Routes.RouteVM.Stream">
+            <summary>
+            The Stream that is registered to the Route
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Routes.RouteVM.Bot">
+            <summary>
+            The Bot that is registered to the Route
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Routes.RouteVM.Paths">
+            <summary>
+            The Paths registered to the Route
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.Channels.ServerChannelDiscordVM">
+            <summary>
+            A Discord Channel ViewModel
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.Channels.ServerChannelVM">
+            <summary>
+            A base Channel ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.Channels.ServerChannelVM.Name">
+            <summary>
+            The name of the Channel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.Channels.ServerChannelVM.Server">
+            <summary>
+            The Server that the Channel is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.ServerDiscordVM">
+            <summary>
+            A Discord Server ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerDiscordVM.Channels">
+            <summary>
+            The Discord Channels in the Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.ServerTwitchVM">
+            <summary>
+            A Twitch Server ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerTwitchVM.TwitchDisplayName">
+            <summary>
+            The Server's Twitch display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerTwitchVM.UserTwitch">
+            <summary>
+            The Twitch User that owns this Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.ServerVM">
+            <summary>
+            A base Server ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerVM.Name">
+            <summary>
+            The name of the Server
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerVM.IsOnline">
+            <summary>
+            Is the server currently online?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerVM.Provider">
+            <summary>
+            The Provider type of the Bot User
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.ServerUsersDiscordVM">
+            <summary>
+            A Discord Server Users ViewModel
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.ServerUsersTwitchVM">
+            <summary>
+            A Twitch Server Users ViewModel
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Servers.ServerUsersVM`2">
+            <summary>
+            A base Server Users ViewModel
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="S"></typeparam>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerUsersVM`2.Server">
+            <summary>
+            The Server where the Users are currently online
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Servers.ServerUsersVM`2.UsersOnline">
+            <summary>
+            The Users online in the Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.StreamsCurrencies.StatusVM">
+            <summary>
+            A Status ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.StreamsCurrencies.StatusVM.StatusName">
+            <summary>
+            The name of the Status
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.StreamsCurrencies.StatusVM.TimeSecLastActivityBeforeStatus">
+            <summary>
+            Time in seconds that elapses before this Status becomes active
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.StreamsCurrencies.StatusVM.Quantity">
+            <summary>
+            The amount of Currency accrued per interval when the User is in this Status
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.StreamsCurrencies.StatusVM.StreamCurrency">
+            <summary>
+            The Currency in the Stream this Status is registered
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Streams.StreamCommandSetVM">
+            <summary>
+            A StreamCommandSet ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCommandSetVM.CommandSet">
+            <summary>
+            The Command Set registered to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCommandSetVM.Stream">
+            <summary>
+            The Stream that contains the registered Command Set
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM">
+            <summary>
+            A StreamCurrency ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM.TimeSec">
+            <summary>
+            Interval in Seconds that Currency will be added to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM.Prefix">
+            <summary>
+            The prefix that can be used from any inbound route to report a User's current currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM.Currency">
+            <summary>
+            The Currency registered to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM.Stream">
+            <summary>
+            The Stream that contains the Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM.Status">
+            <summary>
+            Status registered to the stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamCurrencyVM.StreamCurrencyProviders">
+            <summary>
+            Providers in the Stream that accrue Currency
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Streams.StreamUsersVM">
+            <summary>
+            A StreamUsers ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamUsersVM.Stream">
+            <summary>
+            The Stream that contains the Users
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamUsersVM.UsersOnline">
+            <summary>
+            The Users online in the Stream
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Streams.StreamVM">
+            <summary>
+            A Stream ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamVM.StreamName">
+            <summary>
+            The name of the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamVM.HasCurrency">
+            <summary>
+            Does the Stream have Currencies?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamVM.HasCommands">
+            <summary>
+            Does the Stream have Commands?
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamVM.Routes">
+            <summary>
+            The Routes registered to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamVM.StreamsCurrencies">
+            <summary>
+            The Currencies registered to the Stream
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Streams.StreamVM.StreamsCommandSets">
+            <summary>
+            The Command Sets registered to the Stream
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Users.UserDiscordVM">
+            <summary>
+            A Discord User ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserDiscordVM.DiscordId">
+            <summary>
+            The Id of the User from Discord
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Users.UserTcpVM">
+            <summary>
+            A Tcp User ViewModel
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Users.UserTwitchVM">
+            <summary>
+            A Twitch User ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserTwitchVM.TwitchId">
+            <summary>
+            The Id assigned by Twitch
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserTwitchVM.ServerTwitch">
+            <summary>
+            The User's Twitch Server
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Users.UserVM">
+            <summary>
+            A base User ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserVM.Username">
+            <summary>
+            The User's username
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserVM.AvatarUrl">
+            <summary>
+            The User's avatar url
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserVM.DisplayName">
+            <summary>
+            The User's display name
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Users.UserVM.Provider">
+            <summary>
+            The User's Provider
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Users.UserWSVM">
+            <summary>
+            A WebSocket User ViewModel
+            </summary>
+        </member>
+    </members>
+</doc>
