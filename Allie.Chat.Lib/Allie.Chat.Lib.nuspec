@@ -6,13 +6,16 @@
     <title>Allie.Chat.Lib</title>
     <authors>Rob Engel - LiveOrDevTrying</authors>
     <owners>Rob Engel - LiveOrDevTrying</owners>
-    <licenseUrl>https://github.com/LiveOrDevTrying/Allie.Chat/blob/master/LICENSE</licenseUrl>
+    <license type="expression">Apache-2.0</license>
     <projectUrl>https://www.allie.chat</projectUrl>
-    <iconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</iconUrl>
+    <icon>Logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The library assembly for Allie.Chat</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Allie Chat Lib Library RSS Routing Communication</tags>
   </metadata>
+  <files>
+    <file src="Logo.png" target="" />
+  </files>
 </package>
