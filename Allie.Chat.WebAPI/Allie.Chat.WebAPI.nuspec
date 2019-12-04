@@ -3,23 +3,20 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>Allie.Chat.Lib</title>
+    <title>Allie.Chat.WebAPI</title>
     <authors>Rob Engel - LiveOrDevTrying</authors>
-    <owners>Rob Engel - LiveOrDevTrying - PixelHorrorStudios</owners>
+    <owners>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>https://www.allie.chat</projectUrl>
     <icon>Logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The library assembly for Allie.Chat</description>
+    <description>A .NET wrapper for the Allie.Chat WebAPI</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2019</copyright>
-    <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket</tags>
+    <tags>Allie Chat WebAPI Client Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</tags>
     <dependencies>
       <group targetFramework="net21">
-        <dependency id="Allie.Chat.WebAPI" version="1.0.0" />
-        <dependency id="IdentityModel.OidcClient" version="2.9.0" />
-        <dependency id="Microsoft.AspNetCore.Hosting" version="2.1.1" />
-        <dependency id="Microsoft.AspNetCore.Server.Kestrel" version="2.1.1" />
+        <dependency id="Allie.Chat.Lib" version="[1.0.1,2.0]" />
       </group>
     </dependencies>
   </metadata>

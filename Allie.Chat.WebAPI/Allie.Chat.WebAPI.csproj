@@ -6,17 +6,15 @@
     <Company>Pixel Horror Studios</Company>
     <Description>A .NET wrapper for the Allie.Chat WebAPI</Description>
     <Copyright>Pixel Horror Studios Copyright 2019</Copyright>
-    <PackageProjectUrl>www.allie.chat</PackageProjectUrl>
-    <RepositoryUrl>www.github.com/liveordevtrying/alliechat</RepositoryUrl>
-    <RepositoryType>Github</RepositoryType>
+    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
+    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
+    <RepositoryType>Github Public</RepositoryType>
+    <PackageIconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Allie.Chat.Lib" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Allie.Chat.Lib\Allie.Chat.Lib.csproj" />
   </ItemGroup>
 
 </Project>
