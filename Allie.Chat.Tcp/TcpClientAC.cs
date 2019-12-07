@@ -58,7 +58,7 @@ namespace Allie.Chat.Tcp
                 _tcpClient.Disconnect();
             }
 
-            _tcpClient.Connect(_connectUri, _connectPort, "/r/n");
+            _tcpClient.Connect(_connectUri, _connectPort, Environment.NewLine);
 
             if (_tcpClient.IsConnected)
             {
@@ -115,22 +115,22 @@ namespace Allie.Chat.Tcp
                             switch (message.ProviderType)
                             {
                                 case ProviderType.Twitch:
-                                    MessageTwitchEvent(sender, JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data));
+                                    MessageTwitchEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data));
                                     break;
                                 case ProviderType.Discord:
-                                    MessageDiscordEvent(sender, JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data));
+                                    MessageDiscordEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data));
                                     break;
                                 case ProviderType.Tcp:
-                                    MessageTcpEvent(sender, JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data));
+                                    MessageTcpEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data));
                                     break;
                                 case ProviderType.Websocket:
-                                    MessageWebsocketEvent(sender, JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data));
+                                    MessageWebsocketEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data));
                                     break;
                                 default:
                                     break;
                             }
 
-                            MessageEvent(sender, message);
+                            MessageEvent?.Invoke(sender, message);
                         }
                         catch
                         { }

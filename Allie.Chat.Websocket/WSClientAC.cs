@@ -19,6 +19,7 @@ namespace Allie.Chat.Websocket
         private readonly string _connectUri = "https://connect.allie.chat";
         private readonly int _connectPort = 7420;
         private readonly string _accessToken;
+        private readonly bool _isWSS = true;
         protected readonly WebsocketClient _websocketClient;
 
         public event NetworkingEventHandler<WSConnectionEventArgs> ConnectionEvent;
@@ -38,11 +39,12 @@ namespace Allie.Chat.Websocket
             _websocketClient.MessageEvent += OnMessageEvent;
             _websocketClient.ErrorEvent += OnErrorEvent;
         }
-        public WSClientAC(string url, int port, string accessToken)
+        public WSClientAC(string url, int port, string accessToken, bool isWss)
         {
             _connectUri = url;
             _connectPort = port;
             _accessToken = accessToken;
+            _isWSS = isWss;
 
             _websocketClient = new WebsocketClient();
             _websocketClient.ConnectionEvent += OnConnectionEvent;
@@ -52,7 +54,7 @@ namespace Allie.Chat.Websocket
 
         public virtual async Task<bool> ConnectAsync()
         {
-            return await _websocketClient.ConnectAsync(_connectUri, _connectPort, _accessToken, _connectUri.ToLower().Contains("https"));
+            return await _websocketClient.ConnectAsync(_connectUri, _connectPort, _accessToken, _isWSS);
         }
         public virtual async Task<bool> DisconnectAsync()
         {
@@ -93,22 +95,22 @@ namespace Allie.Chat.Websocket
                             switch (message.ProviderType)
                             {
                                 case ProviderType.Twitch:
-                                    MessageTwitchEvent(sender, JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data));
+                                    MessageTwitchEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data));
                                     break;
                                 case ProviderType.Discord:
-                                    MessageDiscordEvent(sender, JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data));
+                                    MessageDiscordEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data));
                                     break;
                                 case ProviderType.Tcp:
-                                    MessageTcpEvent(sender, JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data));
+                                    MessageTcpEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data));
                                     break;
                                 case ProviderType.Websocket:
-                                    MessageWebsocketEvent(sender, JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data));
+                                    MessageWebsocketEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data));
                                     break;
                                 default:
                                     break;
                             }
 
-                            MessageEvent(sender, message);
+                            MessageEvent?.Invoke(sender, message);
                         }
                         catch
                         { }
