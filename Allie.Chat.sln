@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Lib", "Allie.Cha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.WebAPI", "Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj", "{28D36389-E1A2-46BB-93C2-053357B289A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allie.Chat.WebAPI.Auth", "Allie.Chat.WebAPI.Auth\Allie.Chat.WebAPI.Auth.csproj", "{4158EBFF-3E30-4666-8B39-51D725DB26C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.WebAPI.Auth", "Allie.Chat.WebAPI.Auth\Allie.Chat.WebAPI.Auth.csproj", "{4158EBFF-3E30-4666-8B39-51D725DB26C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Websocket", "Allie.Chat.Websocket\Allie.Chat.Websocket.csproj", "{9D081A8E-1D62-4F90-B6E2-5CCE470521F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Tcp", "Allie.Chat.Tcp\Allie.Chat.Tcp.csproj", "{711416C4-5BF6-4C66-A351-F510379E39DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allie.Chat", "Allie.Chat\Allie.Chat.csproj", "{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{4158EBFF-3E30-4666-8B39-51D725DB26C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4158EBFF-3E30-4666-8B39-51D725DB26C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4158EBFF-3E30-4666-8B39-51D725DB26C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D081A8E-1D62-4F90-B6E2-5CCE470521F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D081A8E-1D62-4F90-B6E2-5CCE470521F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D081A8E-1D62-4F90-B6E2-5CCE470521F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D081A8E-1D62-4F90-B6E2-5CCE470521F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711416C4-5BF6-4C66-A351-F510379E39DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711416C4-5BF6-4C66-A351-F510379E39DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711416C4-5BF6-4C66-A351-F510379E39DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711416C4-5BF6-4C66-A351-F510379E39DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
