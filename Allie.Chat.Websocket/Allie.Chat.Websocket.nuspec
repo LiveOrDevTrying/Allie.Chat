@@ -3,22 +3,22 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>Allie.Chat.WebAPI</title>
+    <title>Allie.Chat.Websocket</title>
     <authors>Rob Engel - LiveOrDevTrying</authors>
     <owners>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>https://www.allie.chat</projectUrl>
     <icon>Logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A .NET wrapper for the Allie.Chat WebAPI</description>
+    <description>A .NET wrapper for Client access to the Allie.Chat Websocket Servers</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019</copyright>
-    <tags>Allie Chat WebAPI Client Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</tags>
+    <tags>Allie Chat WebAPI Client WSClient WebsocketClient Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket websockets WS</tags>
     <dependencies>
       <group targetFramework="netcoreapp2.1">
         <dependency id="Microsoft.NETCore.App" version="[2.1,3]" />
-        <dependency id="Allie.Chat.Lib" version="[1.0.3,2.0]" />
-        <dependency id="Newtonsoft.Json" version="[12.0.2,13]" />
+        <dependency id="Allie.Chat.Lib" version="[1.0.3,2]" />
+        <dependency id="WebsocketsSimple.Client" version="[1.0.3,2]" />
       </group>
     </dependencies>
   </metadata>

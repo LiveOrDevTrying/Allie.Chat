@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Allie.Chat.WebAPI.Auth
 {
-    public class ClientAuth : Client, IClientAuth
+    public class WebAPIClientACAuth : WebAPIClientAC, IWebAPIClientACAuth
     {
         protected OidcClient _oidcClient;
 
-        public ClientAuth() : base(string.Empty)
+        public WebAPIClientACAuth() : base(string.Empty)
         {
         }
 

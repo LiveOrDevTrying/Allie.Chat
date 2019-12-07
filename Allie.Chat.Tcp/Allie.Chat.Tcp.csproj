@@ -2,11 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>Rob Engel - LiveOrDevTrying</Authors>
+    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
+    <Description>A .NET wrapper for Client access to the Allie.Chat Tcp Servers</Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
+    <PackageIconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</PackageIconUrl>
+    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
+    <RepositoryType>Github Public</RepositoryType>
+    <PackageTags>Allie Chat WebAPI Client TcpClient Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Lib" Version="1.0.1" />
-    <PackageReference Include="Tcp.NET.Client" Version="1.0.0" />
+    <PackageReference Include="Allie.Chat.Lib" Version="1.0.3" />
+    <PackageReference Include="Tcp.NET.Client" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

@@ -38,7 +38,7 @@ using Allie.Chat.Lib.Responses.Currencies;
 
 namespace Allie.Chat.WebAPI
 {
-    public interface IClient : IDisposable
+    public interface IWebAPIClientAC : IDisposable
     {
         /// <summary>
         /// Set the access token

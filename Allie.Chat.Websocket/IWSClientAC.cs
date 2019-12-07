@@ -6,7 +6,7 @@ using WebsocketsSimple.Core.Events.Args;
 
 namespace Allie.Chat.Websocket
 {
-    public interface IWSClient : IDisposable
+    public interface IWSClientAC : IDisposable
     {
         bool IsRunning { get; }
 

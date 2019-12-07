@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Allie.Chat.WebAPI.Auth
 {
-    public interface IClientAuth : IClient
+    public interface IWebAPIClientACAuth : IWebAPIClientAC
     {
         Task<LoginResult> GetAccessTokenAuthCodeAsync(string identityServerAuthorityUrl, string clientId, string clientSecret, string scopes);
         Task<LoginResult> GetAccessTokenNativePKCEAsync(string identityServerAuthorityUrl, string clientId, string scopes);

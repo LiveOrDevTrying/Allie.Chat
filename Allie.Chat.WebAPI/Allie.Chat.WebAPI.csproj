@@ -3,18 +3,21 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>Rob Engel - LiveOrDevTrying</Authors>
-    <Company>Pixel Horror Studios</Company>
+    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
     <Description>A .NET wrapper for the Allie.Chat WebAPI</Description>
-    <Copyright>Pixel Horror Studios Copyright 2019</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github Public</RepositoryType>
     <PackageIconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</PackageIconUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.4</Version>
+    <PackageTags>Allie Chat WebAPI Client Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Product>Allie.Chat.WebAPI</Product>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Lib" Version="1.0.1" />
+    <PackageReference Include="Allie.Chat.Lib" Version="1.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 

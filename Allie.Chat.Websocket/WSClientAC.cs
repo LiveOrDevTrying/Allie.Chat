@@ -7,75 +7,63 @@ using PHS.Core.Events;
 using PHS.Core.Models;
 using System;
 using System.Threading.Tasks;
-using Tcp.NET.Client;
-using Tcp.NET.Core.Events.Args;
+using WebsocketsSimple.Client;
+using WebsocketsSimple.Core.Events.Args;
 
-namespace Allie.Chat.Tcp
+namespace Allie.Chat.Websocket
 {
-    public delegate void TcpMessageEventHandler<T>(object sender, T args) where T : IMessageBase;
+    public delegate void WebsocketMessageEventHandler<T>(object sender, T args) where T : IMessageBase;
 
-    public class TcpClient : ITcpClient
+    public class WSClientAC : IWSClientAC
     {
         private readonly string _connectUri = "https://connect.allie.chat";
-        private readonly int _connectPort = 7415;
-        protected readonly ITcpAsyncClient _tcpClient;
+        private readonly int _connectPort = 7420;
+        protected readonly WebsocketClient _websocketClient;
 
-        public event NetworkingEventHandler<TcpConnectionEventArgs> ConnectionEvent;
-        public event TcpMessageEventHandler<IMessageBase> MessageEvent;
-        public event TcpMessageEventHandler<IMessageTwitch> MessageTwitchEvent;
-        public event TcpMessageEventHandler<IMessageDiscord> MessageDiscordEvent;
-        public event TcpMessageEventHandler<IMessageTcp> MessageTcpEvent;
-        public event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
-        public event NetworkingEventHandler<TcpErrorEventArgs> ErrorEvent;
+        public event NetworkingEventHandler<WSConnectionEventArgs> ConnectionEvent;
+        public event WebsocketMessageEventHandler<IMessageBase> MessageEvent;
+        public event WebsocketMessageEventHandler<IMessageTwitch> MessageTwitchEvent;
+        public event WebsocketMessageEventHandler<IMessageDiscord> MessageDiscordEvent;
+        public event WebsocketMessageEventHandler<IMessageTcp> MessageTcpEvent;
+        public event WebsocketMessageEventHandler<IMessageWS> MessageWebsocketEvent;
+        public event NetworkingEventHandler<WSErrorEventArgs> ErrorEvent;
 
-        public TcpClient(string accessToken)
+        public WSClientAC(string accessToken)
         {
-            _tcpClient = new TcpAsyncClient();
-            _tcpClient.ConnectionEvent += OnConnectionEvent;
-            _tcpClient.MessageEvent += OnMessageEvent;
-            _tcpClient.ErrorEvent += OnErrorEvent;
-            _tcpClient.Start(_connectUri, _connectPort, "/r/n");
-
-            if (_tcpClient.IsConnected)
-            {
-                _tcpClient.SendToServerRaw($"oauth:{accessToken}");
-            }
+            _websocketClient = new WebsocketClient();
+            _websocketClient.ConnectionEvent += OnConnectionEvent;
+            _websocketClient.MessageEvent += OnMessageEvent;
+            _websocketClient.ErrorEvent += OnErrorEvent;
+            _websocketClient.Start(_connectUri, _connectPort, accessToken, true);
         }
-        public TcpClient(string url, int port, string accessToken)
+        public WSClientAC(string url, int port, string accessToken)
         {
             _connectUri = url;
             _connectPort = port;
 
-            _tcpClient = new TcpAsyncClient();
-            _tcpClient.ConnectionEvent += OnConnectionEvent;
-            _tcpClient.MessageEvent += OnMessageEvent;
-            _tcpClient.ErrorEvent += OnErrorEvent;
-            _tcpClient.Start(_connectUri, _connectPort, "/r/n");
-
-            if (_tcpClient.IsConnected)
-            {
-                _tcpClient.SendToServerRaw($"oauth:{accessToken}");
-            }
+            _websocketClient = new WebsocketClient();
+            _websocketClient.ConnectionEvent += OnConnectionEvent;
+            _websocketClient.MessageEvent += OnMessageEvent;
+            _websocketClient.ErrorEvent += OnErrorEvent;
+            _websocketClient.Start(_connectUri, _connectPort, accessToken, url.ToLower().Contains("https"));
         }
 
-        public virtual Task<bool> SendAsync(string message)
+        public virtual async Task<bool> SendAsync(string message)
         {
-            var response = _tcpClient.SendToServer(new PacketDTO
+            return await _websocketClient.Send(new PacketDTO
             {
                 Action = (int)ActionType.SendToServer,
                 Data = message,
                 Timestamp = DateTime.UtcNow
             });
-
-            return Task.FromResult(response);
         }
 
-        protected virtual Task OnConnectionEvent(object sender, TcpConnectionEventArgs args)
+        protected virtual Task OnConnectionEvent(object sender, WSConnectionEventArgs args)
         {
             ConnectionEvent(sender, args);
             return Task.CompletedTask;
         }
-        protected virtual Task OnMessageEvent(object sender, TcpMessageEventArgs args)
+        protected virtual async Task OnMessageEvent(object sender, WSMessageEventArgs args)
         {
             switch (args.MessageEventType)
             {
@@ -84,7 +72,7 @@ namespace Allie.Chat.Tcp
                 case MessageEventType.Receive:
                     if (args.Message.Trim().ToLower() == "ping")
                     {
-                        _tcpClient.SendToServerRaw("pong");
+                        await _websocketClient.Send("pong");
                     }
                     else
                     {
@@ -119,9 +107,8 @@ namespace Allie.Chat.Tcp
                 default:
                     break;
             }
-            return Task.CompletedTask;
         }
-        protected virtual Task OnErrorEvent(object sender, TcpErrorEventArgs args)
+        protected virtual Task OnErrorEvent(object sender, WSErrorEventArgs args)
         {
             ErrorEvent(sender, args);
             return Task.CompletedTask;
@@ -129,12 +116,12 @@ namespace Allie.Chat.Tcp
 
         public virtual void Dispose()
         {
-            if (_tcpClient != null)
+            if (_websocketClient != null)
             {
-                _tcpClient.ConnectionEvent -= OnConnectionEvent;
-                _tcpClient.MessageEvent -= OnMessageEvent;
-                _tcpClient.ErrorEvent -= OnErrorEvent;
-                _tcpClient.Dispose();
+                _websocketClient.ConnectionEvent -= OnConnectionEvent;
+                _websocketClient.MessageEvent -= OnMessageEvent;
+                _websocketClient.ErrorEvent -= OnErrorEvent;
+                _websocketClient.Dispose();
             }
         }
 
@@ -142,7 +129,7 @@ namespace Allie.Chat.Tcp
         {
             get
             {
-                return _tcpClient != null && _tcpClient.IsConnected;
+                return _websocketClient != null && _websocketClient.IsRunning;
             }
         }
     }

@@ -3,14 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Description>The library assembly for Allie.Chat</Description>
-    <Copyright>Pixel Horror Studios Copyright 2019</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github Public</RepositoryType>
     <Authors>Rob Engel - LiveOrDevTrying</Authors>
-    <Company>Pixel Horror Studios</Company>
-    <Version>1.0.1</Version>
+    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
+    <Version>1.0.3</Version>
     <PackageIconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</PackageIconUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageTags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

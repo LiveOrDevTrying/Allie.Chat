@@ -43,16 +43,16 @@ using Allie.Chat.Lib.Responses.Currencies;
 
 namespace Allie.Chat.WebAPI
 {
-    public class Client : IClient
+    public class WebAPIClientAC : IWebAPIClientAC
     {
         private readonly string _webAPIBaseUrl = "https://api.allie.chat";
         protected string _accessToken;
 
-        public Client(string accessToken)
+        public WebAPIClientAC(string accessToken)
         {
             _accessToken = accessToken;
         }
-        public Client(string accessToken, string webAPIBaseUrl)
+        public WebAPIClientAC(string accessToken, string webAPIBaseUrl)
         {
             _accessToken = accessToken;
             _webAPIBaseUrl = webAPIBaseUrl;

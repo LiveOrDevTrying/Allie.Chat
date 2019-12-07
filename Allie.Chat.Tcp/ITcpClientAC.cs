@@ -5,7 +5,7 @@ using Tcp.NET.Core.Events.Args;
 
 namespace Allie.Chat.Tcp
 {
-    public interface ITcpClient
+    public interface ITcpClientAC
     {
         bool IsRunning { get; }
 
