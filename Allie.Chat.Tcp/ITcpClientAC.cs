@@ -17,6 +17,9 @@ namespace Allie.Chat.Tcp
         event TcpMessageEventHandler<IMessageTwitch> MessageTwitchEvent;
         event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
 
+        bool Connect();
+        bool Disconnect();
+
         void Dispose();
         Task<bool> SendAsync(string message);
     }

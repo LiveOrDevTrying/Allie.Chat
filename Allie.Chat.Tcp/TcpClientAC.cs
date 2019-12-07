@@ -18,6 +18,7 @@ namespace Allie.Chat.Tcp
     {
         private readonly string _connectUri = "https://connect.allie.chat";
         private readonly int _connectPort = 7415;
+        private readonly string _accessToken;
         protected readonly ITcpNETClient _tcpClient;
 
         public event NetworkingEventHandler<TcpConnectionEventArgs> ConnectionEvent;
@@ -30,34 +31,53 @@ namespace Allie.Chat.Tcp
 
         public TcpClientAC(string accessToken)
         {
+            _accessToken = accessToken;
+
             _tcpClient = new TcpNETClient();
             _tcpClient.ConnectionEvent += OnConnectionEvent;
             _tcpClient.MessageEvent += OnMessageEvent;
             _tcpClient.ErrorEvent += OnErrorEvent;
-            _tcpClient.Connect(_connectUri, _connectPort, "/r/n");
-
-            if (_tcpClient.IsConnected)
-            {
-                _tcpClient.SendToServerRaw($"oauth:{accessToken}");
-            }
+           
         }
         public TcpClientAC(string url, int port, string accessToken)
         {
             _connectUri = url;
             _connectPort = port;
+            _accessToken = accessToken;
 
             _tcpClient = new TcpNETClient();
             _tcpClient.ConnectionEvent += OnConnectionEvent;
             _tcpClient.MessageEvent += OnMessageEvent;
             _tcpClient.ErrorEvent += OnErrorEvent;
+        }
+
+        public virtual bool Connect()
+        {
+            if (_tcpClient.IsConnected)
+            {
+                _tcpClient.Disconnect();
+            }
+
             _tcpClient.Connect(_connectUri, _connectPort, "/r/n");
 
             if (_tcpClient.IsConnected)
             {
-                _tcpClient.SendToServerRaw($"oauth:{accessToken}");
+                _tcpClient.SendToServerRaw($"oauth:{_accessToken}");
+                return true;
             }
-        }
 
+            return false;
+        }
+        public virtual bool Disconnect()
+        {
+            if (_tcpClient.IsConnected)
+            {
+                _tcpClient.Disconnect();
+                return true;
+            }
+
+            return false;
+        }
         public virtual Task<bool> SendAsync(string message)
         {
             var response = _tcpClient.SendToServer(new PacketDTO

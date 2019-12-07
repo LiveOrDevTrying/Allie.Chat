@@ -18,6 +18,7 @@ namespace Allie.Chat.Websocket
     {
         private readonly string _connectUri = "https://connect.allie.chat";
         private readonly int _connectPort = 7420;
+        private readonly string _accessToken;
         protected readonly WebsocketClient _websocketClient;
 
         public event NetworkingEventHandler<WSConnectionEventArgs> ConnectionEvent;
@@ -30,27 +31,36 @@ namespace Allie.Chat.Websocket
 
         public WSClientAC(string accessToken)
         {
+            _accessToken = accessToken;
+
             _websocketClient = new WebsocketClient();
             _websocketClient.ConnectionEvent += OnConnectionEvent;
             _websocketClient.MessageEvent += OnMessageEvent;
             _websocketClient.ErrorEvent += OnErrorEvent;
-            _websocketClient.Start(_connectUri, _connectPort, accessToken, true);
         }
         public WSClientAC(string url, int port, string accessToken)
         {
             _connectUri = url;
             _connectPort = port;
+            _accessToken = accessToken;
 
             _websocketClient = new WebsocketClient();
             _websocketClient.ConnectionEvent += OnConnectionEvent;
             _websocketClient.MessageEvent += OnMessageEvent;
             _websocketClient.ErrorEvent += OnErrorEvent;
-            _websocketClient.Start(_connectUri, _connectPort, accessToken, url.ToLower().Contains("https"));
         }
 
+        public virtual async Task<bool> ConnectAsync()
+        {
+            return await _websocketClient.ConnectAsync(_connectUri, _connectPort, _accessToken, _connectUri.ToLower().Contains("https"));
+        }
+        public virtual async Task<bool> DisconnectAsync()
+        {
+            return await _websocketClient.DisconnectAsync();
+        }
         public virtual async Task<bool> SendAsync(string message)
         {
-            return await _websocketClient.Send(new PacketDTO
+            return await _websocketClient.SendAsync(new PacketDTO
             {
                 Action = (int)ActionType.SendToServer,
                 Data = message,
@@ -72,7 +82,7 @@ namespace Allie.Chat.Websocket
                 case MessageEventType.Receive:
                     if (args.Message.Trim().ToLower() == "ping")
                     {
-                        await _websocketClient.Send("pong");
+                        await _websocketClient.SendAsync("pong");
                     }
                     else
                     {
@@ -125,11 +135,11 @@ namespace Allie.Chat.Websocket
             }
         }
 
-        public bool IsRunning
+        public bool IsConnected
         {
             get
             {
-                return _websocketClient != null && _websocketClient.IsRunning;
+                return _websocketClient != null && _websocketClient.IsConnected;
             }
         }
     }
