@@ -16,7 +16,7 @@ namespace Allie.Chat.Websocket
 
     public class WSClientAC : IWSClientAC
     {
-        private readonly string _connectUri = "https://connect.allie.chat";
+        private readonly string _connectUri = "connect.allie.chat";
         private readonly int _connectPort = 7420;
         private readonly string _accessToken;
         private readonly bool _isWSS = true;

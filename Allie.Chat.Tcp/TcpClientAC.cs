@@ -16,7 +16,7 @@ namespace Allie.Chat.Tcp
 
     public class TcpClientAC : ITcpClientAC
     {
-        private readonly string _connectUri = "https://connect.allie.chat";
+        private readonly string _connectUri = "connect.allie.chat";
         private readonly int _connectPort = 7415;
         private readonly string _accessToken;
         protected readonly ITcpNETClient _tcpClient;
