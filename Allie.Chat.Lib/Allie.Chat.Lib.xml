@@ -2438,11 +2438,6 @@
             A Discord Bot ViewModel
             </summary>
         </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotDiscordVM.User">
-            <summary>
-            The Discord User the Discord Bot is registered to
-            </summary>
-        </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotDiscordVM.ServerDiscord">
             <summary>
             The Discord Server the Discord Bot is registered to
@@ -2451,16 +2446,6 @@
         <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM">
             <summary>
             A Tcp Bot ViewModel
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.Username">
-            <summary>
-            The username of the Bot User
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.DisplayName">
-            <summary>
-            The display name of the Bot User
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.ProviderType">
@@ -2475,11 +2460,6 @@
             Values: "Twitch", "Discord", "Tcp", "Websocket"
             </summary>
         </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.AvatarUrl">
-            <summary>
-            The avatar url of the Bot User
-            </summary>
-        </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTcpVM.Token">
             <summary>
             The token for this Bot to log into the Tcp Server
@@ -2488,11 +2468,6 @@
         <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotTwitchVM">
             <summary>
             A Twitch Bot ViewModel
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotTwitchVM.User">
-            <summary>
-            The Twitch User the Twitch Bot is registered to
             </summary>
         </member>
         <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotVM">
@@ -2505,19 +2480,14 @@
             The Routes registered to the Bot
             </summary>
         </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotVM.User">
+            <summary>
+            The User registered to the Bot
+            </summary>
+        </member>
         <member name="T:Allie.Chat.Lib.ViewModels.Bots.BotWSVM">
             <summary>
             A Websocket Bot ViewModel
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.Username">
-            <summary>
-            The username of the Bot User
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.DisplayName">
-            <summary>
-            The display name of the Bot User
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.ProviderType">
@@ -2530,11 +2500,6 @@
             <summary>
             The Provider type of the Bot User as a string
             Values: "Twitch", "Discord", "Tcp", "Websocket"
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.AvatarUrl">
-            <summary>
-            The avatar url of the Bot User
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Bots.BotWSVM.Token">

@@ -9,10 +9,6 @@ namespace Allie.Chat.Lib.ViewModels.Bots
     public class BotDiscordVM : BotVM
     {
         /// <summary>
-        /// The Discord User the Discord Bot is registered to
-        /// </summary>
-        public UserDTO User { get; set; }
-        /// <summary>
         /// The Discord Server the Discord Bot is registered to
         /// </summary>
         public ServerDiscordDTO ServerDiscord { get; set; }

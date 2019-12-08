@@ -1,6 +1,5 @@
-﻿using Allie.Chat.Lib.DTOs.ApplicationUsers;
-using Allie.Chat.Lib.DTOs.Routes;
-using Allie.Chat.Lib.Enums;
+﻿using Allie.Chat.Lib.DTOs.Routes;
+using Allie.Chat.Lib.DTOs.Users;
 using System.Collections.Generic;
 
 namespace Allie.Chat.Lib.ViewModels.Bots
@@ -15,5 +14,10 @@ namespace Allie.Chat.Lib.ViewModels.Bots
         /// </summary>
         public ICollection<RouteDTO> Routes { get; set; } =
             new List<RouteDTO>();
+
+        /// <summary>
+        /// The User registered to the Bot
+        /// </summary>
+        public UserDTO User { get; set; }
     }
 }

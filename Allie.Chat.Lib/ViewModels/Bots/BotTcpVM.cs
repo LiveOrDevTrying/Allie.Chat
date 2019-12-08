@@ -8,14 +8,6 @@ namespace Allie.Chat.Lib.ViewModels.Bots
     public class BotTcpVM : BotVM
     {
         /// <summary>
-        /// The username of the Bot User
-        /// </summary>
-        public string Username { get; set; }
-        /// <summary>
-        /// The display name of the Bot User
-        /// </summary>
-        public string DisplayName { get; set; }
-        /// <summary>
         /// The Provider type of the Bot User
         /// Values: 0 - Twitch, 1 - Discord, 2 - Tcp, 3 - Websocket
         /// </summary>
@@ -25,10 +17,6 @@ namespace Allie.Chat.Lib.ViewModels.Bots
         /// Values: "Twitch", "Discord", "Tcp", "Websocket"
         /// </summary>
         public string ProviderTypeValue { get; set; }
-        /// <summary>
-        /// The avatar url of the Bot User
-        /// </summary>
-        public string AvatarUrl { get; set; }
         /// <summary>
         /// The token for this Bot to log into the Tcp Server
         /// </summary>

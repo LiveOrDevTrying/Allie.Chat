@@ -7,9 +7,5 @@ namespace Allie.Chat.Lib.ViewModels.Bots
     /// </summary>
     public class BotTwitchVM : BotVM
     {
-        /// <summary>
-        /// The Twitch User the Twitch Bot is registered to
-        /// </summary>
-        public UserDTO User { get; set; }
     }
 }
