@@ -13,12 +13,14 @@ using Tcp.NET.Core.Events.Args;
 namespace Allie.Chat.Tcp
 {
     public delegate void TcpMessageEventHandler<T>(object sender, T args) where T : IMessageBase;
+    public delegate void SystemMessageEventHandler(object sender, string message);
 
     public class TcpClientAC : ITcpClientAC
     {
         private readonly string _connectUri = "connect.allie.chat";
-        private readonly int _connectPort = 7415;
+        private readonly int _connectPort = 7610;
         private readonly string _accessToken;
+
         protected readonly ITcpNETClient _tcpClient;
 
         public event NetworkingEventHandler<TcpConnectionEventArgs> ConnectionEvent;
@@ -28,6 +30,7 @@ namespace Allie.Chat.Tcp
         public event TcpMessageEventHandler<IMessageTcp> MessageTcpEvent;
         public event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
         public event NetworkingEventHandler<TcpErrorEventArgs> ErrorEvent;
+        public event SystemMessageEventHandler SystemMessageEvent;
 
         public TcpClientAC(string accessToken)
         {
@@ -58,7 +61,7 @@ namespace Allie.Chat.Tcp
                 _tcpClient.Disconnect();
             }
 
-            _tcpClient.Connect(_connectUri, _connectPort, Environment.NewLine);
+            _tcpClient.Connect(_connectUri, _connectPort, "\r\n");
 
             if (_tcpClient.IsConnected)
             {
@@ -133,7 +136,9 @@ namespace Allie.Chat.Tcp
                             MessageEvent?.Invoke(sender, message);
                         }
                         catch
-                        { }
+                        {
+                            SystemMessageEvent?.Invoke(sender, args.Message);
+                        }
                     }
                     break;
                 default:

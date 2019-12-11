@@ -13,11 +13,12 @@ using WebsocketsSimple.Core.Events.Args;
 namespace Allie.Chat.Websocket
 {
     public delegate void WebsocketMessageEventHandler<T>(object sender, T args) where T : IMessageBase;
+    public delegate void SystemMessageEventHandler(object sender, string message);
 
     public class WSClientAC : IWSClientAC
     {
         private readonly string _connectUri = "connect.allie.chat";
-        private readonly int _connectPort = 7420;
+        private readonly int _connectPort = 7620;
         private readonly string _accessToken;
         private readonly bool _isWSS = true;
         protected readonly WebsocketClient _websocketClient;
@@ -29,6 +30,7 @@ namespace Allie.Chat.Websocket
         public event WebsocketMessageEventHandler<IMessageTcp> MessageTcpEvent;
         public event WebsocketMessageEventHandler<IMessageWS> MessageWebsocketEvent;
         public event NetworkingEventHandler<WSErrorEventArgs> ErrorEvent;
+        public event SystemMessageEventHandler SystemMessageEvent;
 
         public WSClientAC(string accessToken)
         {
@@ -113,7 +115,9 @@ namespace Allie.Chat.Websocket
                             MessageEvent?.Invoke(sender, message);
                         }
                         catch
-                        { }
+                        {
+                            SystemMessageEvent?.Invoke(sender, args.Message);
+                        }
                     }
                     break;
                 default:
