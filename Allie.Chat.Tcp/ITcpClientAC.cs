@@ -16,6 +16,7 @@ namespace Allie.Chat.Tcp
         event TcpMessageEventHandler<IMessageTcp> MessageTcpEvent;
         event TcpMessageEventHandler<IMessageTwitch> MessageTwitchEvent;
         event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
+        event SystemMessageEventHandler SystemMessageEvent;
 
         bool Connect();
         bool Disconnect();
