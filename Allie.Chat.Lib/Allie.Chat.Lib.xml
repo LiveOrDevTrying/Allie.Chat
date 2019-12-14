@@ -351,11 +351,6 @@
             The description of the Currency
             </summary>
         </member>
-        <member name="P:Allie.Chat.Lib.DTOs.Currencies.CurrencyDTO.StreamCurrencyCount">
-            <summary>
-            The number of Streams the Currency is registered
-            </summary>
-        </member>
         <member name="T:Allie.Chat.Lib.DTOs.Currencies.CurrencyUserDTO">
             <summary>
             A Currency User data-transfer object
@@ -2767,6 +2762,11 @@
             The amount of Currency currently accrued
             </summary>
         </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM.UserCurrency.Status">
+            <summary>
+            The Status that represents the User's activity
+            </summary>
+        </member>
         <member name="T:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM">
             <summary>
             A Currency User ViewModel
@@ -2780,6 +2780,11 @@
         <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM.User">
             <summary>
             The User that is accruing the currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM.Status">
+            <summary>
+            The Status the User's activity currently represents
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM.Quantity">
@@ -2800,11 +2805,6 @@
         <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.CurrencyDescription">
             <summary>
             The description of the currency
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.StreamCurrencyCount">
-            <summary>
-            The number of Streams the Currency is registered
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.StreamsCurrencies">

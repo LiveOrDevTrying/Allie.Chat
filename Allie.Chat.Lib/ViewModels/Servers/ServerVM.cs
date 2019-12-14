@@ -6,7 +6,7 @@ namespace Allie.Chat.Lib.ViewModels.Servers
     /// <summary>
     /// A base Server ViewModel
     /// </summary>
-    public abstract class ServerVM : BaseVM
+    public class ServerVM : BaseVM
     {
         /// <summary>
         /// The name of the Server

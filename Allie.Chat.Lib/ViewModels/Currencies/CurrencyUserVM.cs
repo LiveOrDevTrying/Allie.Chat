@@ -1,4 +1,5 @@
 ﻿using Allie.Chat.Lib.DTOs.Currencies;
+using Allie.Chat.Lib.DTOs.StreamsCurrencies;
 using Allie.Chat.Lib.DTOs.Users;
 
 namespace Allie.Chat.Lib.ViewModels.Currencies
@@ -16,6 +17,10 @@ namespace Allie.Chat.Lib.ViewModels.Currencies
         /// The User that is accruing the currency
         /// </summary>
         public UserDTO User { get; set; }
+        /// <summary>
+        /// The Status the User's activity currently represents
+        /// </summary>
+        public StatusDTO Status { get; set; }
         /// <summary>
         /// The amount of Currency currently accrued
         /// </summary>

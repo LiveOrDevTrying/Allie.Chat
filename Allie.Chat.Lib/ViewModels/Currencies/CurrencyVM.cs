@@ -16,11 +16,6 @@ namespace Allie.Chat.Lib.ViewModels.Currencies
         /// The description of the currency
         /// </summary>
         public string CurrencyDescription { get; set; }
-
-        /// <summary>
-        /// The number of Streams the Currency is registered
-        /// </summary>
-        public int StreamCurrencyCount { get; set; }
         /// <summary>
         /// The StreamCurrencies of the Streams this Currency is registered
         /// </summary>

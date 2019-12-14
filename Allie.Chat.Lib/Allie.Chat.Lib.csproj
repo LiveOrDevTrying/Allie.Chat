@@ -9,11 +9,12 @@
     <RepositoryType>Github Public</RepositoryType>
     <Authors>Rob Engel - LiveOrDevTrying</Authors>
     <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <PackageIconUrl></PackageIconUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageTags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
     <PackageIcon>Logo.png</PackageIcon>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

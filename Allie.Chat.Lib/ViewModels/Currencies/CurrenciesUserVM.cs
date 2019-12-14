@@ -1,4 +1,5 @@
 ﻿using Allie.Chat.Lib.DTOs.Currencies;
+using Allie.Chat.Lib.DTOs.StreamsCurrencies;
 using Allie.Chat.Lib.DTOs.Users;
 
 namespace Allie.Chat.Lib.ViewModels.Currencies
@@ -6,7 +7,7 @@ namespace Allie.Chat.Lib.ViewModels.Currencies
     /// <summary>
     /// A Currencies User ViewModel
     /// </summary>
-    public class CurrenciesUserVM : BaseVM
+    public class CurrenciesUserVM
     {
         /// <summary>
         /// The User that is accruing the stream currencies
@@ -16,7 +17,6 @@ namespace Allie.Chat.Lib.ViewModels.Currencies
         /// The Stream Currencies the User is accruing
         /// </summary>
         public UserCurrency[] UserCurrencies { get; set; }
-
         /// <summary>
         /// A User Currency nested data-transfer object
         /// </summary>
@@ -26,11 +26,14 @@ namespace Allie.Chat.Lib.ViewModels.Currencies
             /// The Currency the User is accruing
             /// </summary>
             public CurrencyDTO Currency { get; set; }
-
             /// <summary>
             /// The amount of Currency currently accrued
             /// </summary>
             public int Quantity { get; set; }
+            /// <summary>
+            /// The Status that represents the User's activity
+            /// </summary>
+            public StatusDTO Status { get; set; }
         }
     }
 }

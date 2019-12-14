@@ -13,9 +13,5 @@
         /// The description of the Currency
         /// </summary>
         public string CurrencyDescription { get; set; }
-        /// <summary>
-        /// The number of Streams the Currency is registered
-        /// </summary>
-        public int StreamCurrencyCount { get; set; }
     }
 }

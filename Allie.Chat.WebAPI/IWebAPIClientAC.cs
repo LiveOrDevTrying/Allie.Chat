@@ -524,7 +524,12 @@ namespace Allie.Chat.WebAPI
         /// <param name="serverDiscordId">The Id of the Discord Server to have its online Users retrieved</param>
         /// <returns>A Discord Server Users Response</returns>
         Task<ServerUsersDiscordVM> GetServerDiscordUsersAsync(Guid serverDiscordId);
-        
+        /// <summary>
+        /// Get the Users and their User Currencies in a Server
+        /// </summary>
+        /// <param name="serverId">The Id of the Server to retrieve the Users and their User Currencies</param>
+        /// <returns>An array of Currencies User ViewModels</returns>
+        Task<CurrenciesUserVM[]> GetServerUsersCurrencies(Guid serverId);
         /// <summary>
         /// Get the Discord Channels in a Discord Server
         /// </summary>
@@ -661,6 +666,13 @@ namespace Allie.Chat.WebAPI
         /// <param name="streamId">The Stream Id where the Users are registered</param>
         /// <returns>A Stream Users ViewModel</returns>
         Task<StreamUsersVM> GetStreamUsersAsync(Guid streamId);
+
+        /// <summary>
+        /// Get the Users and their User Currencies in a Stream
+        /// </summary>
+        /// <param name="streamId">The Id of the Stream to retrieve the Users and their User Currencies</param>
+        /// <returns>An array of Currencies User ViewModels</returns>
+        Task<CurrenciesUserVM[]> GetStreamUsersCurrencies(Guid streamId);
 
         /// <summary>
         /// Get the Users registered to the Application User

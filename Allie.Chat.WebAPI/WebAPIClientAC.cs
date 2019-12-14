@@ -2598,6 +2598,38 @@ namespace Allie.Chat.WebAPI
         }
 
         /// <summary>
+        /// Get the Users and their User Currencies in a Server
+        /// </summary>
+        /// <param name="serverId">The Id of the Server to retrieve the Users and their User Currencies</param>
+        /// <returns>An array of Currencies User ViewModels</returns>
+        public async virtual Task<CurrenciesUserVM[]> GetServerUsersCurrencies(Guid serverId)
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+            {
+                throw new Exception("There is no access token currently loaded to access the WebAPI. Please load a new access token and try again");
+            }
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Users/Currencies/{serverId.ToString()}");
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert.DeserializeObject<CurrenciesUserVM[]>(await response.Content.ReadAsStringAsync());
+                    }
+                }
+            }
+            catch
+            { }
+
+            return null;
+        }
+
+        /// <summary>
         /// Get the registered Streams
         /// </summary>
         /// <returns>An array of Stream data-transfer objects</returns>
@@ -3200,6 +3232,38 @@ namespace Allie.Chat.WebAPI
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return JsonConvert.DeserializeObject<StreamUsersVM>(await response.Content.ReadAsStringAsync());
+                    }
+                }
+            }
+            catch
+            { }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get the Users and their User Currencies in a Stream
+        /// </summary>
+        /// <param name="streamId">The Id of the Stream to retrieve the Users and their User Currencies</param>
+        /// <returns>An array of Currencies User ViewModels</returns>
+        public async virtual Task<CurrenciesUserVM[]> GetStreamUsersCurrencies(Guid streamId)
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+            {
+                throw new Exception("There is no access token currently loaded to access the WebAPI. Please load a new access token and try again");
+            }
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Users/Currencies/{streamId.ToString()}");
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert.DeserializeObject<CurrenciesUserVM[]>(await response.Content.ReadAsStringAsync());
                     }
                 }
             }
