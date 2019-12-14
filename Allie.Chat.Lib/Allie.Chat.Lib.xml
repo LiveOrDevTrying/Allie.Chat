@@ -2737,6 +2737,36 @@
             The Command Replies registered to the Command
             </summary>
         </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM">
+            <summary>
+            A Currencies User ViewModel
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM.User">
+            <summary>
+            The User that is accruing the stream currencies
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM.UserCurrencies">
+            <summary>
+            The Stream Currencies the User is accruing
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM.UserCurrency">
+            <summary>
+            A User Currency nested data-transfer object
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM.UserCurrency.Currency">
+            <summary>
+            The Currency the User is accruing
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrenciesUserVM.UserCurrency.Quantity">
+            <summary>
+            The amount of Currency currently accrued
+            </summary>
+        </member>
         <member name="T:Allie.Chat.Lib.ViewModels.Currencies.CurrencyUserVM">
             <summary>
             A Currency User ViewModel

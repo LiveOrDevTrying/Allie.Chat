@@ -9,17 +9,25 @@
     <Copyright>Copyright 2019</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
-    <PackageIconUrl>https://pixelhorrorstudios.s3-us-west-2.amazonaws.com/Allie.Chat/Logo.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github Public</RepositoryType>
     <PackageTags>Allie Chat WebAPI Client WSClient TcpClient WebsocketClient Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket websockets WS</PackageTags>
-    <Version>1.0.10</Version>
+    <Version>1.0.11</Version>
+    <PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Tcp" Version="1.0.8" />
-    <PackageReference Include="Allie.Chat.WebAPI.Auth" Version="1.0.5" />
-    <PackageReference Include="Allie.Chat.Websocket" Version="1.0.9" />
+    <PackageReference Include="Allie.Chat.Tcp" Version="1.0.9" />
+    <PackageReference Include="Allie.Chat.WebAPI.Auth" Version="1.0.6" />
+    <PackageReference Include="Allie.Chat.Websocket" Version="1.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

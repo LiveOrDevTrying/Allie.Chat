@@ -17,7 +17,7 @@
     <dependencies>
       <group targetFramework="netcoreapp2.1">
         <dependency id="Microsoft.NETCore.App" version="[2.1,3]" />
-        <dependency id="Allie.Chat.WebAPI" version="[1.0.5,2]" />
+        <dependency id="Allie.Chat.WebAPI" version="[1.0.6,2]" />
         <dependency id="IdentityModel.OidcClient" version="[2.9.0,3]" />
         <dependency id="Microsoft.AspNetCore.Hosting" version="[2.1.1,3]" />
         <dependency id="Microsoft.AspNetCore.Server.Kestrel" version="[2.1.1,3]" />
