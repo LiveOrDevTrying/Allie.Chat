@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Websocket", "All
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Tcp", "Allie.Chat.Tcp\Allie.Chat.Tcp.csproj", "{711416C4-5BF6-4C66-A351-F510379E39DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allie.Chat", "Allie.Chat\Allie.Chat.csproj", "{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat", "Allie.Chat\Allie.Chat.csproj", "{8A4EBDA5-9951-4D62-9448-FC7E16D4CC60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
