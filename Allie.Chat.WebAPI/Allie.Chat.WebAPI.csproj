@@ -10,7 +10,7 @@
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github Public</RepositoryType>
     <PackageIconUrl></PackageIconUrl>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <PackageTags>Allie Chat WebAPI Client Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Product>Allie.Chat.WebAPI</Product>

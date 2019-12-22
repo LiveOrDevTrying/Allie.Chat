@@ -7,18 +7,18 @@ namespace Allie.Chat.WebAPI.Auth
 {
     public interface IWebAPIClientACAuth : IWebAPIClientAC
     {
-        Task<LoginResult> GetAccessTokenAuthCodeAsync(string identityServerAuthorityUrl, string clientId, string clientSecret, string scopes);
-        Task<LoginResult> GetAccessTokenNativePKCEAsync(string identityServerAuthorityUrl, string clientId, string scopes);
-        Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string identityServerAuthorityUrl, string clientId, string clientSecret,
+        Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes);
+        Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes);
+        Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string clientId, string clientSecret,
             string scopes, string username, string password);
 
         Task<RefreshTokenResult> RefreshAccessTokenAuthCodeOrNativeAsync(string refreshToken);
-        Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string identityServerAuthorityUrl, string clientId,
+        Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string clientId,
             string clientSecret, string refreshToken);
 
         Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync();
-        Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync(string identityServerAuthorityUrl);
+        Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync();
 
-        Task<IntrospectionResponse> IntrospectAccessTokenAsync(string identityServerAuthorityUrl, string clientId, string clientSecret, string apiName, string apiSecret);
+        Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret);
     }
 }

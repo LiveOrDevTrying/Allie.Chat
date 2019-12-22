@@ -45,14 +45,10 @@ namespace Allie.Chat.WebAPI
 {
     public class WebAPIClientAC : IWebAPIClientAC
     {
-        private readonly string _webAPIBaseUrl = "https://api.allie.chat";
+        private readonly string _webAPIBaseUrl;
         protected string _accessToken;
 
-        public WebAPIClientAC(string accessToken)
-        {
-            _accessToken = accessToken;
-        }
-        public WebAPIClientAC(string accessToken, string webAPIBaseUrl)
+        public WebAPIClientAC(string accessToken, string webAPIBaseUrl = "https://api.allie.chat")
         {
             _accessToken = accessToken;
             _webAPIBaseUrl = webAPIBaseUrl;
@@ -402,6 +398,37 @@ namespace Allie.Chat.WebAPI
             return null;
         }
         /// <summary>
+        /// Get a registered Tcp Bot
+        /// </summary>
+        /// <param name="token">The OAuth token of the requested Tcp Bot</param>
+        /// <returns>The Tcp Bot ViewModel</returns>
+        public async virtual Task<BotTcpVM> GetBotTcpAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+            {
+                throw new Exception("There is no access token currently loaded to access the WebAPI. Please load a new access token and try again");
+            }
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Tcp/{token}");
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert.DeserializeObject<BotTcpVM>(await response.Content.ReadAsStringAsync());
+                    }
+                }
+            }
+            catch
+            { }
+
+            return null;
+        }
+        /// <summary>
         /// Create a Tcp Bot
         /// </summary>
         /// <param name="request">The Tcp Bot create request</param>
@@ -482,6 +509,37 @@ namespace Allie.Chat.WebAPI
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
                     var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Websocket/{id.ToString()}");
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert.DeserializeObject<BotWSVM>(await response.Content.ReadAsStringAsync());
+                    }
+                }
+            }
+            catch
+            { }
+
+            return null;
+        }
+        /// <summary>
+        /// Get a Websocket Bot
+        /// </summary>
+        /// <param name="token">The OAuth Token of the requested Websocket Bot</param>
+        /// <returns>A Websocket Bot ViewModel</returns>
+        public async virtual Task<BotWSVM> GetBotWebsocketAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+            {
+                throw new Exception("There is no access token currently loaded to access the WebAPI. Please load a new access token and try again");
+            }
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Websocket/{token}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {

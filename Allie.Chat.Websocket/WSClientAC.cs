@@ -1,6 +1,7 @@
 ﻿using Allie.Chat.Lib.Enums;
 using Allie.Chat.Lib.Interfaces;
 using Allie.Chat.Lib.Structs;
+using Allie.Chat.Websocket.Events;
 using Newtonsoft.Json;
 using PHS.Core.Enums;
 using PHS.Core.Events;
@@ -12,9 +13,6 @@ using WebsocketsSimple.Core.Events.Args;
 
 namespace Allie.Chat.Websocket
 {
-    public delegate void WebsocketMessageEventHandler<T>(object sender, T args) where T : IMessageBase;
-    public delegate void SystemMessageEventHandler(object sender, string message);
-
     public class WSClientAC : IWSClientAC
     {
         private readonly string _connectUri = "connect.allie.chat";
@@ -93,26 +91,34 @@ namespace Allie.Chat.Websocket
                         try
                         {
                             var message = JsonConvert.DeserializeObject<MessageBase>(args.Packet.Data);
+                            IMessageBase messageTyped = null;
 
                             switch (message.ProviderType)
                             {
                                 case ProviderType.Twitch:
-                                    MessageTwitchEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data));
+                                    messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data);
+                                    MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
                                     break;
                                 case ProviderType.Discord:
-                                    MessageDiscordEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data));
+                                    messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data);
+                                    MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
                                     break;
                                 case ProviderType.Tcp:
-                                    MessageTcpEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data));
+                                    messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data);
+                                    MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
                                     break;
                                 case ProviderType.Websocket:
-                                    MessageWebsocketEvent?.Invoke(sender, JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data));
+                                    messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data);
+                                    MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
                                     break;
                                 default:
                                     break;
                             }
 
-                            MessageEvent?.Invoke(sender, message);
+                            if (messageTyped != null)
+                            {
+                                MessageEvent?.Invoke(sender, messageTyped);
+                            }
                         }
                         catch
                         {

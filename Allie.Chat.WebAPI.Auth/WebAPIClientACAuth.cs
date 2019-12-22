@@ -9,19 +9,21 @@ namespace Allie.Chat.WebAPI.Auth
     public class WebAPIClientACAuth : WebAPIClientAC, IWebAPIClientACAuth
     {
         protected OidcClient _oidcClient;
+        private string _identityServerAuthorityUrl;
 
-        public WebAPIClientACAuth() : base(string.Empty)
+        public WebAPIClientACAuth(string identityServerAuthorityUrl = "https://identity.allie.chat") : base(string.Empty)
         {
+            _identityServerAuthorityUrl = identityServerAuthorityUrl;
         }
 
-        public async Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string identityServerAuthorityUrl, string clientId, string clientSecret,
+        public async Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string clientId, string clientSecret,
             string scopes, string username, string password)
         {
             using (var client = new HttpClient())
             {
                 var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
                 {
-                    Address = identityServerAuthorityUrl,
+                    Address = _identityServerAuthorityUrl,
                 });
 
                 var response = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
@@ -42,7 +44,7 @@ namespace Allie.Chat.WebAPI.Auth
                 return response;
             }
         }
-        public async Task<LoginResult> GetAccessTokenAuthCodeAsync(string identityServerAuthorityUrl, string clientId, string clientSecret, string scopes)
+        public async Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes)
         {
             // create a redirect URI using an available port on the loopback address.
             // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
@@ -51,7 +53,7 @@ namespace Allie.Chat.WebAPI.Auth
 
             var options = new OidcClientOptions
             {
-                Authority = identityServerAuthorityUrl,
+                Authority = _identityServerAuthorityUrl,
                 ClientId = clientId,
                 RedirectUri = redirectUri,
                 Scope = scopes,
@@ -72,7 +74,7 @@ namespace Allie.Chat.WebAPI.Auth
 
             return result;
         }
-        public async Task<LoginResult> GetAccessTokenNativePKCEAsync(string identityServerAuthorityUrl, string clientId, string scopes)
+        public async Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes)
         {
             // create a redirect URI using an available port on the loopback address.
             // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
@@ -81,7 +83,7 @@ namespace Allie.Chat.WebAPI.Auth
 
             var options = new OidcClientOptions
             {
-                Authority = identityServerAuthorityUrl,
+                Authority = _identityServerAuthorityUrl,
                 ClientId = clientId,
                 RedirectUri = redirectUri,
                 Scope = scopes,
@@ -118,14 +120,14 @@ namespace Allie.Chat.WebAPI.Auth
 
             return null;
         }
-        public async Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string identityServerAuthorityUrl, string clientId,
+        public async Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string clientId,
             string clientSecret, string refreshToken)
         {
             using (var client = new HttpClient())
             {
                 var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
                 {
-                    Address = identityServerAuthorityUrl,
+                    Address = _identityServerAuthorityUrl,
                 });
 
                 var result = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
@@ -149,13 +151,13 @@ namespace Allie.Chat.WebAPI.Auth
         {
             return _oidcClient != null ? await _oidcClient.GetUserInfoAsync(_accessToken) : null;
         }
-        public async Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync(string identityServerAuthorityUrl)
+        public async Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync()
         {
             using (var client = new HttpClient())
             {
                 var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
                 {
-                    Address = identityServerAuthorityUrl,
+                    Address = _identityServerAuthorityUrl,
                 });
 
                 return await client.GetUserInfoAsync(new UserInfoRequest
@@ -166,13 +168,13 @@ namespace Allie.Chat.WebAPI.Auth
             }
         }
 
-        public async Task<IntrospectionResponse> IntrospectAccessTokenAsync(string identityServerAuthorityUrl, string clientId, string clientSecret, string apiName, string apiSecret)
+        public async Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
         {
             using (var client = new HttpClient())
             {
                 var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
                 {
-                    Address = identityServerAuthorityUrl,
+                    Address = _identityServerAuthorityUrl,
                 });
 
                 client.SetBasicAuthentication(apiName, apiSecret);

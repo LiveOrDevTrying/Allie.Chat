@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Allie.Chat.Lib.Interfaces;
+using Allie.Chat.Websocket.Events;
 using PHS.Core.Events;
 using WebsocketsSimple.Core.Events.Args;
 

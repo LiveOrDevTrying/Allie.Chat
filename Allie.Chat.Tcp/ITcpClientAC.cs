@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Allie.Chat.Lib.Interfaces;
+using Allie.Chat.Tcp.Events;
 using PHS.Core.Events;
 using Tcp.NET.Core.Events.Args;
 
