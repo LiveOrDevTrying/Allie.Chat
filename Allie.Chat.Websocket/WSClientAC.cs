@@ -141,11 +141,11 @@ namespace Allie.Chat.Websocket
             }
         }
 
-        public bool IsConnected
+        public bool IsRunning
         {
             get
             {
-                return _websocketClient != null && _websocketClient.IsConnected;
+                return _websocketClient != null && _websocketClient.IsRunning;
             }
         }
     }

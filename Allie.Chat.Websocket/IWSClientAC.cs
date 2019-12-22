@@ -8,7 +8,7 @@ namespace Allie.Chat.Websocket
 {
     public interface IWSClientAC : IDisposable
     {
-        bool IsConnected { get; }
+        bool IsRunning { get; }
 
         event NetworkingEventHandler<WSConnectionEventArgs> ConnectionEvent;
         event NetworkingEventHandler<WSErrorEventArgs> ErrorEvent;

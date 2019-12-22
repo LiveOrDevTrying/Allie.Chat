@@ -56,16 +56,16 @@ namespace Allie.Chat.Tcp
 
         public virtual bool Connect()
         {
-            if (_tcpClient.IsConnected)
+            if (_tcpClient.IsRunning)
             {
                 _tcpClient.Disconnect();
             }
 
             _tcpClient.Connect(_connectUri, _connectPort, "\r\n");
 
-            if (_tcpClient.IsConnected)
+            if (_tcpClient.IsRunning)
             {
-                _tcpClient.SendToServerRaw($"oauth:{_accessToken}");
+                _tcpClient.SendToServer($"oauth:{_accessToken}");
                 return true;
             }
 
@@ -73,7 +73,7 @@ namespace Allie.Chat.Tcp
         }
         public virtual bool Disconnect()
         {
-            if (_tcpClient.IsConnected)
+            if (_tcpClient.IsRunning)
             {
                 _tcpClient.Disconnect();
                 return true;
@@ -107,7 +107,7 @@ namespace Allie.Chat.Tcp
                 case MessageEventType.Receive:
                     if (args.Message.Trim().ToLower() == "ping")
                     {
-                        _tcpClient.SendToServerRaw("pong");
+                        _tcpClient.SendToServer("pong");
                     }
                     else
                     {
@@ -167,7 +167,7 @@ namespace Allie.Chat.Tcp
         {
             get
             {
-                return _tcpClient != null && _tcpClient.IsConnected;
+                return _tcpClient != null && _tcpClient.IsRunning;
             }
         }
     }
