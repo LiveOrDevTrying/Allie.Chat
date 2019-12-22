@@ -106,11 +106,11 @@ namespace Allie.Chat.WebAPI
         /// <returns>A Discord Bot ViewModel</returns>
         Task<BotDiscordVM> GetBotDiscordAsync(Guid id);
         /// <summary>
-        /// Get a registered Tcp Bot
+        /// Get a registered Tcp Bot by OAuth Token
         /// </summary>
-        /// <param name="id">The Id of the requested Tcp Bot</param>
+        /// <param name="token">The OAuth Token of the requested Tcp Bot</param>
         /// <returns>The Tcp Bot ViewModel</returns>
-        Task<BotTcpVM> GetBotTcpAsync(Guid id);
+        Task<BotTcpVM> GetBotTcpAsync(string token);
         /// <summary>
         /// Create a Tcp Bot
         /// </summary>
@@ -129,6 +129,12 @@ namespace Allie.Chat.WebAPI
         /// <param name="id">The Id of the requested Websocket Bot</param>
         /// <returns>A Websocket Bot ViewModel</returns>
         Task<BotWSVM> GetBotWebsocketAsync(Guid id);
+        /// <summary>
+        /// Get a Websocket Bot by OAuth Token
+        /// </summary>
+        /// <param name="token">The OAuth Token of the requested Websocket Bot</param>
+        /// <returns>A Websocket Bot ViewModel</returns>
+        Task<BotWSVM> GetBotWebsocketAsync(string token);
         /// <summary>
         /// Create a Websocket Bot
         /// </summary>
