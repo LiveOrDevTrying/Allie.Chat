@@ -15,8 +15,8 @@ namespace Allie.Chat.Websocket
 {
     public class WSClientAC : IWSClientAC
     {
-        private readonly string _connectUri = "connect.allie.chat";
-        private readonly int _connectPort = 7620;
+        private readonly string _connectUri;
+        private readonly int _connectPort;
         private readonly string _accessToken;
         private readonly bool _isWSS = true;
         protected readonly WebsocketClient _websocketClient;
@@ -30,21 +30,12 @@ namespace Allie.Chat.Websocket
         public event NetworkingEventHandler<WSErrorEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public WSClientAC(string accessToken)
-        {
-            _accessToken = accessToken;
-
-            _websocketClient = new WebsocketClient();
-            _websocketClient.ConnectionEvent += OnConnectionEvent;
-            _websocketClient.MessageEvent += OnMessageEvent;
-            _websocketClient.ErrorEvent += OnErrorEvent;
-        }
-        public WSClientAC(string url, int port, string accessToken, bool isWss)
+        public WSClientAC(string accessToken, string url = "connect.allie.chat", int port = 7620, bool isWSS = true)
         {
             _connectUri = url;
             _connectPort = port;
             _accessToken = accessToken;
-            _isWSS = isWss;
+            _isWSS = isWSS;
 
             _websocketClient = new WebsocketClient();
             _websocketClient.ConnectionEvent += OnConnectionEvent;

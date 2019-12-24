@@ -15,8 +15,8 @@ namespace Allie.Chat.Tcp
 {
     public class TcpClientAC : ITcpClientAC
     {
-        private readonly string _connectUri = "connect.allie.chat";
-        private readonly int _connectPort = 7610;
+        private readonly string _connectUri;
+        private readonly int _connectPort;
         private readonly string _accessToken;
 
         protected readonly ITcpNETClient _tcpClient;
@@ -30,21 +30,11 @@ namespace Allie.Chat.Tcp
         public event NetworkingEventHandler<TcpErrorEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public TcpClientAC(string accessToken)
+        public TcpClientAC(string accessToken, string url = "connect.allie.chat", int port = 7610)
         {
             _accessToken = accessToken;
-
-            _tcpClient = new TcpNETClient();
-            _tcpClient.ConnectionEvent += OnConnectionEvent;
-            _tcpClient.MessageEvent += OnMessageEvent;
-            _tcpClient.ErrorEvent += OnErrorEvent;
-           
-        }
-        public TcpClientAC(string url, int port, string accessToken)
-        {
             _connectUri = url;
             _connectPort = port;
-            _accessToken = accessToken;
 
             _tcpClient = new TcpNETClient();
             _tcpClient.ConnectionEvent += OnConnectionEvent;
