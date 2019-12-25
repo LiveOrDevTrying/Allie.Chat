@@ -18,6 +18,7 @@ namespace Allie.Chat.Tcp
         private readonly string _connectUri;
         private readonly int _connectPort;
         private readonly string _accessToken;
+        private readonly string _certificateIssuedTo;
 
         protected readonly ITcpNETClientSSL _tcpClient;
 
@@ -30,11 +31,12 @@ namespace Allie.Chat.Tcp
         public event NetworkingEventHandler<TcpSSLErrorEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public TcpClientSSLAC(string accessToken, string url = "connect.allie.chat", int port = 7615)
+        public TcpClientSSLAC(string accessToken, string url = "connect.allie.chat", int port = 7615, string certificateIssuedTo = "connect.allie.chat")
         {
             _accessToken = accessToken;
             _connectUri = url;
             _connectPort = port;
+            _certificateIssuedTo = certificateIssuedTo;
 
             _tcpClient = new TcpNETClientSSL();
             _tcpClient.ConnectionEvent += OnConnectionEvent;
@@ -49,7 +51,7 @@ namespace Allie.Chat.Tcp
                 _tcpClient.Disconnect();
             }
 
-            _tcpClient.Connect(_connectUri, _connectPort, "\r\n");
+            _tcpClient.Connect(_connectUri, _connectPort, "\r\n", _certificateIssuedTo);
 
             if (_tcpClient.IsRunning)
             {
