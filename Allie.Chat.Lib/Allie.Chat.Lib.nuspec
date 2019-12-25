@@ -13,7 +13,7 @@
     <description>The library assembly for Allie.Chat</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019</copyright>
-    <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS</tags>
+    <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL</tags>
     <dependencies>
       <group targetFramework="netcoreapp2.1">
         <dependency id="Microsoft.NETCore.App" version="[2.1,3]" />
