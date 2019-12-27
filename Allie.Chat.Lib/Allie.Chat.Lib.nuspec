@@ -16,7 +16,7 @@
     <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL</tags>
     <dependencies>
       <group targetFramework="netcoreapp2.1">
-        <dependency id="Microsoft.NETCore.App" version="[2.1,3]" />
+        <dependency id="Microsoft.NETCore.App" version="[2.1,3)" />
       </group>
     </dependencies>
   </metadata>

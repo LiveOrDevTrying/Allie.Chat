@@ -9,7 +9,7 @@
     <RepositoryType>Github Public</RepositoryType>
     <Authors>Rob Engel - LiveOrDevTrying</Authors>
     <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <PackageIconUrl></PackageIconUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageTags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL</PackageTags>
