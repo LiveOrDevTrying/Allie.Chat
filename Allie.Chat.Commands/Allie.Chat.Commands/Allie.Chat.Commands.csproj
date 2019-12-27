@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Allie.Chat.Commands.Tcp\Allie.Chat.Commands.Tcp.csproj" />
+    <ProjectReference Include="..\Allie.Chat.Commands.Websocket\Allie.Chat.Commands.Websocket.csproj" />
+  </ItemGroup>
+
+</Project>
