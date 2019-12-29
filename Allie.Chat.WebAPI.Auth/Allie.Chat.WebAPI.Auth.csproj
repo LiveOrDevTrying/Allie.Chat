@@ -4,13 +4,13 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Authors>Rob Engel - LiveOrDevTrying</Authors>
     <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
-    <Product>Allie.Chat.Lib</Product>
+    <Product>Allie.Chat.WebAPI.Auth</Product>
     <Description>An authorization module for the Allie.Chat WebAPI .NET wrapper</Description>
     <Copyright>Copyright 2019</Copyright>
     <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
-    <Version>1.1.6</Version>
+    <Version>1.1.7</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageTags>Allie Chat WebAPI Auth Module RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
     <PackageIconUrl></PackageIconUrl>
@@ -18,13 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Allie.Chat.WebAPI" Version="1.1.7" />
     <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj" />
   </ItemGroup>
 
 </Project>
