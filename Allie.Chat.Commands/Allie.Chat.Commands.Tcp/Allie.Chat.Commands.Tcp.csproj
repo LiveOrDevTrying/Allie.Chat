@@ -2,14 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <Authors>Rob Engel - LiveOrDevTrying</Authors>
+    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
+    <Description>The Allie.Chat Commands services for a Tcp Client</Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
+    <PackageIcon>Logo.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
+    <RepositoryType>Github Public</RepositoryType>
+    <PackageTags>Allie Chat Commands Core RSS Routing Communication Twitch Discord Tcp Websocket WS SSL Tcp</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.0" />
     <PackageReference Include="Allie.Chat.Tcp" Version="1.1.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Allie.Chat.Commands.Core\Allie.Chat.Commands.Core.csproj" />
+    <None Include="Logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

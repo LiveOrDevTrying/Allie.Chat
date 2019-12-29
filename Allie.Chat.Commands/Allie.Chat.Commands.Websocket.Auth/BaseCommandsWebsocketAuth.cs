@@ -2,9 +2,9 @@
 using Allie.Chat.Commands.Core.Auth;
 using Allie.Chat.Commands.Core.Interfaces;
 using Allie.Chat.Lib.ViewModels.Bots;
-using Allie.Chat.WebAPI.Auth;
 using Allie.Chat.Websocket;
 using System.Threading.Tasks;
+using WebsocketsSimple.Core.Events.Args;
 
 namespace Allie.Chat.Commands.Websocket.Auth
 {
@@ -36,10 +36,13 @@ namespace Allie.Chat.Commands.Websocket.Auth
 
             _wsClient = new WSClientAC(_parameters.BotAccessToken);
             _wsClient.MessageEvent += OnMessageEvent;
+            _wsClient.ConnectionEvent += OnConnectionEvent;
+            _wsClient.ErrorEvent += OnErrorEvent;
 
             await _wsClient.ConnectAsync();
             _isRunning = true;
         }
+
         protected virtual void Disconnect()
         {
             _isRunning = false;
@@ -47,6 +50,8 @@ namespace Allie.Chat.Commands.Websocket.Auth
             if (_wsClient != null)
             {
                 _wsClient.MessageEvent -= OnMessageEvent;
+                _wsClient.ConnectionEvent -= OnConnectionEvent;
+                _wsClient.ErrorEvent -= OnErrorEvent;
                 _wsClient.Dispose();
             }
         }
@@ -73,6 +78,17 @@ namespace Allie.Chat.Commands.Websocket.Auth
         protected override async Task<BotVM> GetBotAsync()
         {
             return await _webapiClient.GetBotWebsocketAsync(_parameters.BotAccessToken);
+        }
+
+        protected virtual Task OnErrorEvent(object sender, WSErrorEventArgs args)
+        {
+            FireErrorEvent(sender, args);
+            return Task.CompletedTask;
+        }
+        protected virtual Task OnConnectionEvent(object sender, WSConnectionEventArgs args)
+        {
+            FireConnectionEvent(sender, args);
+            return Task.CompletedTask;
         }
 
         public override void Dispose()

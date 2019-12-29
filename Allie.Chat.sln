@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Commands.Websock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Commands", "Allie.Chat.Commands\Allie.Chat.Commands\Allie.Chat.Commands.csproj", "{3D6774D6-111A-4F1F-81B6-CE9DB4E29849}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allie.Chat.Commands.Auth", "Allie.Chat.Commands\Allie.Chat.Commands.Auth\Allie.Chat.Commands.Auth.csproj", "{04E7624F-D792-4DB3-B836-08EBB1FB901F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApps", "TestApps", "{FF903C5C-FD34-4CB1-A023-6557A2F10092}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allie.Chat.TestApps.Tcp", "TestApps\Allie.Chat.TestApps.Tcp\Allie.Chat.TestApps.Tcp.csproj", "{21B52AFD-83F4-4271-8766-D6E3FD343D69}"
@@ -149,14 +147,6 @@ Global
 		{3D6774D6-111A-4F1F-81B6-CE9DB4E29849}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D6774D6-111A-4F1F-81B6-CE9DB4E29849}.Release|x86.ActiveCfg = Release|Any CPU
 		{3D6774D6-111A-4F1F-81B6-CE9DB4E29849}.Release|x86.Build.0 = Release|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Debug|x86.Build.0 = Debug|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Release|x86.ActiveCfg = Release|Any CPU
-		{04E7624F-D792-4DB3-B836-08EBB1FB901F}.Release|x86.Build.0 = Release|Any CPU
 		{21B52AFD-83F4-4271-8766-D6E3FD343D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21B52AFD-83F4-4271-8766-D6E3FD343D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21B52AFD-83F4-4271-8766-D6E3FD343D69}.Debug|x86.ActiveCfg = Debug|Any CPU

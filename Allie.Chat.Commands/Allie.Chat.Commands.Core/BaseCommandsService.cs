@@ -9,6 +9,7 @@ using Allie.Chat.Lib.Enums;
 using Allie.Chat.Lib.Interfaces;
 using Allie.Chat.Lib.ViewModels.Bots;
 using Allie.Chat.WebAPI;
+using PHS.Core.Events.Args.NetworkEventArgs;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -24,12 +25,14 @@ namespace Allie.Chat.Commands.Core
             new ConcurrentDictionary<Guid, CachedStreamDTO>();
         protected BotVM _bot;
         protected IWebAPIClientAC _webapiClient;
-
+        
         private event CommandEventHandler<CommandEventArgs> _commandEvent;
         private event CommandEventHandler<CommandTwitchEventArgs> _commandTwitchEvent;
         private event CommandEventHandler<CommandDiscordEventArgs> _commandDiscordEvent;
         private event CommandEventHandler<CommandTcpEventArgs> _commandTcpEvent;
         private event CommandEventHandler<CommandWSEventArgs> _commandWSEvent;
+        private event ClientEventHandler<ConnectionEventArgs> _connectionEvent;
+        private event ClientEventHandler<ErrorEventArgs> _errorEvent;
 
         public BaseCommandsService(IParameters parameters)
             : base(parameters.StreamCachePollingIntervalMS)
@@ -232,6 +235,14 @@ namespace Allie.Chat.Commands.Core
         {
             _commandWSEvent?.Invoke(sender, args);
         }
+        protected virtual void FireConnectionEvent(object sender, ConnectionEventArgs args)
+        {
+            _connectionEvent?.Invoke(sender, args);
+        }
+        protected virtual void FireErrorEvent(object sender, ErrorEventArgs args)
+        {
+            _errorEvent?.Invoke(sender, args);
+        }
 
         public override void Dispose()
         {
@@ -296,6 +307,28 @@ namespace Allie.Chat.Commands.Core
             remove
             {
                 _commandWSEvent -= value;
+            }
+        }
+        public event ClientEventHandler<ConnectionEventArgs> ConnectionEvent
+        {
+            add
+            {
+                _connectionEvent += value;
+            }
+            remove
+            {
+                _connectionEvent -= value;
+            }
+        }
+        public event ClientEventHandler<ErrorEventArgs> ErrorEvent
+        {
+            add
+            {
+                _errorEvent += value;
+            }
+            remove
+            {
+                _errorEvent -= value;
             }
         }
     }

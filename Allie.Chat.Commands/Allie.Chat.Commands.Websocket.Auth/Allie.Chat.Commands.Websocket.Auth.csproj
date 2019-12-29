@@ -2,12 +2,31 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <Authors>Rob Engel - LiveOrDevTrying</Authors>
+    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
+    <Description>The Allie.Chat Commands services with Authorization for a Websocket Client</Description>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
+    <PackageIcon>Logo.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryType>Github Public</RepositoryType>
+    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
+    <PackageTags>Allie Chat Commands Core RSS Routing Communication Twitch Discord Tcp Websocket WS SSL Authorization Auth Websocket WS</PackageTags>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Allie.Chat.Websocket\Allie.Chat.Websocket.csproj" />
-    <ProjectReference Include="..\Allie.Chat.Commands.Core.Auth\Allie.Chat.Commands.Core.Auth.csproj" />
-    <ProjectReference Include="..\Allie.Chat.Commands.Core\Allie.Chat.Commands.Core.csproj" />
+    <None Include="Logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Allie.Chat.Commands.Core.Auth" Version="1.0.0" />
+    <PackageReference Include="Allie.Chat.Websocket" Version="1.1.6" />
   </ItemGroup>
 
 </Project>

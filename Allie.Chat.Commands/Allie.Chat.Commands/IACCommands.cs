@@ -1,23 +1,19 @@
 ﻿using Allie.Chat.Commands.Core.Events;
 using Allie.Chat.Commands.Core.Events.Args;
-using Allie.Chat.Commands.Core.Services;
-using System.Threading.Tasks;
-
-using PHS.Core;
 using PHS.Core.Events.Args.NetworkEventArgs;
 
-namespace Allie.Chat.Commands.Core
+namespace Allie.Chat.Commands
 {
-    public interface ICommandsService : IBasePollingService
+    public interface IACCommands
     {
-        Task SendMessageAsync(string message);
-
-        event ClientEventHandler<ConnectionEventArgs> ConnectionEvent;
-        event ClientEventHandler<ErrorEventArgs> ErrorEvent;
         event CommandEventHandler<CommandDiscordEventArgs> CommandDiscordEvent;
         event CommandEventHandler<CommandEventArgs> CommandEvent;
         event CommandEventHandler<CommandTcpEventArgs> CommandTcpEvent;
-        event CommandEventHandler<CommandWSEventArgs> CommandWebsocketEvent;
         event CommandEventHandler<CommandTwitchEventArgs> CommandTwitchEvent;
+        event CommandEventHandler<CommandWSEventArgs> CommandWebsocketEvent;
+        event ClientEventHandler<ConnectionEventArgs> ConnectionEvent;
+        event ClientEventHandler<ErrorEventArgs> ErrorEvent;
+
+        void Dispose();
     }
 }

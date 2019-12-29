@@ -1,7 +1,6 @@
 ﻿using Allie.Chat.Commands.Core;
 using Allie.Chat.Commands.Core.Interfaces;
 using Allie.Chat.Lib.ViewModels.Bots;
-using Allie.Chat.WebAPI.Auth;
 using Allie.Chat.Websocket;
 using System.Threading.Tasks;
 
