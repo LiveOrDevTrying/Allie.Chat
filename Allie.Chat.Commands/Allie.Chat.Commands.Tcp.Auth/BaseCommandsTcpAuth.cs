@@ -1,27 +1,24 @@
 ﻿using Allie.Chat.Commands.Core;
 using Allie.Chat.Commands.Core.Auth;
-using Allie.Chat.Commands.Tcp.Auth.Interfaces;
+using Allie.Chat.Commands.Core.Interfaces;
 using Allie.Chat.Lib.ViewModels.Bots;
 using Allie.Chat.Tcp;
 using Allie.Chat.WebAPI.Auth;
 using System;
 using System.Threading.Tasks;
+using Tcp.NET.Core.Events.Args;
 
 namespace Allie.Chat.Commands.Tcp
 {
     public abstract class BaseCommandsTcpAuth : BaseCommandsAuthService, ICommandsService
     {
-        protected readonly string _botAccessToken;
-        protected IParametersBaseTcpAuth _parameters;
         protected ITcpClientAC _tcpClient;
         protected int _reconnectPollingIntervalIndex;
         protected bool _isRunning;
 
-        public BaseCommandsTcpAuth(IParametersBaseTcpAuth parameters)
-            : base(string.Empty, parameters.StreamCachePollingIntervalMS, new WebAPIClientACAuth())
+        public BaseCommandsTcpAuth(IParameters parameters)
+            : base(parameters)
         {
-            _parameters = parameters;
-
             Task.Run(async () =>
             {
                 await GetAccessTokenAsync();
@@ -34,12 +31,20 @@ namespace Allie.Chat.Commands.Tcp
         {
             Disconnect();
 
-            _tcpClient = new TcpClientAC(_botAccessToken);
+            _tcpClient = new TcpClientAC(_parameters.BotAccessToken);
+            _tcpClient.ConnectionEvent += OnConnectionEvent;
             _tcpClient.MessageEvent += OnMessageEvent;
             _tcpClient.Connect();
 
             _isRunning = true;
         }
+
+        private Task OnConnectionEvent(object sender, TcpConnectionEventArgs args)
+        {
+            Console.WriteLine(args.ConnectionEventType.ToString());
+            return Task.CompletedTask;
+        }
+
         protected virtual void Disconnect()
         {
             _isRunning = false;
@@ -73,7 +78,12 @@ namespace Allie.Chat.Commands.Tcp
         }
         protected override async Task<BotVM> GetBotAsync()
         {
-            return await _webapiClient.GetBotTcpAsync(_botAccessToken);
+            return await _webapiClient.GetBotTcpAsync(_parameters.BotAccessToken);
+        }
+
+        public override async Task SendMessageAsync(string message)
+        {
+            await _tcpClient.SendAsync(message);
         }
 
         public override void Dispose()

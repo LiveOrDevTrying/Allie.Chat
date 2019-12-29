@@ -1,4 +1,5 @@
-﻿using Allie.Chat.Commands.Websocket.Auth.Interfaces;
+﻿using Allie.Chat.Commands.Core.Auth.Interfaces;
+using Allie.Chat.WebAPI.Auth;
 using IdentityModel.OidcClient;
 using System;
 using System.Threading.Tasks;
@@ -7,13 +8,14 @@ namespace Allie.Chat.Commands.Websocket.Auth
 {
     public class CommandsWebsocketAuthCode : BaseCommandsWebsocketAuth
     {
-        protected new readonly IParametersWebsocketAuthCode _parameters;
+        protected new readonly IParametersAuthCode _parameters;
         protected LoginResult _loginResult;
         protected DateTime _expireTime;
 
-        public CommandsWebsocketAuthCode(IParametersWebsocketAuthCode parameters) 
+        public CommandsWebsocketAuthCode(IParametersAuthCode parameters) 
             : base(parameters)
         { 
+            _parameters = parameters;
         }
 
         protected override async Task GetAccessTokenAsync()
@@ -22,23 +24,20 @@ namespace Allie.Chat.Commands.Websocket.Auth
             _loginResult = await _webapiClient.GetAccessTokenAuthCodeAsync(
                 _parameters.ClientId, _parameters.ClientSecret, _parameters.Scopes);
 
-            if (_loginResult != null)
+            if (_loginResult != null &&
+                !string.IsNullOrWhiteSpace(_loginResult.AccessToken))
             {
-                if (!string.IsNullOrWhiteSpace(_loginResult.AccessToken))
-                {
-                    UpdateWebAPIToken(_loginResult.AccessToken);
-                    await ConnectAsync();
-                }
+                UpdateWebAPIToken(_loginResult.AccessToken);
+                await UpdateEventsAsync(0);
+                await ConnectAsync();
             }
         }
-        protected override async Task<bool> IsTokenValidAsync()
+        protected override async Task ValidateTokenAsync()
         {
             if (_loginResult.AccessTokenExpiration <= DateTime.Now)
             {
                 await GetAccessTokenAsync();
             }
-
-            return await base.IsTokenValidAsync();
         }
     }
 }

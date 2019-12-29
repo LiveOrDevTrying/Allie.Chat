@@ -1,9 +1,8 @@
-﻿namespace Allie.Chat.Commands.Websocket.Auth.Interfaces
+﻿namespace Allie.Chat.Commands.Core.Interfaces
 {
-    public interface IParametersCommandsBaseWebsocketAuth
+    public interface IParameters
     {
         string BotAccessToken { get; set; }
-        string WebAPIToken { get; set; }
         int StreamCachePollingIntervalMS { get; set; }
         int ReconnectPollingIntervalMS { get; set; }
     }

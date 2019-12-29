@@ -1,5 +1,6 @@
 ﻿using Allie.Chat.Commands.Core.Events;
 using Allie.Chat.Commands.Core.Events.Args;
+using Allie.Chat.Commands.Core.Interfaces;
 using Allie.Chat.Commands.Core.Models;
 using Allie.Chat.Commands.Core.Services;
 using Allie.Chat.Lib.DTOs.Commands;
@@ -18,11 +19,11 @@ namespace Allie.Chat.Commands.Core
 {
     public abstract class BaseCommandsService : BasePollingService, ICommandsService
     {
-        protected readonly IWebAPIClientAC _webapiClient;
+        protected readonly IParameters _parameters;
         protected ConcurrentDictionary<Guid, CachedStreamDTO> _cachedData =
             new ConcurrentDictionary<Guid, CachedStreamDTO>();
         protected BotVM _bot;
-        protected string _webAPIToken;
+        protected IWebAPIClientAC _webapiClient;
 
         private event CommandEventHandler<CommandEventArgs> _commandEvent;
         private event CommandEventHandler<CommandTwitchEventArgs> _commandTwitchEvent;
@@ -30,12 +31,13 @@ namespace Allie.Chat.Commands.Core
         private event CommandEventHandler<CommandTcpEventArgs> _commandTcpEvent;
         private event CommandEventHandler<CommandWSEventArgs> _commandWSEvent;
 
-        public BaseCommandsService(string webAPIToken, int pollingIntervalMS, IWebAPIClientAC webapiClient)
-            : base(pollingIntervalMS)
+        public BaseCommandsService(IParameters parameters)
+            : base(parameters.StreamCachePollingIntervalMS)
         {
-            _webapiClient = webapiClient;
-            _webAPIToken = webAPIToken;
+            _parameters = parameters;
         }
+
+        public abstract Task SendMessageAsync(string message);
 
         protected virtual void OnMessageEvent(object sender, IMessageBase message)
         {
@@ -103,11 +105,6 @@ namespace Allie.Chat.Commands.Core
             }
         }
 
-        public virtual void UpdateWebAPIToken(string webAPIToken)
-        {
-            _webAPIToken = webAPIToken;
-        }
-
         protected override void UpdateEvents(int updateIntervalMS)
         { }
         protected override async Task UpdateEventsAsync(int updateIntervalMS)
@@ -120,11 +117,6 @@ namespace Allie.Chat.Commands.Core
                 {
                     return;
                 }
-            }
-
-            if (!await IsTokenValidAsync())
-            {
-                return;
             }
 
             var cachedStreams = new Dictionary<Guid, CachedStreamDTO>();
@@ -183,22 +175,23 @@ namespace Allie.Chat.Commands.Core
 
             foreach (var streamCommandSet in streamCommandSets)
             {
-                var commandSet = await _webapiClient.GetCommandSetAsync(streamCommandSet.CommandSetId);
-
-                if (commandSet != null)
+                if (streamCommandSet != null &&
+                    streamCommandSet.CommandSet != null)
                 {
+                    var commands = await _webapiClient.GetCommandsAsync(streamCommandSet.CommandSet.Id);
+
                     cachedCommandSets.Add(new CachedCommandSetDTO
                     {
                         CommandSet = new CommandSetDTO
                         {
-                            CommandsCount = commandSet.Commands.Count(),
-                            Description = commandSet.Description,
-                            Id = commandSet.Id,
-                            Name = commandSet.Name,
-                            Prefix = commandSet.Prefix,
+                            CommandsCount = commands.Count(),
+                            Description = streamCommandSet.CommandSet.Description,
+                            Id = streamCommandSet.CommandSet.Id,
+                            Name = streamCommandSet.CommandSet.Name,
+                            Prefix = streamCommandSet.CommandSet.Prefix,
                             StreamsCommandSets = streamCommandSets.Count()
                         },
-                        Commands = commandSet.Commands.ToArray()
+                        Commands = commands
                     });
                 }
 
@@ -208,10 +201,15 @@ namespace Allie.Chat.Commands.Core
             return cachedStreamDTO;
         }
         protected abstract Task<BotVM> GetBotAsync();
-        protected virtual Task<bool> IsTokenValidAsync()
+
+        public virtual void UpdateWebAPIToken(string webAPIToken)
         {
-            var isValid = !string.IsNullOrWhiteSpace(_webAPIToken);
-            return Task.FromResult(isValid);
+            if (_webapiClient != null)
+            {
+                _webapiClient.Dispose();
+            }
+
+            _webapiClient = new WebAPIClientAC(webAPIToken);
         }
 
         protected virtual void FireCommandReceivedEvent(object sender, CommandEventArgs args)
@@ -256,7 +254,7 @@ namespace Allie.Chat.Commands.Core
                 _commandEvent -= value;
             }
         }
-        public event CommandEventHandler<CommandTwitchEventArgs> CommndTwitchEvent
+        public event CommandEventHandler<CommandTwitchEventArgs> CommandTwitchEvent
         {
             add
             {

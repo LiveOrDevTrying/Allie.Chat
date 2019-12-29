@@ -1,6 +1,8 @@
-﻿namespace Allie.Chat.Commands.Tcp.Auth.Interfaces
+﻿using Allie.Chat.Commands.Core.Interfaces;
+
+namespace Allie.Chat.Commands.Core.Auth.Interfaces
 {
-    public interface IParametersTcpAuthROPassword : IParametersBaseTcpAuth
+    public interface IParametersAuthROPassword : IParameters
     {
         string ClientId { get; set; }
         string ClientSecret { get; set; }

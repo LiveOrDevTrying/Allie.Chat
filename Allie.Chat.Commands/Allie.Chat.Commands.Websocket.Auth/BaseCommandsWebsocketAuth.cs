@@ -1,30 +1,31 @@
 ﻿using Allie.Chat.Commands.Core;
 using Allie.Chat.Commands.Core.Auth;
-using Allie.Chat.Commands.Websocket.Auth.Interfaces;
+using Allie.Chat.Commands.Core.Interfaces;
 using Allie.Chat.Lib.ViewModels.Bots;
 using Allie.Chat.WebAPI.Auth;
 using Allie.Chat.Websocket;
-using System;
 using System.Threading.Tasks;
 
-namespace Allie.Chat.Commands.Websocket
+namespace Allie.Chat.Commands.Websocket.Auth
 {
     public abstract class BaseCommandsWebsocketAuth : BaseCommandsAuthService, ICommandsService
     {
-        protected readonly IParametersCommandsBaseWebsocketAuth _parameters;
         protected IWSClientAC _wsClient;
         protected int _reconnectPollingIntervalIndex;
         protected bool _isRunning;
 
-        public BaseCommandsWebsocketAuth(IParametersCommandsBaseWebsocketAuth parameters)
-            : base(parameters.WebAPIToken, parameters.ReconnectPollingIntervalMS, new WebAPIClientACAuth())
+        public BaseCommandsWebsocketAuth(IParameters parameters)
+            : base(parameters)
         {
-            _parameters = parameters;
-
             Task.Run(async () =>
             {
                 await GetAccessTokenAsync();
             });
+        }
+
+        public override async Task SendMessageAsync(string message)
+        {
+            await _wsClient.SendAsync(message);
         }
 
         protected abstract Task GetAccessTokenAsync();

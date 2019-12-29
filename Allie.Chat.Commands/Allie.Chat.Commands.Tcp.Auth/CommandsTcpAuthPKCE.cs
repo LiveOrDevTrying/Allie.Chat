@@ -1,4 +1,5 @@
-﻿using Allie.Chat.Commands.Tcp.Auth.Interfaces;
+﻿using Allie.Chat.Commands.Core.Auth.Interfaces;
+using Allie.Chat.WebAPI.Auth;
 using IdentityModel.OidcClient;
 using System;
 using System.Threading.Tasks;
@@ -7,13 +8,14 @@ namespace Allie.Chat.Commands.Tcp.Auth
 {
     public class CommandsTcpAuthPKCE : BaseCommandsTcpAuth
     {
-        protected new readonly IParametersTcpAuthPKCE _parameters;
+        protected new readonly IParametersAuthPKCE _parameters;
         protected LoginResult _loginResult;
         protected DateTime _expireTime;
 
-        public CommandsTcpAuthPKCE(IParametersTcpAuthPKCE parameters) 
+        public CommandsTcpAuthPKCE(IParametersAuthPKCE parameters) 
             : base(parameters)
         {
+            _parameters = parameters;
         }
 
         protected override async Task GetAccessTokenAsync()
@@ -26,18 +28,17 @@ namespace Allie.Chat.Commands.Tcp.Auth
                 if (!string.IsNullOrWhiteSpace(_loginResult.AccessToken))
                 {
                     UpdateWebAPIToken(_loginResult.AccessToken);
+                    await UpdateEventsAsync(0);
                     Connect();
                 }
             }
         }
-        protected override async Task<bool> IsTokenValidAsync()
+        protected override async Task ValidateTokenAsync()
         {
             if (_loginResult.AccessTokenExpiration <= DateTime.Now)
             {
                 await GetAccessTokenAsync();
-            }
-
-            return await base.IsTokenValidAsync();
+            };
         }
     }
 }

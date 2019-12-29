@@ -63,7 +63,7 @@ namespace Allie.Chat.Websocket
 
         protected virtual Task OnConnectionEvent(object sender, WSConnectionEventArgs args)
         {
-            ConnectionEvent(sender, args);
+            ConnectionEvent?.Invoke(sender, args);
             return Task.CompletedTask;
         }
         protected virtual async Task OnMessageEvent(object sender, WSMessageEventArgs args)

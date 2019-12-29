@@ -589,8 +589,8 @@ namespace Allie.Chat.WebAPI
         /// Get the Command Sets registered to a Stream
         /// </summary>
         /// <param name="streamId">The Id of the Stream where the requested Command Sets are registered</param>
-        /// <returns>An array of Stream Command Set data-transfer objects</returns>
-        Task<StreamCommandSetDTO[]> GetStreamCommandSetsAsync(Guid streamId);
+        /// <returns>An array of Stream Command Set ViewModels</returns>
+        Task<StreamCommandSetVM[]> GetStreamCommandSetsAsync(Guid streamId);
         /// <summary>
         /// Get a Stream Command Set
         /// </summary>

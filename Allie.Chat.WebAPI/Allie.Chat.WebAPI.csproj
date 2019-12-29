@@ -10,7 +10,7 @@
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github Public</RepositoryType>
     <PackageIconUrl></PackageIconUrl>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <PackageTags>Allie Chat WebAPI Client Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Product>Allie.Chat.WebAPI</Product>
@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Allie.Chat.Lib" Version="1.1.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

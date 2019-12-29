@@ -2843,8 +2843,8 @@ namespace Allie.Chat.WebAPI
         /// Get the Command Sets registered to a Stream
         /// </summary>
         /// <param name="streamId">The Id of the Stream where the requested Command Sets are registered</param>
-        /// <returns>An array of Stream Command Set data-transfer objects</returns>
-        public async virtual Task<StreamCommandSetDTO[]> GetStreamCommandSetsAsync(Guid streamId)
+        /// <returns>An array of Stream Command Set ViewModels</returns>
+        public async virtual Task<StreamCommandSetVM[]> GetStreamCommandSetsAsync(Guid streamId)
         {
             if (string.IsNullOrWhiteSpace(_accessToken))
             {
@@ -2861,7 +2861,7 @@ namespace Allie.Chat.WebAPI
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        return JsonConvert.DeserializeObject<StreamCommandSetDTO[]>(await response.Content.ReadAsStringAsync());
+                        return JsonConvert.DeserializeObject<StreamCommandSetVM[]>(await response.Content.ReadAsStringAsync());
                     }
                 }
             }

@@ -1,32 +1,33 @@
 ﻿using Allie.Chat.Commands.Core;
-using Allie.Chat.Commands.Tcp.Interfaces;
+using Allie.Chat.Commands.Core.Interfaces;
 using Allie.Chat.Lib.ViewModels.Bots;
 using Allie.Chat.Tcp;
 using Allie.Chat.WebAPI;
-using System;
 using System.Threading.Tasks;
 
 namespace Allie.Chat.Commands.Tcp
 {
-    public class CommandsTcp : BaseCommandsService, ICommandsService
+    public class CommandsTcp : BaseCommandsTokenService, ICommandsService
     {
         protected readonly ITcpClientAC _tcpClient;
-        protected readonly IParametersCommandsTcp _parameters;
 
         protected int _reconnectPollingIntervalMS;
         protected int _reconnectPollingIntervalIndex;
         protected bool _isRunning;
 
-        public CommandsTcp(IParametersCommandsTcp parameters)
-            : base(parameters.WebAPIToken, parameters.StreamCachePollingIntervalMS, new WebAPIClientAC(parameters.WebAPIToken))
+        public CommandsTcp(IParametersToken parameters)
+            : base(parameters)
         {
-            _parameters = parameters;
-
             _tcpClient = new TcpClientAC(_parameters.BotAccessToken);
             _tcpClient.MessageEvent += OnMessageEvent;
-            _tcpClient.Connect();
 
-            _isRunning = true;
+            Task.Run(async () =>
+            {
+                _isRunning = true;
+                await UpdateEventsAsync(0);
+
+                _tcpClient.Connect();
+            });
         }
 
         protected override void UpdateEvents(int updateIntervalMS)
@@ -52,6 +53,11 @@ namespace Allie.Chat.Commands.Tcp
         protected override async Task<BotVM> GetBotAsync()
         {
             return await _webapiClient.GetBotTcpAsync(_parameters.BotAccessToken);
+        }
+
+        public override async Task SendMessageAsync(string message)
+        {
+            await _tcpClient.SendAsync(message);
         }
 
         public override void Dispose()

@@ -17,9 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Lib" Version="1.1.3" />
     <PackageReference Include="Tcp.NET.Client" Version="1.1.6" />
     <PackageReference Include="Tcp.NET.Client.SSL" Version="1.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Allie.Chat.Lib\Allie.Chat.Lib.csproj" />
   </ItemGroup>
 
 </Project>

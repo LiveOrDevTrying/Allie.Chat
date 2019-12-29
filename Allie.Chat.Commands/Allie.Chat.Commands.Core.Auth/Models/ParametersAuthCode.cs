@@ -1,8 +1,8 @@
-﻿using Allie.Chat.Commands.Tcp.Auth.Interfaces;
+﻿using Allie.Chat.Commands.Core.Auth.Interfaces;
 
-namespace Allie.Chat.Commands.Tcp.Auth.Models
+namespace Allie.Chat.Commands.Core.Auth.Models
 {
-    public struct ParametersTcpAuthROPassword : IParametersTcpAuthROPassword
+    public struct ParametersAuthCode : IParametersAuthCode
     {
         public string BotAccessToken { get; set; }
         public int StreamCachePollingIntervalMS { get; set; }
@@ -10,7 +10,5 @@ namespace Allie.Chat.Commands.Tcp.Auth.Models
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string Scopes { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
 }

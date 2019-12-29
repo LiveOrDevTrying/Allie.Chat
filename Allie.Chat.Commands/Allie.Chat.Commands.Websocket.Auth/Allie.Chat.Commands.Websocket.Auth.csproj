@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Websocket" Version="1.1.5" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\Allie.Chat.Websocket\Allie.Chat.Websocket.csproj" />
     <ProjectReference Include="..\Allie.Chat.Commands.Core.Auth\Allie.Chat.Commands.Core.Auth.csproj" />
     <ProjectReference Include="..\Allie.Chat.Commands.Core\Allie.Chat.Commands.Core.csproj" />
   </ItemGroup>

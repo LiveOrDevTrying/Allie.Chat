@@ -1,11 +1,8 @@
-﻿using Allie.Chat.Commands.Tcp.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Allie.Chat.Commands.Core.Interfaces;
 
-namespace Allie.Chat.Commands.Tcp.Models
+namespace Allie.Chat.Commands.Core.Models
 {
-    public class ParametersCommandsTcp : IParametersCommandsTcp
+    public struct ParametersCommands : IParameters
     {
         public string BotAccessToken { get; set; }
         public string WebAPIToken { get; set; }

@@ -1,15 +1,16 @@
-﻿using Allie.Chat.Commands.Websocket.Auth.Interfaces;
+﻿using Allie.Chat.Commands.Core.Auth.Interfaces;
 
-namespace Allie.Chat.Commands.Websocket.Auth.Models
+namespace Allie.Chat.Commands.Core.Auth.Models
 {
-    public struct ParametersWebsocketAuthCode : IParametersWebsocketAuthCode
+    public struct ParametersAuthROPassword : IParametersAuthROPassword
     {
         public string BotAccessToken { get; set; }
-        public string WebAPIToken { get; set; }
         public int StreamCachePollingIntervalMS { get; set; }
         public int ReconnectPollingIntervalMS { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string Scopes { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Allie.Chat.Commands.Core.Models
 {
-    public class CachedCommandSetDTO
+    public struct CachedCommandSetDTO
     {
         public CommandSetDTO CommandSet { get; set; }
         public CommandDTO[] Commands { get; set; }
