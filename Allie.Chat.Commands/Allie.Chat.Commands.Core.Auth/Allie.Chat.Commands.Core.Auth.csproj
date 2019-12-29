@@ -14,11 +14,12 @@
     <RepositoryType>Github Public</RepositoryType>
     <PackageTags>Allie Chat Commands Core RSS Routing Communication Twitch Discord Tcp Websocket WS SSL Authorization Auth</PackageTags>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.0" />
-    <PackageReference Include="Allie.Chat.WebAPI.Auth" Version="1.1.6" />
+    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.2" />
+    <PackageReference Include="Allie.Chat.WebAPI.Auth" Version="1.1.7" />
   </ItemGroup>
 
   <ItemGroup>

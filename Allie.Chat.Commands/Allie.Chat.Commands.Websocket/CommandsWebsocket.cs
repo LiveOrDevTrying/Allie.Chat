@@ -12,6 +12,8 @@ namespace Allie.Chat.Commands.Websocket
         protected int _reconnectPollingIntervalIndex;
         protected bool _isRunning;
 
+        private const int RECONNECT_POLLING_INTERVAL_MS = 15000;
+
         public CommandsWebsocket(IParametersToken parameters)
             : base(parameters)
         {
@@ -32,7 +34,7 @@ namespace Allie.Chat.Commands.Websocket
             {
                 _reconnectPollingIntervalIndex += updateIntervalMS;
 
-                if (_reconnectPollingIntervalIndex >= _parameters.ReconnectPollingIntervalMS)
+                if (_reconnectPollingIntervalIndex >= RECONNECT_POLLING_INTERVAL_MS)
                 {
                     _reconnectPollingIntervalIndex = 0;
 

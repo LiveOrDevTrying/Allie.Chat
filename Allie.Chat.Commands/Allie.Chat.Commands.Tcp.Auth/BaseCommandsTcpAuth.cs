@@ -18,6 +18,7 @@ namespace Allie.Chat.Commands.Tcp
         protected int _reconnectPollingIntervalIndex;
         protected bool _isRunning;
 
+        private const int RECONNECT_POLLING_INTERVAL_MS = 15000;
         
         public BaseCommandsTcpAuth(IParameters parameters)
             : base(parameters)
@@ -61,7 +62,7 @@ namespace Allie.Chat.Commands.Tcp
             {
                 _reconnectPollingIntervalIndex += updateIntervalMS;
 
-                if (_reconnectPollingIntervalIndex >= _parameters.ReconnectPollingIntervalMS)
+                if (_reconnectPollingIntervalIndex >= RECONNECT_POLLING_INTERVAL_MS)
                 {
                     _reconnectPollingIntervalIndex = 0;
 

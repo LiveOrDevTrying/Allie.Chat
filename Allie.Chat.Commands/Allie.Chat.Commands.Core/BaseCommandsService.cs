@@ -25,7 +25,9 @@ namespace Allie.Chat.Commands.Core
             new ConcurrentDictionary<Guid, CachedStreamDTO>();
         protected BotVM _bot;
         protected IWebAPIClientAC _webapiClient;
-        
+
+        private const int STREAM_CACHE_POLLING_INTERVAL_MS = 45000;
+
         private event CommandEventHandler<CommandEventArgs> _commandEvent;
         private event CommandEventHandler<CommandTwitchEventArgs> _commandTwitchEvent;
         private event CommandEventHandler<CommandDiscordEventArgs> _commandDiscordEvent;
@@ -35,7 +37,7 @@ namespace Allie.Chat.Commands.Core
         private event ClientEventHandler<ErrorEventArgs> _errorEvent;
 
         public BaseCommandsService(IParameters parameters)
-            : base(parameters.StreamCachePollingIntervalMS)
+            : base(STREAM_CACHE_POLLING_INTERVAL_MS)
         {
             _parameters = parameters;
         }
