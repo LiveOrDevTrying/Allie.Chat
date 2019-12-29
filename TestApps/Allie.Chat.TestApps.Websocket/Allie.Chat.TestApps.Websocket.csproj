@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Allie.Chat.Commands\Allie.Chat.Commands.Websocket.Auth\Allie.Chat.Commands.Websocket.Auth.csproj" />
+    <PackageReference Include="Allie.Chat" Version="1.1.11" />
   </ItemGroup>
 
 </Project>
