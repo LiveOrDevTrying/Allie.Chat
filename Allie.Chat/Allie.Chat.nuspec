@@ -20,7 +20,7 @@
         <dependency id="Allie.Chat.Tcp" version="[1.1.9,2)" />
         <dependency id="Allie.Chat.WebAPI.Auth" version="[1.1.6,2)" />
         <dependency id="Allie.Chat.Websocket" version="[1.1.6,2)" />
-        <dependency id="Allie.Chat.Commands" version="[1.0.1,2)" />
+        <dependency id="Allie.Chat.Commands" version="[1.0.2,2)" />
       </group>
     </dependencies>
   </metadata>
