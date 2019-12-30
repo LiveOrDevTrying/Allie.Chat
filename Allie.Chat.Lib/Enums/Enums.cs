@@ -60,4 +60,27 @@
         /// </summary>
         Websocket
     }
+
+    /// <summary>
+    /// The available Client Application Types
+    /// </summary>
+    public enum ClientApplicationType
+    {
+        /// <summary>
+        /// Implicit flow authorization
+        /// </summary>
+        Implicit,
+        /// <summary>
+        /// Authorization Code flow authorization
+        /// </summary>
+        AuthCode,
+        /// <summary>
+        /// Resource Owner Password flow authorization
+        /// </summary>
+        ROPassword,
+        /// <summary>
+        /// Native App / PKCE Authorization Code flow authorization
+        /// </summary>
+        NativePKCE
+    }
 }

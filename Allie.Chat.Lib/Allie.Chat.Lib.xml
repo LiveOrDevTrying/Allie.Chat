@@ -196,14 +196,14 @@
             The Client Application's name
             </summary>
         </member>
-        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.AuthTypes">
-            <summary>
-            The Client Application's authorization types
-            </summary>
-        </member>
         <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientApplicationType">
             <summary>
             The Client Application type
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientApplicationTypeValue">
+            <summary>
+            The Client Application type as a value
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.DTOs.ClientApplications.ClientApplicationDTO.ClientUri">
@@ -689,6 +689,31 @@
         <member name="F:Allie.Chat.Lib.Enums.ProviderType.Websocket">
             <summary>
             Allie.Chat Websocket Provider
+            </summary>
+        </member>
+        <member name="T:Allie.Chat.Lib.Enums.ClientApplicationType">
+            <summary>
+            The available Client Application Types
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ClientApplicationType.Implicit">
+            <summary>
+            Implicit flow authorization
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ClientApplicationType.AuthCode">
+            <summary>
+            Authorization Code flow authorization
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ClientApplicationType.ROPassword">
+            <summary>
+            Resource Owner Password flow authorization
+            </summary>
+        </member>
+        <member name="F:Allie.Chat.Lib.Enums.ClientApplicationType.NativePKCE">
+            <summary>
+            Native App / PKCE Authorization Code flow authorization
             </summary>
         </member>
         <member name="T:Allie.Chat.Lib.Interfaces.IMessageBase">
@@ -2632,14 +2657,14 @@
             The Client Application's name
             </summary>
         </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.AuthTypes">
-            <summary>
-            The Client Application's authorization types
-            </summary>
-        </member>
         <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientApplicationType">
             <summary>
             The Client Application type
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientApplicationTypeValue">
+            <summary>
+            The Client Application type as a value
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.ClientApplications.ClientApplicationVM.ClientUri">

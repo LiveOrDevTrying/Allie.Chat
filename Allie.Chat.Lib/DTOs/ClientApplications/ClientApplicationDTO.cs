@@ -1,4 +1,6 @@
-﻿namespace Allie.Chat.Lib.DTOs.ClientApplications
+﻿using Allie.Chat.Lib.Enums;
+
+namespace Allie.Chat.Lib.DTOs.ClientApplications
 {
     /// <summary>
     /// A Client Application base data-transfer object
@@ -18,13 +20,13 @@
         /// </summary>
         public string ClientName { get; set; }
         /// <summary>
-        /// The Client Application's authorization types
-        /// </summary>
-        public string[] AuthTypes { get; set; }
-        /// <summary>
         /// The Client Application type
         /// </summary>
-        public string ClientApplicationType { get; set; }
+        public ClientApplicationType ClientApplicationType { get; set; }
+        /// <summary>
+        /// The Client Application type as a value
+        /// </summary>
+        public string ClientApplicationTypeValue { get; set; }
         /// <summary>
         /// The Client Application's Uri
         /// </summary>
