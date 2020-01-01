@@ -14,12 +14,12 @@
     <RepositoryType>Github Public</RepositoryType>
     <PackageTags>Allie Chat Commands Core RSS Routing Communication Twitch Discord Tcp Websocket WS SSL Tcp</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.3" />
-    <PackageReference Include="Allie.Chat.Tcp" Version="1.1.12" />
+    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.4" />
+    <PackageReference Include="Allie.Chat.Tcp" Version="1.1.13" />
   </ItemGroup>
 
   <ItemGroup>

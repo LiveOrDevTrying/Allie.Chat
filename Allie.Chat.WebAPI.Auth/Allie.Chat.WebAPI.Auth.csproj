@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
-    <Version>1.1.8</Version>
+    <Version>1.1.9</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageTags>Allie Chat WebAPI Auth Module RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
     <PackageIconUrl></PackageIconUrl>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.WebAPI" Version="1.1.9" />
+    <PackageReference Include="Allie.Chat.WebAPI" Version="1.1.10" />
     <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1" />

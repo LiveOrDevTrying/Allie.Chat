@@ -14,12 +14,12 @@
     <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
     <RepositoryType>Github Public</RepositoryType>
     <PackageTags>Allie Chat Commands Core RSS Routing Communication Twitch Discord Tcp Websocket WS SSL Websocket WS</PackageTags>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.3" />
-    <PackageReference Include="Allie.Chat.Websocket" Version="1.1.9" />
+    <PackageReference Include="Allie.Chat.Commands.Core" Version="1.0.4" />
+    <PackageReference Include="Allie.Chat.Websocket" Version="1.1.10" />
   </ItemGroup>
 
   <ItemGroup>

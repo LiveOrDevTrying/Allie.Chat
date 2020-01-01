@@ -351,6 +351,11 @@
             The description of the Currency
             </summary>
         </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Currencies.CurrencyDTO.StreamCurrencyCount">
+            <summary>
+            The number of Streams the Currency is registered to
+            </summary>
+        </member>
         <member name="T:Allie.Chat.Lib.DTOs.Currencies.CurrencyUserDTO">
             <summary>
             A Currency User data-transfer object
@@ -2830,6 +2835,11 @@
         <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.CurrencyDescription">
             <summary>
             The description of the currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.StreamCurrencyCount">
+            <summary>
+            The number of Streams the Currency is registered to
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.Currencies.CurrencyVM.StreamsCurrencies">
