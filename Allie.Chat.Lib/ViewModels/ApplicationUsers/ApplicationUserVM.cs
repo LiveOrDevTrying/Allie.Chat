@@ -37,15 +37,6 @@ namespace Allie.Chat.Lib.ViewModels.ApplicationUsers
         /// </summary>
         public int MaxCommandSets { get; set; }
         /// <summary>
-        /// The Application User's maximum number of Client Applications
-        /// </summary>
-        public int MaxClientApplications { get; set; }
-        /// <summary>
-        /// The Application User's maximum number of Api Resources
-        /// </summary>
-        public int MaxApiResourceCount { get; set; }
-
-        /// <summary>
         /// The Application User's registered Currencies
         /// </summary>
         public ICollection<CurrencyDTO> Currencies { get; set; } =

@@ -40,6 +40,9 @@ using Allie.Chat.Lib.DTOs.Servers.Channels;
 using Allie.Chat.Lib.ViewModels.Servers.Channels;
 using Allie.Chat.Lib.DTOs.Users;
 using Allie.Chat.Lib.Responses.Currencies;
+using IdentityModel.OidcClient;
+using IdentityModel.Client;
+using IdentityModel.OidcClient.Results;
 
 namespace Allie.Chat.WebAPI
 {
@@ -48,16 +51,189 @@ namespace Allie.Chat.WebAPI
         private readonly string _webAPIBaseUrl;
         protected string _accessToken;
 
-        public WebAPIClientAC(string accessToken, string webAPIBaseUrl = "https://api.allie.chat")
+        protected OidcClient _oidcClient;
+        private readonly string _identityServerAuthorityUrl;
+
+        public WebAPIClientAC(string accessToken, string webAPIBaseUri = "https://api.allie.chat", string identityServerAuthorityUrl = "https://identity.allie.chat")
         {
             _accessToken = accessToken;
-            _webAPIBaseUrl = webAPIBaseUrl;
+            _webAPIBaseUrl = webAPIBaseUri;
+            _identityServerAuthorityUrl = identityServerAuthorityUrl;
         }
 
-        /// <summary>
-        /// Set the access token
-        /// </summary>
-        /// <param name="accessToken">The access token to be used when requesting the Allie.Chat WebAPI</param>
+        public async Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string clientId, string clientSecret,
+            string scopes, string username, string password)
+        {
+            using (var client = new HttpClient())
+            {
+                var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                var response = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
+                {
+                    Address = disco.TokenEndpoint,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret,
+                    UserName = username,
+                    Password = password,
+                    Scope = scopes,
+                });
+
+                if (response != null)
+                {
+                    _accessToken = response.AccessToken;
+                }
+
+                return response;
+            }
+        }
+        public async Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes)
+        {
+            // create a redirect URI using an available port on the loopback address.
+            // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
+            var browser = new SystemBrowser(45656);
+            string redirectUri = string.Format($"http://127.0.0.1:{browser.Port}");
+
+            var options = new OidcClientOptions
+            {
+                Authority = _identityServerAuthorityUrl,
+                ClientId = clientId,
+                RedirectUri = redirectUri,
+                Scope = scopes,
+                FilterClaims = false,
+                Browser = browser,
+                RefreshTokenInnerHttpHandler = new HttpClientHandler(),
+                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+                ClientSecret = clientSecret
+            };
+
+            _oidcClient = new OidcClient(options);
+            var result = await _oidcClient.LoginAsync(new LoginRequest());
+
+            if (result != null)
+            {
+                _accessToken = result.AccessToken;
+            }
+
+            return result;
+        }
+        public async Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes)
+        {
+            // create a redirect URI using an available port on the loopback address.
+            // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
+            var browser = new SystemBrowser(45656);
+            string redirectUri = string.Format($"http://127.0.0.1:{browser.Port}");
+
+            var options = new OidcClientOptions
+            {
+                Authority = _identityServerAuthorityUrl,
+                ClientId = clientId,
+                RedirectUri = redirectUri,
+                Scope = scopes,
+                FilterClaims = false,
+                Browser = browser,
+                RefreshTokenInnerHttpHandler = new HttpClientHandler(),
+                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+            };
+
+            _oidcClient = new OidcClient(options);
+            var result = await _oidcClient.LoginAsync(new LoginRequest());
+
+            if (result != null)
+            {
+                _accessToken = result.AccessToken;
+            }
+
+            return result;
+        }
+
+        public async Task<RefreshTokenResult> RefreshAccessTokenAuthCodeOrNativeAsync(string refreshToken)
+        {
+            if (_oidcClient != null)
+            {
+                var result = await _oidcClient.RefreshTokenAsync(refreshToken);
+
+                if (result != null)
+                {
+                    _accessToken = result.AccessToken;
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+        public async Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string clientId,
+            string clientSecret, string refreshToken)
+        {
+            using (var client = new HttpClient())
+            {
+                var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                var result = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
+                {
+                    Address = disco.TokenEndpoint,
+                    RefreshToken = refreshToken,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret
+                });
+
+                if (result != null)
+                {
+                    _accessToken = result.AccessToken;
+                }
+
+                return result;
+            }
+        }
+
+        public async Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync()
+        {
+            return _oidcClient != null ? await _oidcClient.GetUserInfoAsync(_accessToken) : null;
+        }
+        public async Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                return await client.GetUserInfoAsync(new UserInfoRequest
+                {
+                    Address = disco.UserInfoEndpoint,
+                    Token = _accessToken
+                });
+            }
+        }
+
+        public async Task<TokenIntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
+        {
+            using (var client = new HttpClient())
+            {
+                var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                client.SetBasicAuthentication(apiName, apiSecret);
+
+                return await client.IntrospectTokenAsync(new TokenIntrospectionRequest
+                {
+                    Address = disco.IntrospectionEndpoint,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret,
+                    Token = _accessToken,
+                });
+            }
+        }
+
         public virtual void SetAccessToken(string accessToken)
         {
             _accessToken = accessToken;
@@ -296,6 +472,37 @@ namespace Allie.Chat.WebAPI
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return JsonConvert.DeserializeObject<BotDTO[]>(await response.Content.ReadAsStringAsync());
+                    }
+                }
+            }
+            catch
+            { }
+
+            return null;
+        }
+        /// <summary>
+        /// Get the registered Bot by token
+        /// </summary>
+        /// <param name="token">The OAuth Token of the requested Bot</param>
+        /// <returns>A Bot ViewModel</returns>
+        public async virtual Task<BotVM> GetBotAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+            {
+                throw new Exception("There is no access token currently loaded to access the WebAPI. Please load a new access token and try again");
+            }
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/{token}");
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert.DeserializeObject<BotWSVM>(await response.Content.ReadAsStringAsync());
                     }
                 }
             }

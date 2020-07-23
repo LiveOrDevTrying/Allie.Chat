@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Allie.Chat.Lib.Interfaces;
 using Allie.Chat.Websocket.Events;
-using PHS.Core.Events;
-using WebsocketsSimple.Core.Events.Args;
+using PHS.Networking.Events;
+using WebsocketsSimple.Client.Events.Args;
 
 namespace Allie.Chat.Websocket
 {
@@ -11,8 +11,8 @@ namespace Allie.Chat.Websocket
     {
         bool IsRunning { get; }
 
-        event NetworkingEventHandler<WSConnectionEventArgs> ConnectionEvent;
-        event NetworkingEventHandler<WSErrorEventArgs> ErrorEvent;
+        event NetworkingEventHandler<WSConnectionClientEventArgs> ConnectionEvent;
+        event NetworkingEventHandler<WSErrorClientEventArgs> ErrorEvent;
         event WebsocketMessageEventHandler<IMessageDiscord> MessageDiscordEvent;
         event WebsocketMessageEventHandler<IMessageBase> MessageEvent;
         event WebsocketMessageEventHandler<IMessageTcp> MessageTcpEvent;

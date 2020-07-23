@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Allie.Chat.Lib.Interfaces;
 using Allie.Chat.Tcp.Events;
-using PHS.Core.Events;
-using Tcp.NET.Core.Events.Args;
+using PHS.Networking.Events;
+using Tcp.NET.Client.Events.Args;
 
 namespace Allie.Chat.Tcp
 {
@@ -10,8 +10,8 @@ namespace Allie.Chat.Tcp
     {
         bool IsRunning { get; }
 
-        event NetworkingEventHandler<TcpConnectionEventArgs> ConnectionEvent;
-        event NetworkingEventHandler<TcpErrorEventArgs> ErrorEvent;
+        event NetworkingEventHandler<TcpConnectionClientEventArgs> ConnectionEvent;
+        event NetworkingEventHandler<TcpErrorClientEventArgs> ErrorEvent;
         event TcpMessageEventHandler<IMessageDiscord> MessageDiscordEvent;
         event TcpMessageEventHandler<IMessageBase> MessageEvent;
         event TcpMessageEventHandler<IMessageTcp> MessageTcpEvent;
@@ -19,8 +19,8 @@ namespace Allie.Chat.Tcp
         event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
         event SystemMessageEventHandler SystemMessageEvent;
 
-        bool Connect();
-        bool Disconnect();
+        Task<bool> ConnectAsync(bool isSSL = true);
+        Task<bool> DisconnectAsync();
 
         void Dispose();
         Task<bool> SendAsync(string message);

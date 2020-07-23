@@ -18,11 +18,4 @@
     <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Allie.Chat.Commands" Version="1.0.5" />
-    <PackageReference Include="Allie.Chat.Tcp" Version="1.1.13" />
-    <PackageReference Include="Allie.Chat.WebAPI.Auth" Version="1.1.9" />
-    <PackageReference Include="Allie.Chat.Websocket" Version="1.1.10" />
-  </ItemGroup>
-
 </Project>
