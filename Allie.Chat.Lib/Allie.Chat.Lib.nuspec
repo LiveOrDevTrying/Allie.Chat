@@ -10,13 +10,13 @@
     <projectUrl>https://www.allie.chat</projectUrl>
     <icon>Logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The library assembly for Allie.Chat</description>
+    <description>The library assembly for Allie.Chat, an RSS messaging and routing platform to consolidate messages from multiple providers including Twitch, Discord, Websocket and Tcp.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2019</copyright>
-    <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL</tags>
+    <copyright>Copyright 2021</copyright>
+    <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL networking message feeds feed</tags>
     <dependencies>
-      <group targetFramework="netcoreapp2.1">
-        <dependency id="Microsoft.NETCore.App" version="[2.1,3)" />
+      <group targetFramework="netstandard2.1">
+        <dependency id="System.ComponentModel.Annotations" version="[5.0,6)" />
       </group>
     </dependencies>
   </metadata>
