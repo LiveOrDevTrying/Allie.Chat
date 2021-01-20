@@ -40,6 +40,9 @@ using Allie.Chat.Lib.DTOs.Servers.Channels;
 using Allie.Chat.Lib.ViewModels.Servers.Channels;
 using Allie.Chat.Lib.DTOs.Users;
 using Allie.Chat.Lib.Responses.Currencies;
+using IdentityModel.OidcClient;
+using IdentityModel.Client;
+using IdentityModel.OidcClient.Results;
 
 namespace Allie.Chat.WebAPI
 {
@@ -48,16 +51,203 @@ namespace Allie.Chat.WebAPI
         private readonly string _webAPIBaseUrl;
         protected string _accessToken;
 
-        public WebAPIClientAC(string accessToken, string webAPIBaseUrl = "https://api.allie.chat")
+        protected OidcClient _oidcClient;
+        private readonly string _identityServerAuthorityUrl;
+
+        private static HttpClient _client;
+        private static object _clientLock = new object();
+
+        public WebAPIClientAC(string accessToken, string webAPIBaseUri = "https://api.allie.chat", string identityServerAuthorityUrl = "https://identity.allie.chat")
         {
             _accessToken = accessToken;
-            _webAPIBaseUrl = webAPIBaseUrl;
+            _webAPIBaseUrl = webAPIBaseUri;
+            _identityServerAuthorityUrl = identityServerAuthorityUrl;
+
+            if (_client == null)
+            {
+                lock(_clientLock)
+                {
+                    if (_client == null)
+                    {
+                        _client = new HttpClient();
+                    }
+                }
+            }
         }
 
-        /// <summary>
-        /// Set the access token
-        /// </summary>
-        /// <param name="accessToken">The access token to be used when requesting the Allie.Chat WebAPI</param>
+        public async Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string clientId, string clientSecret,
+            string scopes, string username, string password)
+        {
+            
+            {
+                var disco = await _client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                var response = await _client.RequestPasswordTokenAsync(new PasswordTokenRequest
+                {
+                    Address = disco.TokenEndpoint,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret,
+                    UserName = username,
+                    Password = password,
+                    Scope = scopes,
+                });
+
+                if (response != null)
+                {
+                    _accessToken = response.AccessToken;
+                }
+
+                return response;
+            }
+        }
+        public async Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes)
+        {
+            // create a redirect URI using an available port on the loopback address.
+            // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
+            var browser = new SystemBrowser(45656);
+            string redirectUri = string.Format($"http://127.0.0.1:{browser.Port}");
+
+            var options = new OidcClientOptions
+            {
+                Authority = _identityServerAuthorityUrl,
+                ClientId = clientId,
+                RedirectUri = redirectUri,
+                Scope = scopes,
+                FilterClaims = false,
+                Browser = browser,
+                RefreshTokenInnerHttpHandler = new HttpClientHandler(),
+                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+                ClientSecret = clientSecret
+            };
+
+            _oidcClient = new OidcClient(options);
+            var result = await _oidcClient.LoginAsync(new LoginRequest());
+
+            if (result != null)
+            {
+                _accessToken = result.AccessToken;
+            }
+
+            return result;
+        }
+        public async Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes)
+        {
+            // create a redirect URI using an available port on the loopback address.
+            // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
+            var browser = new SystemBrowser(45656);
+            string redirectUri = string.Format($"http://127.0.0.1:{browser.Port}");
+
+            var options = new OidcClientOptions
+            {
+                Authority = _identityServerAuthorityUrl,
+                ClientId = clientId,
+                RedirectUri = redirectUri,
+                Scope = scopes,
+                FilterClaims = false,
+                Browser = browser,
+                RefreshTokenInnerHttpHandler = new HttpClientHandler(),
+                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+            };
+
+            _oidcClient = new OidcClient(options);
+            var result = await _oidcClient.LoginAsync(new LoginRequest());
+
+            if (result != null)
+            {
+                _accessToken = result.AccessToken;
+            }
+
+            return result;
+        }
+
+        public async Task<RefreshTokenResult> RefreshAccessTokenAuthCodeOrNativeAsync(string refreshToken)
+        {
+            if (_oidcClient != null)
+            {
+                var result = await _oidcClient.RefreshTokenAsync(refreshToken);
+
+                if (result != null)
+                {
+                    _accessToken = result.AccessToken;
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+        public async Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string clientId,
+            string clientSecret, string refreshToken)
+        {
+            
+            {
+                var disco = await _client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                var result = await _client.RequestRefreshTokenAsync(new RefreshTokenRequest
+                {
+                    Address = disco.TokenEndpoint,
+                    RefreshToken = refreshToken,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret
+                });
+
+                if (result != null)
+                {
+                    _accessToken = result.AccessToken;
+                }
+
+                return result;
+            }
+        }
+
+        public async Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync()
+        {
+            return _oidcClient != null ? await _oidcClient.GetUserInfoAsync(_accessToken) : null;
+        }
+        public async Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync()
+        {
+            
+            {
+                var disco = await _client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                return await _client.GetUserInfoAsync(new UserInfoRequest
+                {
+                    Address = disco.UserInfoEndpoint,
+                    Token = _accessToken
+                });
+            }
+        }
+
+        public async Task<TokenIntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
+        {
+            
+            {
+                var disco = await _client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+                {
+                    Address = _identityServerAuthorityUrl,
+                });
+
+                _client.SetBasicAuthentication(apiName, apiSecret);
+
+                return await _client.IntrospectTokenAsync(new TokenIntrospectionRequest
+                {
+                    Address = disco.IntrospectionEndpoint,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret,
+                    Token = _accessToken,
+                });
+            }
+        }
+
         public virtual void SetAccessToken(string accessToken)
         {
             _accessToken = accessToken;
@@ -76,11 +266,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/ApiResources");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/ApiResources");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -107,11 +297,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/ApiResources/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/ApiResources/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -138,11 +328,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/ApiResources", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/ApiResources", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -169,11 +359,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/ApiResources/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/ApiResources/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -200,11 +390,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/ApiResources/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/ApiResources/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -228,11 +418,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var result = await client.PostAsync($"{_webAPIBaseUrl}/ApiResources/ResetSecrets/{id}", new JsonContent(null));
+                    var result = await _client.PostAsync($"{_webAPIBaseUrl}/ApiResources/ResetSecrets/{id}", new JsonContent(null));
 
                     return result.IsSuccessStatusCode;
                 }
@@ -256,11 +446,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var user = await client.GetStringAsync(_webAPIBaseUrl + "/ApplicationUser");
+                    var user = await _client.GetStringAsync(_webAPIBaseUrl + "/ApplicationUser");
 
                     if (!string.IsNullOrWhiteSpace(user))
                     {
@@ -287,15 +477,46 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return JsonConvert.DeserializeObject<BotDTO[]>(await response.Content.ReadAsStringAsync());
+                    }
+                }
+            }
+            catch
+            { }
+
+            return null;
+        }
+        /// <summary>
+        /// Get the registered Bot by token
+        /// </summary>
+        /// <param name="token">The OAuth Token of the requested Bot</param>
+        /// <returns>A Bot ViewModel</returns>
+        public async virtual Task<BotVM> GetBotAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+            {
+                throw new Exception("There is no access token currently loaded to access the WebAPI. Please load a new access token and try again");
+            }
+
+            try
+            {
+                
+                {
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/{token}");
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert.DeserializeObject<BotWSVM>(await response.Content.ReadAsStringAsync());
                     }
                 }
             }
@@ -318,11 +539,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Twitch/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Twitch/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -349,11 +570,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Discord/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Discord/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -380,11 +601,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Tcp/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Tcp/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -411,11 +632,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Tcp/{token}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Tcp/{token}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -442,11 +663,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Bots/Tcp", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Bots/Tcp", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -473,11 +694,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/Bots/Tcp/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/Bots/Tcp/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -504,11 +725,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Websocket/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Websocket/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -535,11 +756,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Bots/Websocket/{token}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Websocket/{token}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -566,11 +787,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Bots/Websocket", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Bots/Websocket", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -597,11 +818,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/Bots/Websocket/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/Bots/Websocket/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -628,11 +849,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Bots/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Bots/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -656,11 +877,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/ClientApplications");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/ClientApplications");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -687,11 +908,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/ClientApplications/AuthCode/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/ClientApplications/AuthCode/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -718,11 +939,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/AuthCode", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/AuthCode", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -749,11 +970,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/AuthCode/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/AuthCode/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -780,11 +1001,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/ClientApplications/Implicit/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/ClientApplications/Implicit/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -811,11 +1032,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/Implicit", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/Implicit", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -842,11 +1063,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/Implicit/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/Implicit/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -873,11 +1094,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var clientApplicationPassword = await client.GetStringAsync($"{_webAPIBaseUrl}/ClientApplications/ROPassword/{id.ToString()}");
+                    var clientApplicationPassword = await _client.GetStringAsync($"{_webAPIBaseUrl}/ClientApplications/ROPassword/{id.ToString()}");
 
                     if (!string.IsNullOrWhiteSpace(clientApplicationPassword))
                     {
@@ -904,11 +1125,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/ROPassword", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/ROPassword", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -935,11 +1156,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/ROPassword/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/ROPassword/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -966,11 +1187,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/ClientApplications/PKCE/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/ClientApplications/PKCE/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -997,11 +1218,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/PKCE", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/PKCE", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1028,11 +1249,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/PKCE/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/ClientApplications/PKCE/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1059,11 +1280,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/ClientApplications/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/ClientApplications/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -1086,11 +1307,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/ResetSecrets/{id}", new JsonContent(null));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/ClientApplications/ResetSecrets/{id}", new JsonContent(null));
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -1114,11 +1335,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/CommandSets");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/CommandSets");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1145,11 +1366,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/CommandSets/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/CommandSets/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1176,11 +1397,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/CommandSets", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/CommandSets", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1207,11 +1428,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/CommandSets/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/CommandSets/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1238,11 +1459,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/CommandSets/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/CommandSets/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -1267,11 +1488,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Commands/{commandSetId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Commands/{commandSetId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1298,11 +1519,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Command/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Command/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1329,11 +1550,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/CommandSets/Commands", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/CommandSets/Commands", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1360,11 +1581,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/CommandSets/Commands/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/CommandSets/Commands/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1391,11 +1612,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/CommandSets/Commands/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/CommandSets/Commands/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -1420,11 +1641,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies/{commandId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies/{commandId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1451,11 +1672,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Command/CommandReply/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/CommandSets/Command/CommandReply/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1482,11 +1703,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1513,11 +1734,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1544,11 +1765,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/CommandSets/Commands/CommandReplies{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -1572,11 +1793,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currencies");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currencies");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1603,11 +1824,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currencies/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currencies/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1634,11 +1855,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Currencies", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Currencies", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1665,11 +1886,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/Currencies/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/Currencies/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1696,11 +1917,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Currencies/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Currencies/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -1724,11 +1945,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currencies/Users");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currencies/Users");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1755,11 +1976,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currencies/User/{userId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currencies/User/{userId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1798,11 +2019,11 @@ namespace Allie.Chat.WebAPI
                     }
                 }
 
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currencies/Users?userIds={sb.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currencies/Users?userIds={sb.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1829,11 +2050,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currency/User/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currency/User/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1872,11 +2093,11 @@ namespace Allie.Chat.WebAPI
                     }
                 }
 
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Currency/Users?ids={sb.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Currency/Users?ids={sb.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1903,11 +2124,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Currency/User/Transaction", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Currency/User/Transaction", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1934,11 +2155,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Currency/Users/Transaction", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Currency/Users/Transaction", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -1966,11 +2187,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Paths/{routeId.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Paths/{routeId.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -1997,11 +2218,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Paths/Path/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Paths/Path/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2028,11 +2249,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Paths/Path", new StringContent(JsonConvert.SerializeObject(request)));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Paths/Path", new StringContent(JsonConvert.SerializeObject(request)));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -2059,11 +2280,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Paths/Server/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Paths/Server/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2090,11 +2311,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Paths/Server", new StringContent(JsonConvert.SerializeObject(request)));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Paths/Server", new StringContent(JsonConvert.SerializeObject(request)));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -2121,11 +2342,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Paths/Channel/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Paths/Channel/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2152,11 +2373,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Paths/Channel", new StringContent(JsonConvert.SerializeObject(request)));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Paths/Channel", new StringContent(JsonConvert.SerializeObject(request)));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -2183,11 +2404,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Paths/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Paths/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -2211,11 +2432,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Providers");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Providers");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2242,11 +2463,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Providers/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Providers/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2274,11 +2495,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Routes/{streamId.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Routes/{streamId.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2305,11 +2526,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Route/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Route/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2336,11 +2557,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Routes", new StringContent(JsonConvert.SerializeObject(request)));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Routes", new StringContent(JsonConvert.SerializeObject(request)));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -2367,11 +2588,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Routes/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Routes/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -2396,11 +2617,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Server/Twitch/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Server/Twitch/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2438,11 +2659,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Twitch?ids={sb.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Servers/Twitch?ids={sb.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2469,11 +2690,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Server/Discord/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Server/Discord/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2511,11 +2732,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var server = await client.GetStringAsync($"{_webAPIBaseUrl}/Servers/Discord?ids={sb.ToString()}");
+                    var server = await _client.GetStringAsync($"{_webAPIBaseUrl}/Servers/Discord?ids={sb.ToString()}");
 
                     if (!string.IsNullOrWhiteSpace(server))
                     {
@@ -2543,11 +2764,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Twitch/Users/{serverTwitchId.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Servers/Twitch/Users/{serverTwitchId.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2574,11 +2795,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Discord/Users/{serverDiscordId.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Servers/Discord/Users/{serverDiscordId.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2606,11 +2827,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Discord/Channels/{discordServerId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Servers/Discord/Channels/{discordServerId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2637,11 +2858,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Discord/Channel/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Servers/Discord/Channel/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2669,11 +2890,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Servers/Users/Currencies/{serverId.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Servers/Users/Currencies/{serverId.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2700,11 +2921,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2731,11 +2952,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2762,11 +2983,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Streams", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Streams", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -2793,11 +3014,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/Streams/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/Streams/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2824,11 +3045,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Streams/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Streams/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -2853,11 +3074,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/CommandSets/{streamId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/CommandSets/{streamId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2884,11 +3105,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/CommandSet/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/CommandSet/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -2915,11 +3136,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Streams/CommandSets", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Streams/CommandSets", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -2946,11 +3167,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Streams/CommandSets/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Streams/CommandSets/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -2975,11 +3196,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/{streamId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/{streamId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3006,11 +3227,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3037,11 +3258,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Streams/Currencies", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Streams/Currencies", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -3068,11 +3289,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/Streams/Currencies/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/Streams/Currencies/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3099,11 +3320,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Streams/Currencies/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Streams/Currencies/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -3128,11 +3349,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/Statuses/{streamCurrencyId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/Statuses/{streamCurrencyId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3159,11 +3380,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status/{id.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status/{id.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3190,11 +3411,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PostAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status", new JsonContent(request));
+                    var response = await _client.PostAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
@@ -3221,11 +3442,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.PutAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status/{request.Id}", new JsonContent(request));
+                    var response = await _client.PutAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status/{request.Id}", new JsonContent(request));
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3252,11 +3473,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.DeleteAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status/{id.ToString()}");
+                    var response = await _client.DeleteAsync($"{_webAPIBaseUrl}/Streams/Currencies/Status/{id.ToString()}");
 
                     return response.StatusCode == HttpStatusCode.NoContent;
                 }
@@ -3281,11 +3502,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Users/{streamId}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/Users/{streamId}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3313,11 +3534,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Streams/Users/Currencies/{streamId.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Streams/Users/Currencies/{streamId.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3344,11 +3565,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Users");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Users");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3375,9 +3596,9 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
                     var sb = new StringBuilder();
                     for (int i = 0; i < ids.Length; i++)
@@ -3390,7 +3611,7 @@ namespace Allie.Chat.WebAPI
                         }
                     }
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/Users?ids={sb.ToString()}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Users?ids={sb.ToString()}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3417,11 +3638,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/User/Twitch/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/User/Twitch/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3448,9 +3669,9 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
                     var sb = new StringBuilder();
                     for (int i = 0; i < ids.Length; i++)
@@ -3463,7 +3684,7 @@ namespace Allie.Chat.WebAPI
                         }
                     }
 
-                    var response = await client.GetStringAsync($"{_webAPIBaseUrl}/Users/Twitch?ids={sb.ToString()}");
+                    var response = await _client.GetStringAsync($"{_webAPIBaseUrl}/Users/Twitch?ids={sb.ToString()}");
 
                     if (!string.IsNullOrWhiteSpace(response))
                     {
@@ -3490,11 +3711,11 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await client.GetAsync($"{_webAPIBaseUrl}/User/Discord/{id}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/User/Discord/{id}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
@@ -3521,9 +3742,9 @@ namespace Allie.Chat.WebAPI
 
             try
             {
-                using (var client = new HttpClient())
+                
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
                     var sb = new StringBuilder();
                     for (int i = 0; i < ids.Length; i++)
@@ -3536,7 +3757,7 @@ namespace Allie.Chat.WebAPI
                         }
                     }
 
-                    var response = await client.GetStringAsync($"{_webAPIBaseUrl}/Users/Discord?ids={sb.ToString()}");
+                    var response = await _client.GetStringAsync($"{_webAPIBaseUrl}/Users/Discord?ids={sb.ToString()}");
 
                     if (!string.IsNullOrWhiteSpace(response))
                     {

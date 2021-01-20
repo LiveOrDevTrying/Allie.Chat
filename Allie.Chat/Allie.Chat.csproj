@@ -1,28 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Description>A .NET wrapper for Websocket, Tcp, and WebAPI access to the Allie.Chat services.</Description>
-    <Authors>Rob Engel - LiveOrDevTrying</Authors>
-    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
-    <Product>Allie.Chat</Product>
-    <Copyright>Copyright 2019</Copyright>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
-    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
-    <RepositoryType>Github Public</RepositoryType>
-    <PackageTags>Allie Chat WebAPI Client WSClient TcpClient WebsocketClient Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket websockets WS</PackageTags>
-    <Version>1.1.17</Version>
-    <PackageIcon>Logo.png</PackageIcon>
-    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allie.Chat.Commands" Version="1.0.5" />
-    <PackageReference Include="Allie.Chat.Tcp" Version="1.1.13" />
-    <PackageReference Include="Allie.Chat.WebAPI.Auth" Version="1.1.9" />
-    <PackageReference Include="Allie.Chat.Websocket" Version="1.1.10" />
+    <ProjectReference Include="..\Allie.Chat.Tcp\Allie.Chat.Tcp.csproj" />
+    <ProjectReference Include="..\Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj" />
+    <ProjectReference Include="..\Allie.Chat.Websocket\Allie.Chat.Websocket.csproj" />
   </ItemGroup>
 
 </Project>

@@ -39,16 +39,6 @@
             The Application User's maximum number of command sets
             </summary>
         </member>
-        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxClientApplications">
-            <summary>
-            The Application User's maximum number of Client Applications
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.DTOs.ApplicationUsers.ApplicationUserDTO.MaxApiResourceCount">
-            <summary>
-            The Application User's maximum number of Api Resources
-            </summary>
-        </member>
         <member name="T:Allie.Chat.Lib.DTOs.BaseDTO">
             <summary>
             A base data-transfer object
@@ -529,6 +519,11 @@
             The Id of the Command Set
             </summary>
         </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCommandSetDTO.NumberCommands">
+            <summary>
+            The number of Commands in the Stream Command Set
+            </summary>
+        </member>
         <member name="T:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO">
             <summary>
             A StreamCurrency data-transfer object
@@ -542,6 +537,21 @@
         <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO.Prefix">
             <summary>
             The Prefix that can be used from any inbound route to report a User's current currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO.Providers">
+            <summary>
+            The Providers registered to the Stream Currency to accrue Currency 
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO.Status">
+            <summary>
+            The Statuses registered to the Stream Currency
+            </summary>
+        </member>
+        <member name="P:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyDTO.NumberStreamsCurrencyRegistered">
+            <summary>
+            The number of Streams that the Currency is registered
             </summary>
         </member>
         <member name="T:Allie.Chat.Lib.DTOs.Streams.StreamCurrencyProviderDTO">
@@ -2406,16 +2416,6 @@
         <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxCommandSets">
             <summary>
             The Application User's maximum number of command sets
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxClientApplications">
-            <summary>
-            The Application User's maximum number of Client Applications
-            </summary>
-        </member>
-        <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.MaxApiResourceCount">
-            <summary>
-            The Application User's maximum number of Api Resources
             </summary>
         </member>
         <member name="P:Allie.Chat.Lib.ViewModels.ApplicationUsers.ApplicationUserVM.Currencies">

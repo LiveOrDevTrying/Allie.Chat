@@ -17,5 +17,17 @@ namespace Allie.Chat.Lib.DTOs.Streams
         /// The Prefix that can be used from any inbound route to report a User's current currency
         /// </summary>
         public string Prefix { get; set; }
+        /// <summary>
+        /// The Providers registered to the Stream Currency to accrue Currency 
+        /// </summary>
+        public string[] Providers { get; set; }
+        /// <summary>
+        /// The Statuses registered to the Stream Currency
+        /// </summary>
+        public string[] Status { get; set; }
+        /// <summary>
+        /// The number of Streams that the Currency is registered
+        /// </summary>
+        public int NumberStreamsCurrencyRegistered { get; set; }
     }
 }

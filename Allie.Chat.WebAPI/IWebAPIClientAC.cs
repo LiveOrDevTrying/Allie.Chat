@@ -35,11 +35,35 @@ using Allie.Chat.Lib.DTOs.Servers.Channels;
 using Allie.Chat.Lib.ViewModels.Servers.Channels;
 using Allie.Chat.Lib.DTOs.Users;
 using Allie.Chat.Lib.Responses.Currencies;
+using IdentityModel.OidcClient;
+using IdentityModel.Client;
+using IdentityModel.OidcClient.Results;
 
 namespace Allie.Chat.WebAPI
 {
     public interface IWebAPIClientAC : IDisposable
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="scopes"></param>
+        /// <returns></returns>
+        Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes);
+        Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes);
+        Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string clientId, string clientSecret,
+            string scopes, string username, string password);
+
+        Task<RefreshTokenResult> RefreshAccessTokenAuthCodeOrNativeAsync(string refreshToken);
+        Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string clientId,
+            string clientSecret, string refreshToken);
+
+        Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync();
+        Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync();
+
+        Task<TokenIntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret);
+
         /// <summary>
         /// Set the access token
         /// </summary>
@@ -93,6 +117,11 @@ namespace Allie.Chat.WebAPI
         /// </summary>
         /// <returns>An array of Bot data-transfer objects registered to the Application User</returns>
         Task<BotDTO[]> GetBotsAsync();
+        /// <summary>
+        /// Get a registered Bot
+        /// </summary>
+        /// <returns>A Bot data-transfer object registered to the Application User</returns>
+        Task<BotVM> GetBotAsync(string token);
         /// <summary>
         /// Get a registered Twitch Bot
         /// </summary>

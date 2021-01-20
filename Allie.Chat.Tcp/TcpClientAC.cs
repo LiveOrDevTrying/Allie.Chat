@@ -3,13 +3,14 @@ using Allie.Chat.Lib.Interfaces;
 using Allie.Chat.Lib.Structs;
 using Allie.Chat.Tcp.Events;
 using Newtonsoft.Json;
-using PHS.Core.Enums;
-using PHS.Core.Events;
-using PHS.Core.Models;
+using PHS.Networking.Enums;
+using PHS.Networking.Events;
+using PHS.Networking.Models;
 using System;
 using System.Threading.Tasks;
 using Tcp.NET.Client;
-using Tcp.NET.Core.Events.Args;
+using Tcp.NET.Client.Events.Args;
+using Tcp.NET.Client.Models;
 
 namespace Allie.Chat.Tcp
 {
@@ -21,131 +22,150 @@ namespace Allie.Chat.Tcp
 
         protected readonly ITcpNETClient _tcpClient;
 
-        public event NetworkingEventHandler<TcpConnectionEventArgs> ConnectionEvent;
+        public event NetworkingEventHandler<TcpConnectionClientEventArgs> ConnectionEvent;
         public event TcpMessageEventHandler<IMessageBase> MessageEvent;
         public event TcpMessageEventHandler<IMessageTwitch> MessageTwitchEvent;
         public event TcpMessageEventHandler<IMessageDiscord> MessageDiscordEvent;
         public event TcpMessageEventHandler<IMessageTcp> MessageTcpEvent;
         public event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
-        public event NetworkingEventHandler<TcpErrorEventArgs> ErrorEvent;
+        public event NetworkingEventHandler<TcpErrorClientEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public TcpClientAC(string accessToken, string url = "connect.allie.chat", int port = 7610)
+        public TcpClientAC(string accessToken, string url = "connect.allie.chat", int port = 7610, bool isSSL = true)
         {
             _accessToken = accessToken;
             _connectUri = url;
             _connectPort = port;
 
-            _tcpClient = new TcpNETClient();
+            _tcpClient = new TcpNETClient(new ParamsTcpClient
+            {
+                EndOfLineCharacters = "\r\n",
+                IsSSL = isSSL,
+                Port = _connectPort,
+                Uri = _connectUri
+            }, _accessToken);
             _tcpClient.ConnectionEvent += OnConnectionEvent;
             _tcpClient.MessageEvent += OnMessageEvent;
             _tcpClient.ErrorEvent += OnErrorEvent;
         }
 
-        public virtual bool Connect()
+        public virtual async Task<bool> ConnectAsync(bool isSSL)
+        {
+            try
+            {
+                if (_tcpClient.IsRunning)
+                {
+                    await _tcpClient.DisconnectAsync();
+                }
+
+                await _tcpClient.ConnectAsync();
+
+                return true;
+            }
+            catch
+            { }
+
+            return false;
+        }
+        public virtual async Task<bool> DisconnectAsync()
         {
             if (_tcpClient.IsRunning)
             {
-                _tcpClient.Disconnect();
-            }
-
-            _tcpClient.Connect(_connectUri, _connectPort, "\r\n");
-
-            if (_tcpClient.IsRunning)
-            {
-                _tcpClient.SendToServer($"oauth:{_accessToken}");
+                await _tcpClient.DisconnectAsync();
                 return true;
             }
 
             return false;
         }
-        public virtual bool Disconnect()
+        public virtual async Task<bool> SendAsync(string message)
         {
-            if (_tcpClient.IsRunning)
+            return await _tcpClient.SendToServerAsync(new Packet
             {
-                _tcpClient.Disconnect();
-                return true;
-            }
-
-            return false;
-        }
-        public virtual Task<bool> SendAsync(string message)
-        {
-            var response = _tcpClient.SendToServer(new PacketDTO
-            {
-                Action = (int)ActionType.SendToServer,
                 Data = message,
                 Timestamp = DateTime.UtcNow
             });
-
-            return Task.FromResult(response);
         }
 
-        protected virtual Task OnConnectionEvent(object sender, TcpConnectionEventArgs args)
+        protected virtual async Task OnConnectionEvent(object sender, TcpConnectionClientEventArgs args)
         {
-            ConnectionEvent(sender, args);
-            return Task.CompletedTask;
+            if (ConnectionEvent != null)
+            {
+                await ConnectionEvent?.Invoke(sender, args);
+            }
         }
-        protected virtual Task OnMessageEvent(object sender, TcpMessageEventArgs args)
+        protected virtual async Task OnMessageEvent(object sender, TcpMessageClientEventArgs args)
         {
             switch (args.MessageEventType)
             {
                 case MessageEventType.Sent:
                     break;
                 case MessageEventType.Receive:
-                    if (args.Message.Trim().ToLower() == "ping")
+                    try
                     {
-                        _tcpClient.SendToServer("pong");
-                    }
-                    else
-                    {
-                        try
+                        var message = JsonConvert.DeserializeObject<MessageBase>(args.Packet.Data);
+                        IMessageBase messageTyped = null;
+
+                        switch (message.ProviderType)
                         {
-                            var message = JsonConvert.DeserializeObject<MessageBase>(args.Packet.Data);
-                            IMessageBase messageTyped = null;
+                            case ProviderType.Twitch:
+                                messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data);
 
-                            switch (message.ProviderType)
-                            {
-                                case ProviderType.Twitch:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data);
-                                    MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
-                                    break;
-                                case ProviderType.Discord:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data);
-                                    MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
-                                    break;
-                                case ProviderType.Tcp:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data);
-                                    MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
-                                    break;
-                                case ProviderType.Websocket:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data);
-                                    MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
-                                    break;
-                                default:
-                                    break;
-                            }
+                                if (MessageTwitchEvent != null)
+                                {
+                                    await MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
+                                }
+                                break;
+                            case ProviderType.Discord:
+                                messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data);
+                                
+                                if (MessageDiscordEvent != null)
+                                {
+                                    await MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
+                                }
+                                break;
+                            case ProviderType.Tcp:
+                                messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data);
 
-                            if (messageTyped != null)
-                            {
-                                MessageEvent?.Invoke(sender, messageTyped);
-                            }
+                                if (MessageTcpEvent != null)
+                                {
+                                    await MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
+                                }
+                                break;
+                            case ProviderType.Websocket:
+                                messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data);
+
+                                if (MessageWebsocketEvent != null)
+                                {
+                                    await MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
+                                }
+                                break;
+                            default:
+                                break;
                         }
-                        catch
+
+                        if (messageTyped != null && MessageEvent != null)
                         {
-                            SystemMessageEvent?.Invoke(sender, args.Message);
+                            await MessageEvent?.Invoke(sender, messageTyped);
+                        }
+                    }
+                    catch
+                    {
+                        if (SystemMessageEvent != null)
+                        {
+                            await SystemMessageEvent?.Invoke(sender, args.Message);
                         }
                     }
                     break;
                 default:
                     break;
             }
-            return Task.CompletedTask;
         }
-        protected virtual Task OnErrorEvent(object sender, TcpErrorEventArgs args)
+        protected virtual async Task OnErrorEvent(object sender, TcpErrorClientEventArgs args)
         {
-            ErrorEvent(sender, args);
-            return Task.CompletedTask;
+            if (ErrorEvent != null)
+            {
+                await ErrorEvent?.Invoke(sender, args);
+            }
         }
 
         public virtual void Dispose()

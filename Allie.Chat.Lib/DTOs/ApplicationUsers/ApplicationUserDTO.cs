@@ -29,13 +29,5 @@
         /// The Application User's maximum number of command sets
         /// </summary>
         public int MaxCommandSets { get; set; }
-        /// <summary>
-        /// The Application User's maximum number of Client Applications
-        /// </summary>
-        public int MaxClientApplications { get; set; }
-        /// <summary>
-        /// The Application User's maximum number of Api Resources
-        /// </summary>
-        public int MaxApiResourceCount { get; set; }
     }
 }
