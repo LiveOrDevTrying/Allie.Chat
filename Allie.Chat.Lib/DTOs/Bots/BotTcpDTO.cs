@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Allie.Chat.Lib.DTOs.Bots
+﻿namespace Allie.Chat.Lib.DTOs.Bots
 {
     /// <summary>
     /// A Tcp Bot data-transfer object

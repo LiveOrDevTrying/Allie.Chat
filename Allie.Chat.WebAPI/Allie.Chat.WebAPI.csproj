@@ -1,27 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Authors>Rob Engel - LiveOrDevTrying</Authors>
-    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
-    <Description>A .NET wrapper for the Allie.Chat WebAPI</Description>
-    <Copyright>Copyright 2019</Copyright>
-    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
-    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
-    <RepositoryType>Github Public</RepositoryType>
-    <PackageIconUrl></PackageIconUrl>
-    <Version>1.1.10</Version>
-    <PackageTags>Allie Chat WebAPI Client Services clientServices RSS Routing Communication Twitch Discord Tcp Websocket WS</PackageTags>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Product>Allie.Chat.WebAPI</Product>
-    <PackageIcon>Logo.png</PackageIcon>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IdentityModel.OidcClient" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Tcp.NET.Client" Version="1.6.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,5 @@
-﻿using Allie.Chat.Commands.Core.Auth.Models;
-using Allie.Chat.Commands.Core.Events.Args;
-using Allie.Chat.Commands.Websocket.Auth;
+﻿using Allie.Chat.Events.Args;
+using Allie.Chat.Models;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -9,11 +8,11 @@ namespace Allie.Chat.TestApps.Websocket
 {
     class Program
     {
-        private static CommandsWebsocketAuthCode _commandsAuthCode;
+        private static ACCommands _acCommands;
 
         static void Main(string[] args)
         {
-            _commandsAuthCode = new CommandsWebsocketAuthCode(new ParametersAuthCode
+            _acCommands = new ACCommands(new ACParametersAuthCode
             {
                 BotAccessToken = "c88cbdcbce25497d8ba9edb71a97f06cd3e1fda419bc4adfb42cfc283f0bb29d",
                 ClientId = "auth.code",
@@ -22,7 +21,7 @@ namespace Allie.Chat.TestApps.Websocket
                 StreamCachePollingIntervalMS = 45000,
                 ReconnectPollingIntervalMS = 15000
             });
-            _commandsAuthCode.CommandEvent += OnCommandEvent;
+            _acCommands.CommandEvent += OnCommandEvent;
 
             while (true)
             {
@@ -32,16 +31,6 @@ namespace Allie.Chat.TestApps.Websocket
 
         private static Task OnCommandEvent(object sender, CommandEventArgs args)
         {
-            switch (args.Command.CommandText.Trim().ToLower())
-            {
-                case "time":
-                    _commandsAuthCode.SendMessageAsync($"{DateTime.Now.ToLocalTime().ToShortDateString()} {DateTime.Now.ToLocalTime().ToShortTimeString()}");
-                    break;
-                default:
-                    break;
-            }
-
-
             Console.WriteLine(JsonConvert.SerializeObject(args));
             return Task.CompletedTask;
         }

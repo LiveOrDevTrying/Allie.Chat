@@ -1,7 +1,5 @@
-﻿using Allie.Chat.Commands.Core.Auth.Models;
-using Allie.Chat.Commands.Core.Events.Args;
-using Allie.Chat.Commands.Tcp.Auth;
-using Allie.Chat.WebAPI.Auth;
+﻿using Allie.Chat.Events.Args;
+using Allie.Chat.Models;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -13,7 +11,7 @@ namespace Allie.Chat.TestApps.Tcp
 
         static void Main(string[] args)
         {
-            var commandsAuthCode = new CommandsTcpAuthCode(new ParametersAuthCode
+            var commandsAuthCode = new ACCommands(new ACParametersAuthCode
             {
                 BotAccessToken = "cda0f5e754214a15bad4ce13fecf81658c8ce36e2ade42d7be63991194195ba2",
                 ClientId = "auth.code",

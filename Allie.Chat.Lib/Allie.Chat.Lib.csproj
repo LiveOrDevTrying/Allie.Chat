@@ -1,24 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Description>The library assembly for Allie.Chat</Description>
-    <Copyright>Copyright 2019</Copyright>
-    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
-    <RepositoryUrl>https://www.github.com/liveordevtrying/alliechat</RepositoryUrl>
-    <RepositoryType>Github Public</RepositoryType>
-    <Authors>Rob Engel - LiveOrDevTrying</Authors>
-    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
-    <Version>1.1.6</Version>
-    <PackageIconUrl></PackageIconUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageTags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL</PackageTags>
-    <PackageIcon>Logo.png</PackageIcon>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Companies\PixelHorrorStudios\Projects\PHS.Allie.Chat\Source\Allie.Chat.Public\Allie.Chat.Lib\Allie.Chat.Lib.xml</DocumentationFile>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
 
 </Project>
