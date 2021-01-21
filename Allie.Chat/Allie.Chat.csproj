@@ -2,12 +2,31 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>2.1.0</Version>
+    <Authors>Rob Engel - LiveOrDevTrying</Authors>
+    <Company>Rob Engel - LiveOrDevTrying - Pixel Horror Studios</Company>
+    <Product>Allie.Chat</Product>
+    <PackageProjectUrl>https://www.allie.chat</PackageProjectUrl>
+    <PackageIcon>Logo.png</PackageIcon>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Copyright>Copyright 2021</Copyright>
+    <PackageTags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL networking message feeds feed websockets</PackageTags>
+    <RepositoryType>Github Public</RepositoryType>
+    <RepositoryUrl>https://github.com/liveordevtrying/allie.chat</RepositoryUrl>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Allie.Chat.Tcp\Allie.Chat.Tcp.csproj" />
     <ProjectReference Include="..\Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj" />
     <ProjectReference Include="..\Allie.Chat.Websocket\Allie.Chat.Websocket.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
