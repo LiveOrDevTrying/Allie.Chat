@@ -23,7 +23,7 @@ namespace Allie.Chat.WebAPI
         {
             _path = path;
 
-            Port = !port.HasValue ? GetRandomUnusedPort() : port.Value;
+            Port = port ?? GetRandomUnusedPort() ;
         }
 
         private int GetRandomUnusedPort()
@@ -35,7 +35,7 @@ namespace Allie.Chat.WebAPI
             return port;
         }
 
-        public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken)
+        public async Task<BrowserResult> InvokeAsync(BrowserOptions options)
         {
             using (var listener = new LoopbackHttpListener(Port, _path))
             {
