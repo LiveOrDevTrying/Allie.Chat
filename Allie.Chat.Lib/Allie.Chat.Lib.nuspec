@@ -16,7 +16,7 @@
     <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL networking message feeds feed</tags>
     <dependencies>
       <group targetFramework="netstandard2.1">
-        <dependency id="System.ComponentModel.Annotations" version="[5.0,6)" />
+        <dependency id="System.ComponentModel.Annotations" version="[5,6)" />
       </group>
     </dependencies>
   </metadata>

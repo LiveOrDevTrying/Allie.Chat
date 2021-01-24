@@ -16,9 +16,9 @@
     <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL networking message feeds feed websockets</tags>
     <dependencies>
       <group targetFramework="netstandard2.1">
-        <dependency id="Allie.Chat.Tcp" version="[2.1,3)" />
-		<dependency id="Allie.Chat.WebAPI" version="[2.1,3)" />
-		<dependency id="Allie.Chat.Websocket" version="[2.1,3)" />
+        <dependency id="Allie.Chat.Tcp" version="[2,3)" />
+		<dependency id="Allie.Chat.WebAPI" version="[2,3)" />
+		<dependency id="Allie.Chat.Websocket" version="[2,3)" />
       </group>
     </dependencies>
   </metadata>
