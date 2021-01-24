@@ -227,7 +227,7 @@ namespace Allie.Chat.WebAPI
             }
         }
 
-        public async Task<TokenIntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
+        public async Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
         {
             
             {
