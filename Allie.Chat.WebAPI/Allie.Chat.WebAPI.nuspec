@@ -16,7 +16,7 @@
     <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL networking message feeds feed</tags>
     <dependencies>
       <group targetFramework="netstandard2.1">
-		<dependency id="Allie.Chat.Lib" version="[2,3)" />
+		<dependency id="Allie.Chat.Lib" version="[2.1,3)" />
 		<dependency id="IdentityModel.OidcClient" version="[2,3)" />
 		<dependency id="Microsoft.AspNetCore.Server.Kestrel" version="[2,3)" />
       </group>
