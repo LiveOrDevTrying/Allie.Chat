@@ -71,7 +71,7 @@ namespace Allie.Chat.Websocket
                 case MessageEventType.Sent:
                     break;
                 case MessageEventType.Receive:
-                    if (args.Message.Trim().ToLower() == "ping")
+                    if (args.Message.Trim().ToLower() == "ping" || args.Packet.Data.Trim().ToLower() == "ping")
                     {
                         await _websocketClient.SendToServerRawAsync("pong");
                     }
