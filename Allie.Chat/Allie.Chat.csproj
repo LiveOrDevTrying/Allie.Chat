@@ -19,7 +19,7 @@
 
     <ItemGroup>
 	    <PackageReference Include="Allie.Chat.Tcp" Version="2.1.*" />
-	    <PackageReference Include="Allie.Chat.WebAPI" Version="2.1.4" />
+	    <PackageReference Include="Allie.Chat.WebAPI" Version="2.1.*" />
 	    <PackageReference Include="Allie.Chat.Websocket" Version="2.1.*" />
     </ItemGroup>
 	
