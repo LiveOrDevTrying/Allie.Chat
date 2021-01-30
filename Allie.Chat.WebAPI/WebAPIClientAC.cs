@@ -57,7 +57,7 @@ namespace Allie.Chat.WebAPI
         private static HttpClient _client;
         private static object _clientLock = new object();
 
-        public WebAPIClientAC(string accessToken, string webAPIBaseUri = "https://api.allie.chat", string identityServerAuthorityUrl = "https://identity.allie.chat")
+        public WebAPIClientAC(string accessToken = "", string webAPIBaseUri = "https://api.allie.chat", string identityServerAuthorityUrl = "https://identity.allie.chat")
         {
             _accessToken = accessToken;
             _webAPIBaseUrl = webAPIBaseUri;
