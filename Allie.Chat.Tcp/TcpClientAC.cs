@@ -31,7 +31,7 @@ namespace Allie.Chat.Tcp
         public event NetworkingEventHandler<TcpErrorClientEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public TcpClientAC(string accessToken, string url = "connect.allie.chat", int port = 7610, bool isSSL = true)
+        public TcpClientAC(string accessToken, string url = "connect.allie.chat", int port = 7625, bool isSSL = true)
         {
             _accessToken = accessToken;
             _connectUri = url;
@@ -49,7 +49,7 @@ namespace Allie.Chat.Tcp
             _tcpClient.ErrorEvent += OnErrorEvent;
         }
 
-        public virtual async Task<bool> ConnectAsync(bool isSSL)
+        public virtual async Task<bool> ConnectAsync()
         {
             try
             {
