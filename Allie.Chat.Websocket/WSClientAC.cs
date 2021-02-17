@@ -27,7 +27,7 @@ namespace Allie.Chat.Websocket
         public event NetworkingEventHandler<WSErrorClientEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public WSClientAC(string accessToken, string uri = "connect.allie.chat", int port = 7620, bool isWSS = true)
+        public WSClientAC(string accessToken, string uri = "connect.allie.chat", int port = 7615, bool isWSS = true)
         {
             _websocketClient = new WebsocketClient(new ParamsWSClient
             {

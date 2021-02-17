@@ -20,7 +20,7 @@ namespace Allie.Chat.Tcp
         event TcpMessageEventHandler<IMessageWS> MessageWebsocketEvent;
         event SystemMessageEventHandler SystemMessageEvent;
 
-        Task<bool> ConnectAsync(bool isSSL = true);
+        Task<bool> ConnectAsync();
         Task<bool> DisconnectAsync();
 
         Task<bool> SendAsync(string message);
