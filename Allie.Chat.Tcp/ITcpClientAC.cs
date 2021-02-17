@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Allie.Chat.Lib.Interfaces;
 using Allie.Chat.Tcp.Events;
 using PHS.Networking.Events;
@@ -6,7 +7,7 @@ using Tcp.NET.Client.Events.Args;
 
 namespace Allie.Chat.Tcp
 {
-    public interface ITcpClientAC
+    public interface ITcpClientAC : IDisposable
     {
         bool IsRunning { get; }
 
@@ -22,7 +23,6 @@ namespace Allie.Chat.Tcp
         Task<bool> ConnectAsync(bool isSSL = true);
         Task<bool> DisconnectAsync();
 
-        void Dispose();
         Task<bool> SendAsync(string message);
     }
 }
