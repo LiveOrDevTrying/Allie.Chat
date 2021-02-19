@@ -31,10 +31,10 @@ namespace Allie.Chat.Tcp
         public event NetworkingEventHandler<TcpErrorClientEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public TcpClientAC(string accessToken, string url = "connect.allie.chat", int port = 7625, bool isSSL = true)
+        public TcpClientAC(string accessToken, string uri = "connect.allie.chat", int port = 7625, bool isSSL = true)
         {
             _accessToken = accessToken;
-            _connectUri = url;
+            _connectUri = uri;
             _connectPort = port;
 
             _tcpClient = new TcpNETClient(new ParamsTcpClient
