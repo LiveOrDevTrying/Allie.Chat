@@ -24,8 +24,8 @@ namespace Allie.Chat.Services
         protected ConcurrentDictionary<Guid, CachedStreamDTO> _cachedData =
             new ConcurrentDictionary<Guid, CachedStreamDTO>();
         protected BotVM _bot;
-        protected IWebAPIClientAC _webapiClient;
         protected LoginResult _loginResult;
+        protected IWebAPIClientAC _webAPIClient;
         protected TokenResponse _tokenResponse;
         protected DateTime _expireTime;
 
@@ -155,13 +155,13 @@ namespace Allie.Chat.Services
 
             var cachedStreams = new Dictionary<Guid, CachedStreamDTO>();
 
-            var streams = await _webapiClient.GetStreamsAsync();
+            var streams = await _webAPIClient.GetStreamsAsync();
 
             foreach (var stream in streams)
             {
                 if (!cachedStreams.ContainsKey(stream.Id))
                 {
-                    var routes = await _webapiClient.GetRoutesAsync(stream.Id);
+                    var routes = await _webAPIClient.GetRoutesAsync(stream.Id);
 
                     foreach (var route in routes)
                     {
@@ -169,14 +169,14 @@ namespace Allie.Chat.Services
                         {
                             case RouteType.Inbound:
                                 // Now check if the route belongs to the bot
-                                var routeVM = await _webapiClient.GetRouteAsync(route.Id);
+                                var routeVM = await _webAPIClient.GetRouteAsync(route.Id);
 
                                 if (routeVM.Bot.Id == _bot.Id)
                                 {
                                     // This route is registered to the bot
 
                                     // Verify we have at least 1 path registered
-                                    var paths = await _webapiClient.GetPathsAsync(route.Id);
+                                    var paths = await _webAPIClient.GetPathsAsync(route.Id);
 
                                     if (paths.Any())
                                     {
@@ -205,14 +205,14 @@ namespace Allie.Chat.Services
             };
 
             var cachedCommandSets = new List<CachedCommandSetDTO>();
-            var streamCommandSets = await _webapiClient.GetStreamCommandSetsAsync(stream.Id);
+            var streamCommandSets = await _webAPIClient.GetStreamCommandSetsAsync(stream.Id);
 
             foreach (var streamCommandSet in streamCommandSets)
             {
                 if (streamCommandSet != null &&
                     streamCommandSet.CommandSet != null)
                 {
-                    var commands = await _webapiClient.GetCommandsAsync(streamCommandSet.CommandSet.Id);
+                    var commands = await _webAPIClient.GetCommandsAsync(streamCommandSet.CommandSet.Id);
 
                     cachedCommandSets.Add(new CachedCommandSetDTO
                     {
@@ -236,14 +236,18 @@ namespace Allie.Chat.Services
         }
         protected virtual async Task<BotVM> GetBotAsync()
         {
-            return await _webapiClient.GetBotAsync(_parameters.BotAccessToken);
+            return await _webAPIClient.GetBotAsync(_parameters.BotAccessToken);
         }
         protected virtual async Task GetAccessTokenAsync()
         {
+            if (_webAPIClient == null)
+            {
+                _webAPIClient = new WebAPIClientAC();
+            }
             switch (_parameters)
             {
                 case IParametersAuthCode c:
-                    _loginResult = await _webapiClient.GetAccessTokenAuthCodeAsync(c.ClientId, c.ClientSecret, c.Scopes);
+                    _loginResult = await _webAPIClient.GetAccessTokenAuthCodeAsync(c.ClientId, c.ClientSecret, c.Scopes);
 
                     if (_loginResult != null)
                     {
@@ -252,7 +256,7 @@ namespace Allie.Chat.Services
                     }
                     break;
                 case IParametersAuthPKCE c:
-                    _loginResult = await _webapiClient.GetAccessTokenNativePKCEAsync(c.ClientId, c.Scopes);
+                    _loginResult = await _webAPIClient.GetAccessTokenNativePKCEAsync(c.ClientId, c.Scopes);
 
                     if (_loginResult != null)
                     {
@@ -264,7 +268,7 @@ namespace Allie.Chat.Services
                     }
                     break;
                 case IParametersAuthROPassword c:
-                    _tokenResponse = await _webapiClient.GetAccessTokenResourceOwnerPasswordAsync(
+                    _tokenResponse = await _webAPIClient.GetAccessTokenResourceOwnerPasswordAsync(
                         c.ClientId, c.ClientSecret, c.Scopes, c.Username, c.Password);
 
                     if (_tokenResponse != null)
@@ -304,19 +308,19 @@ namespace Allie.Chat.Services
         }
         public virtual void UpdateWebAPIToken(string webAPIToken)
         {
-            if (_webapiClient != null)
+            if (_webAPIClient != null)
             {
-                _webapiClient.Dispose();
+                _webAPIClient.Dispose();
             }
 
-            _webapiClient = new WebAPIClientAC(webAPIToken);
+            _webAPIClient = new WebAPIClientAC(webAPIToken);
         }
 
         public override void Dispose()
         {
-            if (_webapiClient != null)
+            if (_webAPIClient != null)
             {
-                _webapiClient.Dispose();
+                _webAPIClient.Dispose();
             }
 
             base.Dispose();

@@ -38,6 +38,7 @@ using Allie.Chat.Lib.Responses.Currencies;
 using IdentityModel.OidcClient;
 using IdentityModel.Client;
 using IdentityModel.OidcClient.Results;
+using System.Threading;
 
 namespace Allie.Chat.WebAPI
 {
@@ -50,19 +51,19 @@ namespace Allie.Chat.WebAPI
         /// <param name="clientSecret"></param>
         /// <param name="scopes"></param>
         /// <returns></returns>
-        Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes);
-        Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes);
+        Task<LoginResult> GetAccessTokenAuthCodeAsync(string clientId, string clientSecret, string scopes, CancellationToken cancellationToken = default);
+        Task<LoginResult> GetAccessTokenNativePKCEAsync(string clientId, string scopes, CancellationToken cancellationToken = default);
         Task<TokenResponse> GetAccessTokenResourceOwnerPasswordAsync(string clientId, string clientSecret,
-            string scopes, string username, string password);
+            string scopes, string username, string password, CancellationToken cancellationToken = default);
 
-        Task<RefreshTokenResult> RefreshAccessTokenAuthCodeOrNativeAsync(string refreshToken);
+        Task<RefreshTokenResult> RefreshAccessTokenAuthCodeOrNativeAsync(string refreshToken, CancellationToken cancellationToken = default);
         Task<TokenResponse> RefreshAccessTokenResourceOwnerPasswordAsync(string clientId,
-            string clientSecret, string refreshToken);
+            string clientSecret, string refreshToken, CancellationToken cancellationToken = default);
 
-        Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync();
-        Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync();
+        Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync(CancellationToken cancellationToken = default);
+        Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync(CancellationToken cancellationToken = default);
 
-        Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret);
+        Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Set the access token
@@ -74,681 +75,681 @@ namespace Allie.Chat.WebAPI
         /// Get the registered Api Resources
         /// </summary>
         /// <returns>An array of Api Resource data-transfer objects</returns>
-        Task<ApiResourceDTO[]> GetApiResourcesAsync();
+        Task<ApiResourceDTO[]> GetApiResourcesAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the registered Api Resource
         /// </summary>
         /// <param name="id">The Id of the Api Resource to retrieve</param>
         /// <returns>An Api Resource ViewModel</returns>
-        Task<ApiResourceVM> GetApiResourceAsync(int id);
+        Task<ApiResourceVM> GetApiResourceAsync(int id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create an Api Resource
         /// </summary>
         /// <param name="request">The Api Resource create request</param>
         /// <returns>The created Api Resource ViewModel</returns>
-        Task<ApiResourceVM> CreateApiResourceAsync(ApiResourceCreateRequest request);
+        Task<ApiResourceVM> CreateApiResourceAsync(ApiResourceCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update an Api Resource
         /// </summary>
         /// <param name="request"The Api Resource update request></param>
         /// <returns>The updated Api Resource ViewModel</returns>
-        Task<ApiResourceVM> UpdateApiResourceAsync(ApiResourceUpdateRequest request);
+        Task<ApiResourceVM> UpdateApiResourceAsync(ApiResourceUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete an Api Resource
         /// </summary>
         /// <param name="id">Id of the requested Api Resource to delete</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteApiResourceAsync(int id);
+        Task<bool> DeleteApiResourceAsync(int id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Reset an Api Resource's Secrets
         /// </summary>
         /// <param name="id">The Id of the Api Resource to reset its secrets</param>
         /// <returns>True if the Api Resource Secrets were successfully reset</returns>
-        Task<bool> ResetApiResourceSecretsAsync(int id);
+        Task<bool> ResetApiResourceSecretsAsync(int id, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Retrieve the Authorized Application User
         /// </summary>
         /// <returns>An Application Udser ViewModel</returns>
-        Task<ApplicationUserVM> GetApplicationUserAsync();
+        Task<ApplicationUserVM> GetApplicationUserAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the registered Bots
         /// </summary>
         /// <returns>An array of Bot data-transfer objects registered to the Application User</returns>
-        Task<BotDTO[]> GetBotsAsync();
+        Task<BotDTO[]> GetBotsAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a registered Bot
         /// </summary>
         /// <returns>A Bot data-transfer object registered to the Application User</returns>
-        Task<BotVM> GetBotAsync(string token);
+        Task<BotVM> GetBotAsync(string token, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a registered Twitch Bot
         /// </summary>
         /// <param name="id">Id of the requested Twitch Bot</param>
         /// <returns>The Twitch Bot ViewModel</returns>
-        Task<BotTwitchVM> GetBotTwitchAsync(Guid id);
+        Task<BotTwitchVM> GetBotTwitchAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a registered Discord Bot
         /// </summary>
         /// <param name="id">The Id of the Discord Bot</param>
         /// <returns>A Discord Bot ViewModel</returns>
-        Task<BotDiscordVM> GetBotDiscordAsync(Guid id);
+        Task<BotDiscordVM> GetBotDiscordAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a registered Tcp Bot by Id
         /// </summary>
         /// <param name="id">The id of the requested Tcp Bot</param>
         /// <returns>The Tcp Bot ViewModel</returns>
-        Task<BotTcpVM> GetBotTcpAsync(Guid id);
+        Task<BotTcpVM> GetBotTcpAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a registered Tcp Bot by OAuth Token
         /// </summary>
         /// <param name="token">The OAuth Token of the requested Tcp Bot</param>
         /// <returns>The Tcp Bot ViewModel</returns>
-        Task<BotTcpVM> GetBotTcpAsync(string token);
+        Task<BotTcpVM> GetBotTcpAsync(string token, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Tcp Bot
         /// </summary>
         /// <param name="request">The Tcp Bot create request</param>
         /// <returns>A Tcp Bot ViewModel</returns>
-        Task<BotTcpVM> PostBotTcpAsync(BotTcpCreateRequest request);
+        Task<BotTcpVM> PostBotTcpAsync(BotTcpCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Tcp Bot
         /// </summary>
         /// <param name="request">The Tcp Bot update request</param>
         /// <returns>A Tcp Bot ViewModel</returns>
-        Task<BotTcpVM> PutBotTcpAsync(BotTcpUpdateRequest request);
+        Task<BotTcpVM> PutBotTcpAsync(BotTcpUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Websocket Bot
         /// </summary>
         /// <param name="id">The Id of the requested Websocket Bot</param>
         /// <returns>A Websocket Bot ViewModel</returns>
-        Task<BotWSVM> GetBotWebsocketAsync(Guid id);
+        Task<BotWSVM> GetBotWebsocketAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Websocket Bot by OAuth Token
         /// </summary>
         /// <param name="token">The OAuth Token of the requested Websocket Bot</param>
         /// <returns>A Websocket Bot ViewModel</returns>
-        Task<BotWSVM> GetBotWebsocketAsync(string token);
+        Task<BotWSVM> GetBotWebsocketAsync(string token, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Websocket Bot
         /// </summary>
         /// <param name="request">A Websocket Bot create request</param>
         /// <returns>A Websocket Bot ViewModel</returns>
-        Task<BotWSVM> CreateBotWebsocketAsync(BotWSCreateRequest request);
+        Task<BotWSVM> CreateBotWebsocketAsync(BotWSCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Websocket Bot
         /// </summary>
         /// <param name="request">The Websocket Bot update request</param>
         /// <returns>A Websocket Bot ViewModel</returns>
-        Task<BotWSVM> UpdateBotWebsocketAsync(BotWSUpdateRequest request);
+        Task<BotWSVM> UpdateBotWebsocketAsync(BotWSUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Websocket Bot
         /// </summary>
         /// <param name="request">The Websocket Bot update request</param>
         /// <returns>A Websocket Bot ViewModel</returns>
-        Task<bool> DeleteBotAsync(Guid id);
+        Task<bool> DeleteBotAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the registered Client Applications
         /// </summary>
         /// <returns>An array of Client Application data-transfer objects</returns>
-        Task<ClientApplicationDTO[]> GetClientApplicationsAsync();
+        Task<ClientApplicationDTO[]> GetClientApplicationsAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get an Authorization Code Client Application
         /// </summary>
         /// <param name="id">The Id of the requested Authorization Code Client Application</param>
         /// <returns>An Authorization Code Client Application ViewModel</returns>
-        Task<ClientApplicationAuthCodeVM> GetClientApplicationAuthCodeAsync(int id);
+        Task<ClientApplicationAuthCodeVM> GetClientApplicationAuthCodeAsync(int id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create an Authorization Code Client Application
         /// </summary>
         /// <param name="request">The Authorization Code Client Application create request</param>
         /// <returns>An Authorization Code Client Application ViewModel</returns>
-        Task<ClientApplicationAuthCodeVM> CreateClientApplicationAuthCodeAsync(ClientApplicationAuthCodeCreateRequest request);
+        Task<ClientApplicationAuthCodeVM> CreateClientApplicationAuthCodeAsync(ClientApplicationAuthCodeCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update an Authorization Code Client Application
         /// </summary>
         /// <param name="request">The Authorization Code Client Application update request</param>
         /// <returns>An Authorization Code Client Application ViewModel</returns>
-        Task<ClientApplicationAuthCodeVM> UpdateClientApplicationAuthCodeAsync(ClientApplicationAuthCodeUpdateRequest request);
+        Task<ClientApplicationAuthCodeVM> UpdateClientApplicationAuthCodeAsync(ClientApplicationAuthCodeUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get an Implicit Client Application
         /// </summary>
         /// <param name="id">The Id of the requested Implicit Client Application</param>
         /// <returns>An Implicit Client Application ViewModel</returns>
-        Task<ClientApplicationImplicitVM> GetClientApplicationImplicitAsync(int id);
+        Task<ClientApplicationImplicitVM> GetClientApplicationImplicitAsync(int id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create an Implicit Client Application
         /// </summary>
         /// <param name="request">The Implicit Client create request</param>
         /// <returns>An Implicit Client Application ViewModel</returns>
-        Task<ClientApplicationImplicitVM> CreateClientApplicationImplicitAsync(ClientApplicationImplicitCreateRequest request);
+        Task<ClientApplicationImplicitVM> CreateClientApplicationImplicitAsync(ClientApplicationImplicitCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update an Implicit Client Application
         /// </summary>
         /// <param name="request">The Implicit Client update request</param>
         /// <returns>An Implicit Client Application ViewModel</returns>
-        Task<ClientApplicationImplicitVM> UpdateClientApplicationImplicitAsync(ClientApplicationImplicitUpdateRequest request);
+        Task<ClientApplicationImplicitVM> UpdateClientApplicationImplicitAsync(ClientApplicationImplicitUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Resource Owner Password Credentials Client Application
         /// </summary>
         /// <param name="id">The Id of the requested Resource Owner Password Credentials Client Application</param>
         /// <returns>A Resource Owner Password Credentials Client Application ViewModel</returns>
-        Task<ClientApplicationROPasswordVM> GetClientApplicationPasswordAsync(int id);
+        Task<ClientApplicationROPasswordVM> GetClientApplicationPasswordAsync(int id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Resource Owner Password Credentials Client Application
         /// </summary>
         /// <param name="request">A Resource Owner Password Credentials Client Application create request</param>
         /// <returns>A Resource Owner Password Credentials Client Application ViewModel</returns>
-        Task<ClientApplicationROPasswordVM> CreateClientApplicationPasswordAsync(ClientApplicationROPasswordCreateRequest request);
+        Task<ClientApplicationROPasswordVM> CreateClientApplicationPasswordAsync(ClientApplicationROPasswordCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Resource Owner Password Credentials Client Application
         /// </summary>
         /// <param name="request">A Resource Owner Password Credentials Client Application update request</param>
         /// <returns>A Resource Owner Password Credentials Client Application ViewModel</returns>
-        Task<ClientApplicationROPasswordVM> UpdateClientApplicationPasswordAsync(ClientApplicationROPasswordUpdateRequest request);
+        Task<ClientApplicationROPasswordVM> UpdateClientApplicationPasswordAsync(ClientApplicationROPasswordUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Native PKCE / Authorization Code Client Application
         /// </summary>
         /// <param name="id">The Id of the requested Native PKCE / Authorization Code Client Application</param>
         /// <returns>A Native PKCE / Authorization Code Client APplication ViewModel</returns>
-        Task<ClientApplicationPKCEVM> GetClientApplicationNativePKCEAsync(int id);
+        Task<ClientApplicationPKCEVM> GetClientApplicationNativePKCEAsync(int id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Native PKCE / Authorization Code Client Application
         /// </summary>
         /// <param name="request">The Native PKCE / Authorization Code Client Application create request</param>
         /// <returns>The Native PKCE / Authorization Code Client Application ViewModel</returns>
-        Task<ClientApplicationPKCEVM> CreateClientApplicationNativePKCEAsync(ClientApplicationPKCECreateRequest request);
+        Task<ClientApplicationPKCEVM> CreateClientApplicationNativePKCEAsync(ClientApplicationPKCECreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Native PKCE / Authorization Code Client Application
         /// </summary>
         /// <param name="request">The Native PKCE / Authorization Code Client Application update request</param>
         /// <returns>The Native PKCE / Authorization Code Client Application ViewModel</returns>
-        Task<ClientApplicationPKCEVM> UpdateClientApplicationNativePKCEAsync(ClientApplicationPKCEUpdateRequest request);
+        Task<ClientApplicationPKCEVM> UpdateClientApplicationNativePKCEAsync(ClientApplicationPKCEUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Client Application
         /// </summary>
         /// <param name="id">The Id of the Client Application to delete</param>
         /// <returns>A Native PKCE / Authorization Code Client Application ViewModel</returns>
-        Task<bool> DeleteClientApplicationAsync(int id);
+        Task<bool> DeleteClientApplicationAsync(int id, CancellationToken cancellationToken = default);
         /// Reset a Client Application's secrets
         /// </summary>
         /// <param name="id">The Id of the Client Application to reset its secrets</param>
         /// <returns>True if the Client Application's secrets were reset</returns>
-        Task<bool> ResetClientApplicationSecretsAsync(int id);
+        Task<bool> ResetClientApplicationSecretsAsync(int id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the registered Command Sets
         /// </summary>
         /// <returns>An array of Command Set data-transfer objects</returns>
-        Task<CommandSetDTO[]> GetCommandSetsAsync();
+        Task<CommandSetDTO[]> GetCommandSetsAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Command Set
         /// </summary>
         /// <param name="id">The Id of the requested Command Set</param>
         /// <returns>A Command Set ViewModel</returns>
-        Task<CommandSetVM> GetCommandSetAsync(Guid id);
+        Task<CommandSetVM> GetCommandSetAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Command Set
         /// </summary>
         /// <param name="request">The Command Set create request</param>
         /// <returns>A Command Set ViewModel</returns>
-        Task<CommandSetVM> CreateCommandSetAsync(CommandSetCreateRequest request);
+        Task<CommandSetVM> CreateCommandSetAsync(CommandSetCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Command Set
         /// </summary>
         /// <param name="request">The Command Set update request</param>
         /// <returns>A Command Set ViewModel</returns>
-        Task<CommandSetVM> UpdateCommandSetAsync(CommandSetUpdateRequest request);
+        Task<CommandSetVM> UpdateCommandSetAsync(CommandSetUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Command Set
         /// </summary>
         /// <param name="id">The Id of the Command Set to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteCommandSetAsync(Guid id);
+        Task<bool> DeleteCommandSetAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Commands registered to a Command Set
         /// </summary>
         /// <param name="commandSetId">The Id of the Command Set where the Commands are registered</param>
         /// <returns>An array of Command data-transfer-objects</returns>
-        Task<CommandDTO[]> GetCommandsAsync(Guid commandSetId);
+        Task<CommandDTO[]> GetCommandsAsync(Guid commandSetId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Command
         /// </summary>
         /// <param name="id">The Id of the Command to retrieve</param>
         /// <returns>A Command ViewModel</returns>
-        Task<CommandVM> GetCommandAsync(Guid id);
+        Task<CommandVM> GetCommandAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Command
         /// </summary>
         /// <param name="request">A Command create request</param>
         /// <returns>A Command ViewModel</returns>
-        Task<CommandVM> CreateCommandAsync(CommandCreateRequest request);
+        Task<CommandVM> CreateCommandAsync(CommandCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Command
         /// </summary>
         /// <param name="request">The Commandet update request</param>
         /// <returns>A Command ViewModel</returns>
-        Task<CommandVM> UpdateCommandAsync(CommandUpdateRequest request);
+        Task<CommandVM> UpdateCommandAsync(CommandUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Command
         /// </summary>
         /// <param name="id">The Id of the Command to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteCommandAsync(Guid id);
+        Task<bool> DeleteCommandAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Command Replies registered to a Command
         /// </summary>
         /// <param name="commandId">The Id of the Command where the Command Replies are registered</param>
         /// <returns>An array of Command Reply data-transfer objects</returns>
-        Task<CommandReplyDTO[]> GetCommandRepliesAsync(Guid commandId);
+        Task<CommandReplyDTO[]> GetCommandRepliesAsync(Guid commandId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Command Reply
         /// </summary>
         /// <param name="id">The id of the Command Reply to retrieve</param>
         /// <returns>A Command Reply ViewModel</returns>
-        Task<CommandReplyVM> GetCommandReplyAsync(Guid id);
+        Task<CommandReplyVM> GetCommandReplyAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Command Reply
         /// </summary>
         /// <param name="request">The Command Reply create request</param>
         /// <returns>A Command Reply ViewModel</returns>
-        Task<CommandReplyVM> CreateCommandReplyAsync(CommandReplyCreateRequest request);
+        Task<CommandReplyVM> CreateCommandReplyAsync(CommandReplyCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Command Reply
         /// </summary>
         /// <param name="request">The Command Reply update request</param>
         /// <returns>A Command Reply ViewModel</returns>
-        Task<CommandReplyVM> UpdateCommandReplyAsync(CommandReplyUpdateRequest request);
+        Task<CommandReplyVM> UpdateCommandReplyAsync(CommandReplyUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Command Reply
         /// </summary>
         /// <param name="id">The Id of the Command Reply to be deleted</param>
         /// <returns>True if the Command Reply was successfully deleted</returns>
-        Task<bool> DeleteCommandReplyAsync(Guid id);
+        Task<bool> DeleteCommandReplyAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the registered Currencies
         /// </summary>
         /// <returns>An array of Currency data-transfer objects</returns>
-        Task<CurrencyDTO[]> GetCurrenciesAsync();
+        Task<CurrencyDTO[]> GetCurrenciesAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Currency
         /// </summary>
         /// <param name="id">The Id of the requested Currency</param>
         /// <returns>A Currency ViewModel</returns>
-        Task<CurrencyVM> GetCurrencyAsync(Guid id);
+        Task<CurrencyVM> GetCurrencyAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Currency
         /// </summary>
         /// <param name="request">The Currency create request</param>
         /// <returns>A Currency ViewModel</returns>
-        Task<CurrencyVM> CreateCurrencyAsync(CurrencyCreateRequest request);
+        Task<CurrencyVM> CreateCurrencyAsync(CurrencyCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Currency
         /// </summary>
         /// <param name="request">The Currency update request</param>
         /// <returns>A Currency ViewModel</returns>
-        Task<CurrencyVM> UpdateCurrencyAsync(CurrencyUpdateRequest request);
+        Task<CurrencyVM> UpdateCurrencyAsync(CurrencyUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Currency
         /// </summary>
         /// <param name="id">The Id of the Currency to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteCurrencyAsync(Guid id);
+        Task<bool> DeleteCurrencyAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the registered Currencies Users for all Users registered to the Application User
         /// </summary>
         /// <returns>An array of Currencies Users registered to the Application User</returns>
-        Task<CurrenciesUserResponse[]> GetCurrenciesUsersAsync();
+        Task<CurrenciesUserResponse[]> GetCurrenciesUsersAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the Currencies User for a User
         /// </summary>
         /// <param name="userId">The Id of the desired User to retrieve the User Currencies</param>
         /// <returns>A Currencies User response</returns>
-        Task<CurrenciesUserResponse> GetCurrenciesUserAsync(Guid userId);
+        Task<CurrenciesUserResponse> GetCurrenciesUserAsync(Guid userId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the Currencies Users for a number of Users
         /// </summary>
         /// <param name="userIds">An array of User Ids to retrieve the User Currencies</param>
         /// <returns>A Currencies Users response</returns>
-        Task<CurrenciesUsersResponse> GetCurrenciesUsersAsync(Guid[] userIds);
+        Task<CurrenciesUsersResponse> GetCurrenciesUsersAsync(Guid[] userIds, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the Currency User
         /// </summary>
         /// <param name="id">The Id of the desired Currency User to retrieve</param>
         /// <returns>A Currency User ViewModel</returns>
-        Task<CurrencyUserVM> GetCurrencyUserAsync(Guid id);
+        Task<CurrencyUserVM> GetCurrencyUserAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the specified Currencies Users by their Id
         /// </summary>
         /// <param name="ids">An array of Currency User Ids to retrieve</param>
         /// <returns>A Currency Users response</returns>
-        Task<CurrencyUsersResponse> GetCurrencyUsers(Guid[] ids);
+        Task<CurrencyUsersResponse> GetCurrencyUsers(Guid[] ids, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Currency User Transaction
         /// </summary>
         /// <param name="request">A Currency User Transaction request</param>
         /// <returns>A Currency User ViewModel</returns>
-        Task<CurrencyUserVM> CreateCurrencyUserTransaction(CurrencyUserTransactionRequest request);
+        Task<CurrencyUserVM> CreateCurrencyUserTransaction(CurrencyUserTransactionRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Currency User Transaction for the specified Currency Users
         /// </summary>
         /// <param name="request">A Currency Users Transaction request</param>
         /// <returns>A Currency Users response</returns>
-        Task<CurrencyUsersResponse> CreateCurrencyUsersTransactions(CurrencyUsersTransactionRequest request);
+        Task<CurrencyUsersResponse> CreateCurrencyUsersTransactions(CurrencyUsersTransactionRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Paths associated with a Route
         /// </summary>
         /// <param name="routeId">The Route Id that contains the requested Paths</param>
         /// <returns>An array of Path data-transfer objects</returns>
-        Task<PathDTO[]> GetPathsAsync(Guid routeId);
+        Task<PathDTO[]> GetPathsAsync(Guid routeId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Path of type None
         /// </summary>
         /// <param name="id">The Id of the Path type None</param>
         /// <returns>A Path ViewModel</returns>
-        Task<PathVM> GetPathAsync(Guid id);
+        Task<PathVM> GetPathAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Path of type None
         /// </summary>
         /// <param name="request">The Path create request</param>
         /// <returns>A Path ViewModel</returns>
-        Task<PathVM> CreatePathAsync(PathCreateRequest request);
+        Task<PathVM> CreatePathAsync(PathCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Path of type Server
         /// </summary>
         /// <param name="id">The Id of the Path type Server</param>
         /// <returns>A Path Server ViewModel</returns>
-        Task<PathServerVM> GetPathServerAsync(Guid id);
+        Task<PathServerVM> GetPathServerAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Path of type Server
         /// </summary>
         /// <param name="request">The Path Server create request</param>
         /// <returns>A Path Server ViewModel</returns>
-        Task<PathServerVM> CreatePathServerAsync(PathServerCreateRequest request);
+        Task<PathServerVM> CreatePathServerAsync(PathServerCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Path of type Channel
         /// </summary>
         /// <param name="id">The Id of the Path type Channel</param>
         /// <returns>A Path Channel ViewModel</returns>
-        Task<PathChannelVM> GetPathChannelAsync(Guid id);
+        Task<PathChannelVM> GetPathChannelAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Path of type Channel
         /// </summary>
         /// <param name="request">The Path Channel create request</param>
         /// <returns>A Path Channel ViewModel</returns>
-        Task<PathChannelVM> CreatePathChannelAsync(PathChannelCreateRequest request);
+        Task<PathChannelVM> CreatePathChannelAsync(PathChannelCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Path
         /// </summary>
         /// <param name="id">The Id of the Path to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeletePathAsync(Guid id);
+        Task<bool> DeletePathAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Providers
         /// </summary>
         /// <returns>An array of Provider data-transfer objects</returns>
-        Task<ProviderDTO[]> GetProvidersAsync();
+        Task<ProviderDTO[]> GetProvidersAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Provider
         /// </summary>
         /// <param name="id">The Id of the requested Provider</param>
         /// <returns>A Provider ViewModel</returns>
-        Task<ProviderVM> GetProviderAsync(Guid id);
+        Task<ProviderVM> GetProviderAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Routes associated with a Path
         /// </summary>
         /// <param name="streamId">The Stream Id that contains the requested Routes</param>
         /// <returns>An array of Route data-transfer objects</returns>
-        Task<RouteDTO[]> GetRoutesAsync(Guid id);
+        Task<RouteDTO[]> GetRoutesAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Route
         /// </summary>
         /// <param name="id">The Id of the Route</param>
         /// <returns>A Route ViewModel</returns>
-        Task<RouteVM> GetRouteAsync(Guid id);
+        Task<RouteVM> GetRouteAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Route
         /// </summary>
         /// <param name="request">The Route create request</param>
         /// <returns>A Route ViewModel</returns>
-        Task<RouteVM> CreateRouteAsync(RouteCreateRequest request);
+        Task<RouteVM> CreateRouteAsync(RouteCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Route
         /// </summary>
         /// <param name="id">The Id of the Route to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteRouteAsync(Guid id);
+        Task<bool> DeleteRouteAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get a Twitch Server by its Id, Twitch Id, or Twitch Server name
         /// </summary>
         /// <param name="id">The Id, Twitch Id, or Twitch Channel name of the requested Twitch Server</param>
         /// <returns>A Twitch Server ViewModel</returns>
-        Task<ServerTwitchVM> GetServerTwitchAsync(string id);
+        Task<ServerTwitchVM> GetServerTwitchAsync(string id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get Twitch Servers by their Ids, Twitch Ids, or Twitch Channel names
         /// </summary>
         /// <param name="ids">Array of values of the Ids, Twitch Ids, or Twitch Channel names of the requested Twitch Servers</param>
         /// <returns>A Twitch Servers Response</returns>
-        Task<ServersTwitchResponse> GetServersTwitchAsync(string[] ids);
+        Task<ServersTwitchResponse> GetServersTwitchAsync(string[] ids, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Discord Server by its Id or Discord Guild Id
         /// </summary>
         /// <param name="id">The Id or Discord Guild Id of the requested Discord Server</param>
         /// <returns>A Discord Server ViewModel</returns>
-        Task<ServerDiscordVM> GetServerDiscordAsync(string id);
+        Task<ServerDiscordVM> GetServerDiscordAsync(string id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get Discord Servers by their Ids, Discord Ids, or Discord Channel names
         /// </summary>
         /// <param name="ids">Array of values of the Ids, Discord Ids, or Discord Channel names of the requested Discord Servers</param>
         /// <returns>A Discord Servers Response</returns>
-        Task<ServersDiscordResponse> GetServerDiscordAsync(string[] ids);
+        Task<ServersDiscordResponse> GetServerDiscordAsync(string[] ids, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Users Online in a Twitch Server
         /// </summary>
         /// <param name="serverTwitchId">The Id of the Twitch Server to have its online Users retrieved</param>
         /// <returns>A Twitch Server Users Response</returns>
-        Task<ServerUsersTwitchVM> GetServerTwitchUsersAsync(Guid serverTwitchId);
+        Task<ServerUsersTwitchVM> GetServerTwitchUsersAsync(Guid serverTwitchId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the Users Online in a Discord Server
         /// </summary>
         /// <param name="serverDiscordId">The Id of the Discord Server to have its online Users retrieved</param>
         /// <returns>A Discord Server Users Response</returns>
-        Task<ServerUsersDiscordVM> GetServerDiscordUsersAsync(Guid serverDiscordId);
+        Task<ServerUsersDiscordVM> GetServerDiscordUsersAsync(Guid serverDiscordId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the Users and their User Currencies in a Server
         /// </summary>
         /// <param name="serverId">The Id of the Server to retrieve the Users and their User Currencies</param>
         /// <returns>An array of Currencies User ViewModels</returns>
-        Task<CurrenciesUserVM[]> GetServerUsersCurrencies(Guid serverId);
+        Task<CurrenciesUserVM[]> GetServerUsersCurrencies(Guid serverId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get the Discord Channels in a Discord Server
         /// </summary>
         /// <param name="discordServerId">The Discord Server Id to retrieve the registered Channels</param>
         /// <returns>An array of Discord Server Channel data-transfer objects</returns>
-        Task<ServerChannelDiscordDTO[]> GetChannelsDiscordAsync(Guid discordServerId);
+        Task<ServerChannelDiscordDTO[]> GetChannelsDiscordAsync(Guid discordServerId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Discord Channel in a Discord 
         /// </summary>
         /// <param name="id">The Discord Channel Id to retrieve</param>
         /// <returns>A Discord Server Channel ViewModel</returns>
-        Task<ServerChannelDiscordVM> GetChannelDiscordAsync(Guid id);
+        Task<ServerChannelDiscordVM> GetChannelDiscordAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the registered Streams
         /// </summary>
         /// <returns>An array of Stream data-transfer objects</returns>
-        Task<StreamDTO[]> GetStreamsAsync();
+        Task<StreamDTO[]> GetStreamsAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Stream
         /// </summary>
         /// <param name="id">The Id of the requested Stream</param>
         /// <returns>A Stream ViewModel</returns>
-        Task<StreamVM> GetStreamAsync(Guid id);
+        Task<StreamVM> GetStreamAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Stream
         /// </summary>
         /// <param name="request">The Stream create request</param>
         /// <returns>A Stream ViewModel</returns>
-        Task<StreamVM> CreateStreamAsync(StreamCreateRequest request);
+        Task<StreamVM> CreateStreamAsync(StreamCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Stream
         /// </summary>
         /// <param name="request">The Stream update request</param>
         /// <returns>A Stream ViewModel</returns>
-        Task<StreamVM> UpdateStreamAsync(StreamUpdateRequest request);
+        Task<StreamVM> UpdateStreamAsync(StreamUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Stream
         /// </summary>
         /// <param name="id">The Id of the Stream to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteStreamAsync(Guid id);
+        Task<bool> DeleteStreamAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Command Sets registered to a Stream
         /// </summary>
         /// <param name="streamId">The Id of the Stream where the requested Command Sets are registered</param>
         /// <returns>An array of Stream Command Set ViewModels</returns>
-        Task<StreamCommandSetVM[]> GetStreamCommandSetsAsync(Guid streamId);
+        Task<StreamCommandSetVM[]> GetStreamCommandSetsAsync(Guid streamId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Stream Command Set
         /// </summary>
         /// <param name="id">The Id of the Stream Command Set</param>
         /// <returns>A Stream Command Set ViewModel</returns>
-        Task<StreamCommandSetVM> GetStreamCommandSetAsync(Guid id);
+        Task<StreamCommandSetVM> GetStreamCommandSetAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Stream Command Set
         /// </summary>
         /// <param name="request">A Stream Command Set create request</param>
         /// <returns>A Stream Command Set ViewModel</returns>
-        Task<StreamCommandSetVM> CreateStreamCommandSetAsync(StreamCommandSetCreateRequest request);
+        Task<StreamCommandSetVM> CreateStreamCommandSetAsync(StreamCommandSetCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Stream Command Set
         /// </summary>
         /// <param name="id">The Id of the Stream Command Set to delete</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteStreamCommandSetAsync(Guid id);
+        Task<bool> DeleteStreamCommandSetAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Stream Currencies registered to a Stream
         /// </summary>
         /// <param name="streamId">The Stream Id that the Stream Currencies are registered</param>
         /// <returns>An array of Stream Currency data-transfer objects</returns>
-        Task<StreamCurrencyDTO[]> GetStreamCurrenciesAsync(Guid streamId);
+        Task<StreamCurrencyDTO[]> GetStreamCurrenciesAsync(Guid streamId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Stream Currency
         /// </summary>
         /// <param name="id">The Id of the requested Stream Currency</param>
         /// <returns>A Stream Currency ViewModel</returns>
-        Task<StreamCurrencyVM> GetStreamCurrencyAsync(Guid id);
+        Task<StreamCurrencyVM> GetStreamCurrencyAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Stream Currency
         /// </summary>
         /// <param name="request">The Stream Currency create request</param>
         /// <returns>A Stream Currency ViewModel</returns>
-        Task<StreamCurrencyVM> CreateStreamCurrencyAsync(StreamCurrencyCreateRequest request);
+        Task<StreamCurrencyVM> CreateStreamCurrencyAsync(StreamCurrencyCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Stream Currency
         /// </summary>
         /// <param name="request">The Stream Currency update request</param>
         /// <returns>A Stream Currency ViewModel</returns>
-        Task<StreamCurrencyVM> UpdateStreamCurrencyAsync(StreamCurrencyUpdateRequest request);
+        Task<StreamCurrencyVM> UpdateStreamCurrencyAsync(StreamCurrencyUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Stream Currency
         /// </summary>
         /// <param name="id">The Id of the Stream Currency to be deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteStreamCurrencyAsync(Guid id);
+        Task<bool> DeleteStreamCurrencyAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Statuses registered to a Stream Currency
         /// </summary>
         /// <param name="streamCurrencyId">The Stream Currency Id that the Status are registered</param>
         /// <returns>An array of Status data-transfer objects</returns>
-        Task<StatusDTO[]> GetStreamCurrencyStatusesAsync(Guid streamCurrencyId);
+        Task<StatusDTO[]> GetStreamCurrencyStatusesAsync(Guid streamCurrencyId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Status
         /// </summary>
         /// <param name="id">The Id of the requested Status</param>
         /// <returns>A Status ViewModel</returns>
-        Task<StatusVM> GetStreamCurrencyStatusAsync(Guid id);
+        Task<StatusVM> GetStreamCurrencyStatusAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Create a Status
         /// </summary>
         /// <param name="request">The Status create request</param>
         /// <returns>A Status ViewModel</returns>
-        Task<StatusVM> CreateStreamCurrencyStatusAsync(StatusCreateRequest request);
+        Task<StatusVM> CreateStreamCurrencyStatusAsync(StatusCreateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Update a Status
         /// </summary>
         /// <param name="request">The Status update request</param>
         /// <returns>A Status ViewModel</returns>
-        Task<StatusVM> UpdateStreamCurrencyStatusAsync(StatusUpdateRequest request);
+        Task<StatusVM> UpdateStreamCurrencyStatusAsync(StatusUpdateRequest request, CancellationToken cancellationToken = default);
         /// <summary>
         /// Delete a Status
         /// </summary>
         /// <param name="id">The Id of the Status to deleted</param>
         /// <returns>True if the delete was successful</returns>
-        Task<bool> DeleteStreamCurrencyStatusAsync(Guid id);
+        Task<bool> DeleteStreamCurrencyStatusAsync(Guid id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Users online in a Stream
         /// </summary>
         /// <param name="streamId">The Stream Id where the Users are registered</param>
         /// <returns>A Stream Users ViewModel</returns>
-        Task<StreamUsersVM> GetStreamUsersAsync(Guid streamId);
+        Task<StreamUsersVM> GetStreamUsersAsync(Guid streamId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Users and their User Currencies in a Stream
         /// </summary>
         /// <param name="streamId">The Id of the Stream to retrieve the Users and their User Currencies</param>
         /// <returns>An array of Currencies User ViewModels</returns>
-        Task<CurrenciesUserVM[]> GetStreamUsersCurrencies(Guid streamId);
+        Task<CurrenciesUserVM[]> GetStreamUsersCurrencies(Guid streamId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the Users registered to the Application User
         /// </summary>
         /// <returns>An array of User data-transfer objects</returns>
-        Task<UserDTO[]> GetUsersAsync();
+        Task<UserDTO[]> GetUsersAsync(CancellationToken cancellationToken = default);
         /// <summary>
         /// Get multiple Users by their Ids
         /// </summary>
         /// <param name="ids">Ids of the requested Users</param>
         /// <returns>A Users Response</returns>
-        Task<UsersResponse> GetUsersAsync(Guid[] ids);
+        Task<UsersResponse> GetUsersAsync(Guid[] ids, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Twitch User by their Id, Twitch Id, or Twitch Username
         /// </summary>
         /// <param name="id">The Id, Twitch Id, or Twitch Username of the requested User</param>
         /// <returns>A Twitch User ViewModel</returns>
-        Task<UserTwitchVM> GetUserTwitchAsync(string id);
+        Task<UserTwitchVM> GetUserTwitchAsync(string id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get multiple Twitch Users by their Ids or Twitch Ids
         /// </summary>
         /// <param name="ids">Ids or Twitch Ids of the requested Twitch Users</param>
         /// <returns>A Users Twitch Response</returns>
-        Task<UsersTwitchResponse> GetUsersTwitchAsync(string[] ids);
+        Task<UsersTwitchResponse> GetUsersTwitchAsync(string[] ids, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get a Discord User by their Id or Discord Id
         /// </summary>
         /// <param name="id">The Id or Discord Id of the requested User</param>
         /// <returns>A Discord User ViewModel</returns>
-        Task<UserDiscordVM> GetUserDiscordAsync(string id);
+        Task<UserDiscordVM> GetUserDiscordAsync(string id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Get multiple Discord Users by their Ids or Discord Ids
         /// </summary>
         /// <param name="ids">The Ids or Discord Ids of the requested Users</param>
         /// <returns>A Users Discord Response</returns>
-        Task<UsersDiscordResponse> GetUsersDiscordAsync(string[] ids);
+        Task<UsersDiscordResponse> GetUsersDiscordAsync(string[] ids, CancellationToken cancellationToken = default);
     }
 }

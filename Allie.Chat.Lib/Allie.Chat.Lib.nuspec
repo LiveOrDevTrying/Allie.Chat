@@ -12,10 +12,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The library assembly for Allie.Chat, an RSS messaging and routing platform to consolidate messages from multiple providers including Twitch, Discord, Websocket and Tcp.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2021</copyright>
+    <copyright>Copyright 2022</copyright>
     <tags>Allie Chat Lib Library RSS Routing Communication Twitch Discord Tcp Websocket WS SSL networking message feeds feed</tags>
     <dependencies>
-      <group targetFramework="netstandard2.1">
+      <group targetFramework="net6.0">
         <dependency id="System.ComponentModel.Annotations" version="[5,6)" />
       </group>
     </dependencies>

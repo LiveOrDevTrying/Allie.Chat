@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using Tcp.NET.Client.Events.Args;
 using WebsocketsSimple.Client.Events.Args;
+using Allie.Chat.WebAPI;
 
 namespace Allie.Chat
 {
@@ -138,7 +139,7 @@ namespace Allie.Chat
         {
             _service.Update(updateIntervalMS);
         }
-        protected virtual async Task OnMessageEvent(object sender, IMessageBase args)
+        protected virtual void OnMessageEvent(object sender, IMessageBase args)
         {
             var responses = _service.ProcessMessage(args);
 
@@ -147,73 +148,46 @@ namespace Allie.Chat
                 switch (response)
                 {
                     case CommandTwitchEventArgs c:
-                        if (CommandTwitchEvent != null) 
-                        {
-                            await CommandTwitchEvent?.Invoke(sender, c);
-                        }
+                        CommandTwitchEvent?.Invoke(sender, c);
                         break;
                     case CommandDiscordEventArgs c:
-                        if (CommandDiscordEvent != null)
-                        {
-                            await CommandDiscordEvent?.Invoke(sender, c);
-                        }
+                        CommandDiscordEvent?.Invoke(sender, c);
                         break;
                     case CommandWSEventArgs c:
-                        if (CommandWebsocketEvent != null)
-                        {
-                            await CommandWebsocketEvent?.Invoke(sender, c);
-                        }
+                        CommandWebsocketEvent?.Invoke(sender, c);
                         break;
                     case CommandTcpEventArgs c:
-                        if (CommandTcpEvent != null)
-                        {
-                            await CommandTcpEvent?.Invoke(sender, c);
-                        }
+                        CommandTcpEvent?.Invoke(sender, c);
                         break;
                     default:
                         break;
                 }
 
-                if (CommandEvent != null)
-                {
-                    await CommandEvent?.Invoke(sender, response);
-                }
+                CommandEvent?.Invoke(sender, response);
             }
         }
-        protected virtual async Task OnTcpErrorEvent(object sender, TcpErrorClientEventArgs args)
+        protected virtual void OnTcpErrorEvent(object sender, TcpErrorClientEventArgs args)
         {
-            if (ErrorEvent != null)
-            {
-                await ErrorEvent?.Invoke(sender, args);
-            }
+            ErrorEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnTcpConnectionEvent(object sender, TcpConnectionClientEventArgs args)
+        protected virtual void OnTcpConnectionEvent(object sender, TcpConnectionClientEventArgs args)
         {
-            if (ConnectionEvent != null)
-            {
-                await ConnectionEvent?.Invoke(sender, args);
-            }
+            ConnectionEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnWSErrorEvent(object sender, WSErrorClientEventArgs args)
+        protected virtual void OnWSErrorEvent(object sender, WSErrorClientEventArgs args)
         {
-            if (ErrorEvent != null)
-            {
-                await ErrorEvent?.Invoke(sender, args);
-            }
+            ErrorEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnWSConnectionEvent(object sender, WSConnectionClientEventArgs args)
+        protected virtual void OnWSConnectionEvent(object sender, WSConnectionClientEventArgs args)
         {
-            if (ConnectionEvent != null)
-            {
-                await ConnectionEvent?.Invoke(sender, args);
-            }
+            ConnectionEvent?.Invoke(sender, args);
         }
 
         public virtual void Dispose()
         {
             if (_tcpClient != null) 
             {
-                _tcpClient.DisconnectAsync().Wait();
+                _tcpClient.Disconnect();
                 _tcpClient.ConnectionEvent -= OnTcpConnectionEvent;
                 _tcpClient.ErrorEvent -= OnTcpErrorEvent;
                 _tcpClient.MessageEvent -= OnMessageEvent;

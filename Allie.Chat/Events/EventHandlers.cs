@@ -4,6 +4,6 @@ using System.Threading.Tasks;
 
 namespace Allie.Chat.Events
 {
-    public delegate Task CommandEventHandler<T>(object sender, T args) where T : BaseEventArgs;
-    public delegate Task ClientEventHandler<T>(object sender, T args) where T : BaseArgs;
+    public delegate void CommandEventHandler<T>(object sender, T args) where T : BaseEventArgs;
+    public delegate void ClientEventHandler<T>(object sender, T args) where T : BaseArgs;
 }
