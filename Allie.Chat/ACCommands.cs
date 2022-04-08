@@ -180,40 +180,28 @@ namespace Allie.Chat
                 }
             }
         }
-        protected virtual async Task OnTcpErrorEvent(object sender, TcpErrorClientEventArgs args)
+        protected virtual void OnTcpErrorEvent(object sender, TcpErrorClientEventArgs args)
         {
-            if (ErrorEvent != null)
-            {
-                await ErrorEvent?.Invoke(sender, args);
-            }
+            ErrorEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnTcpConnectionEvent(object sender, TcpConnectionClientEventArgs args)
+        protected virtual void OnTcpConnectionEvent(object sender, TcpConnectionClientEventArgs args)
         {
-            if (ConnectionEvent != null)
-            {
-                await ConnectionEvent?.Invoke(sender, args);
-            }
+            ConnectionEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnWSErrorEvent(object sender, WSErrorClientEventArgs args)
+        protected virtual void OnWSErrorEvent(object sender, WSErrorClientEventArgs args)
         {
-            if (ErrorEvent != null)
-            {
-                await ErrorEvent?.Invoke(sender, args);
-            }
+            ErrorEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnWSConnectionEvent(object sender, WSConnectionClientEventArgs args)
+        protected virtual void OnWSConnectionEvent(object sender, WSConnectionClientEventArgs args)
         {
-            if (ConnectionEvent != null)
-            {
-                await ConnectionEvent?.Invoke(sender, args);
-            }
+            ConnectionEvent?.Invoke(sender, args);
         }
 
         public virtual void Dispose()
         {
             if (_tcpClient != null) 
             {
-                _tcpClient.DisconnectAsync().Wait();
+                _tcpClient.Disconnect();
                 _tcpClient.ConnectionEvent -= OnTcpConnectionEvent;
                 _tcpClient.ErrorEvent -= OnTcpErrorEvent;
                 _tcpClient.MessageEvent -= OnMessageEvent;
