@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -16,18 +16,18 @@
         <ApplicationIcon>Logo.ico</ApplicationIcon>
         <Description>A RSS messaging and routing platform to consolidate messages from multiple providers including Twitch, Discord, Websocket and Tcp. Includes custom message routing, command, and currency systems.</Description>
       </PropertyGroup>
-
-    <ItemGroup>
-	    <PackageReference Include="Allie.Chat.Tcp" Version="6.0.*" />
-	    <PackageReference Include="Allie.Chat.WebAPI" Version="6.0.*" />
-	    <PackageReference Include="Allie.Chat.Websocket" Version="6.0.*" />
-    </ItemGroup>
 	
     <ItemGroup>
         <None Include="Logo.png">
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </None>
+    </ItemGroup>
+	
+    <ItemGroup>
+      <ProjectReference Include="..\Allie.Chat.Tcp\Allie.Chat.Tcp.csproj" />
+      <ProjectReference Include="..\Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj" />
+      <ProjectReference Include="..\Allie.Chat.Websocket\Allie.Chat.Websocket.csproj" />
     </ItemGroup>
 
 </Project>
