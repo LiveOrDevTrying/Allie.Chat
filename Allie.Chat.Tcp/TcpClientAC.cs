@@ -55,7 +55,7 @@ namespace Allie.Chat.Tcp
             {
                 if (_tcpClient.IsRunning)
                 {
-                    await _tcpClient.DisconnectAsync();
+                    Disconnect();
                 }
 
                 await _tcpClient.ConnectAsync();
@@ -67,11 +67,11 @@ namespace Allie.Chat.Tcp
 
             return false;
         }
-        public virtual async Task<bool> DisconnectAsync()
+        public virtual bool Disconnect()
         {
             if (_tcpClient.IsRunning)
             {
-                await _tcpClient.DisconnectAsync();
+                _tcpClient.Disconnect();
                 return true;
             }
 
@@ -86,14 +86,11 @@ namespace Allie.Chat.Tcp
             });
         }
 
-        protected virtual async Task OnConnectionEvent(object sender, TcpConnectionClientEventArgs args)
+        protected virtual void OnConnectionEvent(object sender, TcpConnectionClientEventArgs args)
         {
-            if (ConnectionEvent != null)
-            {
-                await ConnectionEvent?.Invoke(sender, args);
-            }
+            ConnectionEvent?.Invoke(sender, args);
         }
-        protected virtual async Task OnMessageEvent(object sender, TcpMessageClientEventArgs args)
+        protected virtual void OnMessageEvent(object sender, TcpMessageClientEventArgs args)
         {
             switch (args.MessageEventType)
             {
@@ -109,63 +106,41 @@ namespace Allie.Chat.Tcp
                         {
                             case ProviderType.Twitch:
                                 messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data);
-
-                                if (MessageTwitchEvent != null)
-                                {
-                                    await MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
-                                }
+                                MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
                                 break;
                             case ProviderType.Discord:
                                 messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data);
-                                
-                                if (MessageDiscordEvent != null)
-                                {
-                                    await MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
-                                }
+                                MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
                                 break;
                             case ProviderType.Tcp:
                                 messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data);
-
-                                if (MessageTcpEvent != null)
-                                {
-                                    await MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
-                                }
+                                MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
                                 break;
                             case ProviderType.Websocket:
                                 messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data);
-
-                                if (MessageWebsocketEvent != null)
-                                {
-                                    await MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
-                                }
+                                MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
                                 break;
                             default:
                                 break;
                         }
 
-                        if (messageTyped != null && MessageEvent != null)
+                        if (messageTyped != null)
                         {
-                            await MessageEvent?.Invoke(sender, messageTyped);
+                            MessageEvent?.Invoke(sender, messageTyped);
                         }
                     }
                     catch
                     {
-                        if (SystemMessageEvent != null)
-                        {
-                            await SystemMessageEvent?.Invoke(sender, args.Message);
-                        }
+                        SystemMessageEvent?.Invoke(sender, args.Packet.Data);
                     }
                     break;
                 default:
                     break;
             }
         }
-        protected virtual async Task OnErrorEvent(object sender, TcpErrorClientEventArgs args)
+        protected virtual void OnErrorEvent(object sender, TcpErrorClientEventArgs args)
         {
-            if (ErrorEvent != null)
-            {
-                await ErrorEvent?.Invoke(sender, args);
-            }
+            ErrorEvent?.Invoke(sender, args);
         }
 
         public virtual void Dispose()
