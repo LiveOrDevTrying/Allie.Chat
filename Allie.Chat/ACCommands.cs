@@ -147,37 +147,22 @@ namespace Allie.Chat
                 switch (response)
                 {
                     case CommandTwitchEventArgs c:
-                        if (CommandTwitchEvent != null) 
-                        {
-                            await CommandTwitchEvent?.Invoke(sender, c);
-                        }
+                        CommandTwitchEvent?.Invoke(sender, c);
                         break;
                     case CommandDiscordEventArgs c:
-                        if (CommandDiscordEvent != null)
-                        {
-                            await CommandDiscordEvent?.Invoke(sender, c);
-                        }
+                        CommandDiscordEvent?.Invoke(sender, c);
                         break;
                     case CommandWSEventArgs c:
-                        if (CommandWebsocketEvent != null)
-                        {
-                            await CommandWebsocketEvent?.Invoke(sender, c);
-                        }
+                        CommandWebsocketEvent?.Invoke(sender, c);
                         break;
                     case CommandTcpEventArgs c:
-                        if (CommandTcpEvent != null)
-                        {
-                            await CommandTcpEvent?.Invoke(sender, c);
-                        }
+                        CommandTcpEvent?.Invoke(sender, c);
                         break;
                     default:
                         break;
                 }
 
-                if (CommandEvent != null)
-                {
-                    await CommandEvent?.Invoke(sender, response);
-                }
+                CommandEvent?.Invoke(sender, response);
             }
         }
         protected virtual void OnTcpErrorEvent(object sender, TcpErrorClientEventArgs args)

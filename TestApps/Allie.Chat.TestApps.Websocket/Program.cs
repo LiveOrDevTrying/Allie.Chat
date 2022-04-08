@@ -29,10 +29,9 @@ namespace Allie.Chat.TestApps.Websocket
             }
         }
 
-        private static Task OnCommandEvent(object sender, CommandEventArgs args)
+        private static void OnCommandEvent(object sender, CommandEventArgs args)
         {
             Console.WriteLine(JsonConvert.SerializeObject(args));
-            return Task.CompletedTask;
         }
     }
 }
