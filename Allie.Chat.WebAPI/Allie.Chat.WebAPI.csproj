@@ -17,9 +17,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel.OidcClient" Version="2.*" />
+    <PackageReference Include="IdentityModel.OidcClient" Version="5.*" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.*" />
-	<PackageReference Include="Allie.Chat.Lib" Version="6.0.*" />
+	  <PackageReference Include="Allie.Chat.Lib" Version="6.0.*" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>

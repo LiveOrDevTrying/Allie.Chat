@@ -31,16 +31,18 @@ namespace Allie.Chat.Services
 
         private const int STREAM_CACHE_POLLING_INTERVAL_MS = 45000;
 
-        public CommandsService(IParametersToken parameters)
+        public CommandsService(IParametersToken parameters, IWebAPIClientAC webAPIClient)
             : base(STREAM_CACHE_POLLING_INTERVAL_MS)
         {
+            _webapiClient = webAPIClient;
             _parameters = parameters;
 
             UpdateWebAPIToken(parameters.WebAPIToken);
         }
-        public CommandsService(IParametersAuthCode parameters)
+        public CommandsService(IParametersAuthCode parameters, IWebAPIClientAC webAPIClient)
             : base(STREAM_CACHE_POLLING_INTERVAL_MS)
         {
+            _webapiClient = webAPIClient;
             _parameters = parameters;
 
             Task.Run(async () =>
@@ -48,9 +50,10 @@ namespace Allie.Chat.Services
                 await GetAccessTokenAsync();
             });
         }
-        public CommandsService(IParametersAuthPKCE parameters)
+        public CommandsService(IParametersAuthPKCE parameters, IWebAPIClientAC webAPIClient)
             : base(STREAM_CACHE_POLLING_INTERVAL_MS)
         {
+            _webapiClient = webAPIClient;
             _parameters = parameters;
 
             Task.Run(async () =>
@@ -58,9 +61,10 @@ namespace Allie.Chat.Services
                 await GetAccessTokenAsync();
             });
         }
-        public CommandsService(IParametersAuthROPassword parameters)
+        public CommandsService(IParametersAuthROPassword parameters, IWebAPIClientAC webAPIClient)
             : base(STREAM_CACHE_POLLING_INTERVAL_MS)
         {
+            _webapiClient = webAPIClient;
             _parameters = parameters;
 
             Task.Run(async () =>

@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using Tcp.NET.Client.Events.Args;
 using WebsocketsSimple.Client.Events.Args;
+using Allie.Chat.WebAPI;
 
 namespace Allie.Chat
 {
@@ -32,7 +33,7 @@ namespace Allie.Chat
         public ACCommands(IACParametersToken parameters)
         {
             _parameters = parameters;
-            _service = new CommandsService(parameters);
+            _service = new CommandsService(parameters, new WebAPIClientAC());
 
             switch (parameters.ClientType)
             {
@@ -56,7 +57,7 @@ namespace Allie.Chat
         {
             _parameters = parameters;
 
-            _service = new CommandsService(parameters);
+            _service = new CommandsService(parameters, new WebAPIClientAC());
             switch (parameters.ClientType)
             {
                 case ClientType.Tcp:
@@ -79,7 +80,7 @@ namespace Allie.Chat
         {
             _parameters = parameters;
 
-            _service = new CommandsService(parameters);
+            _service = new CommandsService(parameters, new WebAPIClientAC());
             switch (parameters.ClientType)
             {
                 case ClientType.Tcp:
@@ -102,7 +103,7 @@ namespace Allie.Chat
         {
             _parameters = parameters;
 
-            _service = new CommandsService(parameters);
+            _service = new CommandsService(parameters, new WebAPIClientAC());
             switch (parameters.ClientType)
             {
                 case ClientType.Tcp:
@@ -138,7 +139,7 @@ namespace Allie.Chat
         {
             _service.Update(updateIntervalMS);
         }
-        protected virtual async Task OnMessageEvent(object sender, IMessageBase args)
+        protected virtual void OnMessageEvent(object sender, IMessageBase args)
         {
             var responses = _service.ProcessMessage(args);
 
