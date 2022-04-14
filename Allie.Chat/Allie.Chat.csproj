@@ -25,9 +25,9 @@
     </ItemGroup>
 	
     <ItemGroup>
-      <ProjectReference Include="..\Allie.Chat.Tcp\Allie.Chat.Tcp.csproj" />
-      <ProjectReference Include="..\Allie.Chat.WebAPI\Allie.Chat.WebAPI.csproj" />
-      <ProjectReference Include="..\Allie.Chat.Websocket\Allie.Chat.Websocket.csproj" />
+      <PackageReference Include="Allie.Chat.Tcp" Version="6.0.*" />
+	  <PackageReference Include="Allie.Chat.WebAPI" Version="6.0.*" />
+	  <PackageReference Include="Allie.Chat.Websocket" Version="6.0.*"  />
     </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Allie.Chat\Allie.Chat.csproj" />
+	<PackageReference Include="Allie.Chat" Version="6.0.*" />
   </ItemGroup>
 
 </Project>
