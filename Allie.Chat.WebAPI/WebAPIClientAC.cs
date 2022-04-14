@@ -119,7 +119,7 @@ namespace Allie.Chat.WebAPI
                 FilterClaims = false,
                 Browser = browser,
                 RefreshTokenInnerHttpHandler = new HttpClientHandler(),
-                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+                //Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
                 ClientSecret = clientSecret
             };
 
@@ -149,7 +149,7 @@ namespace Allie.Chat.WebAPI
                 FilterClaims = false,
                 Browser = browser,
                 RefreshTokenInnerHttpHandler = new HttpClientHandler(),
-                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+                //Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
             };
 
             _oidcClient = new OidcClient(options);
@@ -227,7 +227,7 @@ namespace Allie.Chat.WebAPI
             }
         }
 
-        public async Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
+        public async Task<TokenIntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret)
         {
             
             {
@@ -512,7 +512,7 @@ namespace Allie.Chat.WebAPI
                 {
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
 
-                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/{token}");
+                    var response = await _client.GetAsync($"{_webAPIBaseUrl}/Bots/Tcp/{token}");
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
