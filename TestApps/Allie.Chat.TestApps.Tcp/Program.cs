@@ -2,26 +2,31 @@
 using Allie.Chat.Models;
 using Newtonsoft.Json;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Allie.Chat.TestApps.Tcp
 {
     class Program
     {
+        private static Timer _timer;
+        private static ACCommands _acCommands;
 
         static void Main(string[] args)
         {
-            var commandsAuthCode = new ACCommands(new ACParametersAuthCode
+            _acCommands = new ACCommands(new ACParametersAuthCode
             {
-                BotAccessToken = "cda0f5e754214a15bad4ce13fecf81658c8ce36e2ade42d7be63991194195ba2",
+                BotAccessToken = "ad4b22edf15240d29aa77a3246f754f77cba2f0d49b0403f939439ab7b497c82",
                 ClientId = "auth.code",
                 ClientSecret = "secret",
                 Scopes = "openid profile Allie.Chat.WebAPI",
                 StreamCachePollingIntervalMS = 45000,
                 ReconnectPollingIntervalMS = 15000
             });
-            commandsAuthCode.CommandEvent += OnCommandEvent;
+            _acCommands.CommandEvent += OnCommandEvent;
+            Task.Run(async () => await _acCommands.StartAsync());
 
+            _timer = new Timer(TimerCallback, null, 0, 1000);
             while (true)
             {
                 Console.ReadLine();
@@ -31,6 +36,11 @@ namespace Allie.Chat.TestApps.Tcp
         private static void OnCommandEvent(object sender, CommandEventArgs args)
         {
             Console.WriteLine(JsonConvert.SerializeObject(args));
+        }
+
+        private static void TimerCallback(object state)
+        {
+            _acCommands.Update(1000);
         }
     }
 }
