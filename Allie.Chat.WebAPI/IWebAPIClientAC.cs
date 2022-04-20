@@ -62,7 +62,7 @@ namespace Allie.Chat.WebAPI
         Task<UserInfoResult> GetUserInfoAuthCodeOrNativeAsync();
         Task<UserInfoResponse> GetUserInfoResourceOwnerPasswordAsync();
 
-        Task<IntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret);
+        Task<TokenIntrospectionResponse> IntrospectAccessTokenAsync(string clientId, string clientSecret, string apiName, string apiSecret);
 
         /// <summary>
         /// Set the access token
