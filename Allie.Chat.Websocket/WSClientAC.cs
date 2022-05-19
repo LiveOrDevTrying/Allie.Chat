@@ -27,13 +27,13 @@ namespace Allie.Chat.Websocket
         public event NetworkingEventHandler<WSErrorClientEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public WSClientAC(string accessToken, string uri = "connect.allie.chat", int port = 7615, bool isWSS = true)
+        public WSClientAC(string accessToken, string host = "connect.allie.chat", int port = 7615, bool isWSS = true)
         {
             _websocketClient = new WebsocketClient(new ParamsWSClient
             {
                 IsWebsocketSecured = isWSS,
                 Port = port,
-                Uri = uri
+                Host = host
             }, accessToken);
             _websocketClient.ConnectionEvent += OnConnectionEvent;
             _websocketClient.MessageEvent += OnMessageEvent;
@@ -50,11 +50,7 @@ namespace Allie.Chat.Websocket
         }
         public virtual async Task<bool> SendAsync(string message)
         {
-            return await _websocketClient.SendToServerAsync(new Packet
-            {
-                Data = message,
-                Timestamp = DateTime.UtcNow
-            });
+            return await _websocketClient.SendToServerAsync(message);
         }
 
         protected virtual void OnConnectionEvent(object sender, WSConnectionClientEventArgs args)
@@ -68,33 +64,33 @@ namespace Allie.Chat.Websocket
                 case MessageEventType.Sent:
                     break;
                 case MessageEventType.Receive:
-                    if (args.Packet.Data.Trim().ToLower() == "ping")
+                    if (args.Message.Trim().ToLower() == "ping")
                     {
-                        Task.Run(async () => await _websocketClient.SendToServerRawAsync("pong"));
+                        Task.Run(async () => await _websocketClient.SendToServerAsync("pong"));
                     }
                     else
                     {
                         try
                         {
-                            var message = JsonConvert.DeserializeObject<MessageBase>(args.Packet.Data);
+                            var message = JsonConvert.DeserializeObject<MessageBase>(args.Message);
                             IMessageBase messageTyped = null;
 
                             switch (message.ProviderType)
                             {
                                 case ProviderType.Twitch:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data);
+                                    messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Message);
                                     MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
                                     break;
                                 case ProviderType.Discord:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data);
+                                    messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Message);
                                     MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
                                     break;
                                 case ProviderType.Tcp:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data);
+                                    messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Message);
                                     MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
                                     break;
                                 case ProviderType.Websocket:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data);
+                                    messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Message);
                                     MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
                                     break;
                                 default:
@@ -108,7 +104,7 @@ namespace Allie.Chat.Websocket
                         }
                         catch
                         {
-                            SystemMessageEvent?.Invoke(sender, args.Packet.Data);
+                            SystemMessageEvent?.Invoke(sender, args.Message);
                         }
                     }
                     break;

@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="Allie.Chat.Lib" Version="6.0.*" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.*" />
     <PackageReference Include="WebsocketsSimple.Client" Version="6.0.*" />
   </ItemGroup>
 
