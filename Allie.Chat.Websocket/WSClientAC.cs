@@ -64,48 +64,41 @@ namespace Allie.Chat.Websocket
                 case MessageEventType.Sent:
                     break;
                 case MessageEventType.Receive:
-                    if (args.Message.Trim().ToLower() == "ping")
+                    try
                     {
-                        Task.Run(async () => await _websocketClient.SendToServerAsync("pong"));
+                        var message = JsonConvert.DeserializeObject<MessageBase>(args.Message);
+                        IMessageBase messageTyped = null;
+
+                        switch (message.ProviderType)
+                        {
+                            case ProviderType.Twitch:
+                                messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Message);
+                                MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
+                                break;
+                            case ProviderType.Discord:
+                                messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Message);
+                                MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
+                                break;
+                            case ProviderType.Tcp:
+                                messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Message);
+                                MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
+                                break;
+                            case ProviderType.Websocket:
+                                messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Message);
+                                MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (messageTyped != null)
+                        {
+                            MessageEvent?.Invoke(sender, messageTyped);
+                        }
                     }
-                    else
+                    catch
                     {
-                        try
-                        {
-                            var message = JsonConvert.DeserializeObject<MessageBase>(args.Message);
-                            IMessageBase messageTyped = null;
-
-                            switch (message.ProviderType)
-                            {
-                                case ProviderType.Twitch:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Message);
-                                    MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
-                                    break;
-                                case ProviderType.Discord:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Message);
-                                    MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
-                                    break;
-                                case ProviderType.Tcp:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Message);
-                                    MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
-                                    break;
-                                case ProviderType.Websocket:
-                                    messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Message);
-                                    MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            if (messageTyped != null)
-                            {
-                                MessageEvent?.Invoke(sender, messageTyped);
-                            }
-                        }
-                        catch
-                        {
-                            SystemMessageEvent?.Invoke(sender, args.Message);
-                        }
+                        SystemMessageEvent?.Invoke(sender, args.Message);
                     }
                     break;
                 default:
