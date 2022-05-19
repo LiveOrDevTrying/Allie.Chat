@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.*" />
     <PackageReference Include="WebsocketsSimple.Client" Version="6.0.*" />
   </ItemGroup>
 
