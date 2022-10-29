@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Tcp.NET.Client.Events.Args;
 using WebsocketsSimple.Client.Events.Args;
 using Allie.Chat.WebAPI;
+using WebsocketsSimple.Core.Models;
+using Tcp.NET.Core.Models;
 
 namespace Allie.Chat
 {
@@ -22,8 +24,10 @@ namespace Allie.Chat
         protected readonly ITcpClientAC _tcpClient;
         protected readonly IWSClientAC _wsClient;
 
-        public event ClientEventHandler<ConnectionEventArgs> ConnectionEvent;
-        public event ClientEventHandler<ErrorEventArgs> ErrorEvent;
+        public event ClientEventHandler<ConnectionEventArgs<ConnectionWS>> ConnectionWSEvent;
+        public event ClientEventHandler<ConnectionEventArgs<ConnectionTcp>> ConnectionTcpEvent;
+        public event ClientEventHandler<ErrorEventArgs<ConnectionWS>> ErrorWSEvent;
+        public event ClientEventHandler<ErrorEventArgs<ConnectionTcp>> ErrorTcpEvent;
         public event CommandEventHandler<CommandDiscordEventArgs> CommandDiscordEvent;
         public event CommandEventHandler<CommandEventArgs> CommandEvent;
         public event CommandEventHandler<CommandTcpEventArgs> CommandTcpEvent;
@@ -168,26 +172,26 @@ namespace Allie.Chat
         }
         protected virtual void OnTcpErrorEvent(object sender, TcpErrorClientEventArgs args)
         {
-            ErrorEvent?.Invoke(sender, args);
+            ErrorTcpEvent?.Invoke(sender, args);
         }
         protected virtual void OnTcpConnectionEvent(object sender, TcpConnectionClientEventArgs args)
         {
-            ConnectionEvent?.Invoke(sender, args);
+            ConnectionTcpEvent?.Invoke(sender, args);
         }
         protected virtual void OnWSErrorEvent(object sender, WSErrorClientEventArgs args)
         {
-            ErrorEvent?.Invoke(sender, args);
+            ErrorWSEvent?.Invoke(sender, args);
         }
         protected virtual void OnWSConnectionEvent(object sender, WSConnectionClientEventArgs args)
         {
-            ConnectionEvent?.Invoke(sender, args);
+            ConnectionWSEvent?.Invoke(sender, args);
         }
 
         public virtual void Dispose()
         {
             if (_tcpClient != null) 
             {
-                _tcpClient.Disconnect();
+                _tcpClient.DisconnectAsync().Wait();
                 _tcpClient.ConnectionEvent -= OnTcpConnectionEvent;
                 _tcpClient.ErrorEvent -= OnTcpErrorEvent;
                 _tcpClient.MessageEvent -= OnMessageEvent;

@@ -21,7 +21,7 @@ namespace Allie.Chat.Tcp
         event SystemMessageEventHandler SystemMessageEvent;
 
         Task<bool> ConnectAsync();
-        bool Disconnect();
+        Task DisconnectAsync();
 
         Task<bool> SendAsync(string message);
     }

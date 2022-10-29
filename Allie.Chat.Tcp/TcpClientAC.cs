@@ -5,8 +5,6 @@ using Allie.Chat.Tcp.Events;
 using Newtonsoft.Json;
 using PHS.Networking.Enums;
 using PHS.Networking.Events;
-using PHS.Networking.Models;
-using System;
 using System.Threading.Tasks;
 using Tcp.NET.Client;
 using Tcp.NET.Client.Events.Args;
@@ -16,10 +14,6 @@ namespace Allie.Chat.Tcp
 {
     public class TcpClientAC : ITcpClientAC
     {
-        private readonly string _connectUri;
-        private readonly int _connectPort;
-        private readonly string _accessToken;
-
         protected readonly ITcpNETClient _tcpClient;
 
         public event NetworkingEventHandler<TcpConnectionClientEventArgs> ConnectionEvent;
@@ -31,19 +25,9 @@ namespace Allie.Chat.Tcp
         public event NetworkingEventHandler<TcpErrorClientEventArgs> ErrorEvent;
         public event SystemMessageEventHandler SystemMessageEvent;
 
-        public TcpClientAC(string accessToken, string uri = "connect.allie.chat", int port = 7625, bool isSSL = true)
+        public TcpClientAC(string accessToken, string host = "connect.allie.chat", int port = 7625, bool isSSL = true)
         {
-            _accessToken = accessToken;
-            _connectUri = uri;
-            _connectPort = port;
-
-            _tcpClient = new TcpNETClient(new ParamsTcpClient
-            {
-                EndOfLineCharacters = "\r\n",
-                IsSSL = isSSL,
-                Port = _connectPort,
-                Uri = _connectUri
-            }, _accessToken);
+            _tcpClient = new TcpNETClient(new ParamsTcpClient(host, port, "\r\n", isSSL, accessToken));
             _tcpClient.ConnectionEvent += OnConnectionEvent;
             _tcpClient.MessageEvent += OnMessageEvent;
             _tcpClient.ErrorEvent += OnErrorEvent;
@@ -55,7 +39,7 @@ namespace Allie.Chat.Tcp
             {
                 if (_tcpClient.IsRunning)
                 {
-                    Disconnect();
+                    await DisconnectAsync();
                 }
 
                 await _tcpClient.ConnectAsync();
@@ -67,23 +51,16 @@ namespace Allie.Chat.Tcp
 
             return false;
         }
-        public virtual bool Disconnect()
+        public virtual async Task DisconnectAsync()
         {
             if (_tcpClient.IsRunning)
             {
-                _tcpClient.Disconnect();
-                return true;
+                await _tcpClient.DisconnectAsync();
             }
-
-            return false;
         }
         public virtual async Task<bool> SendAsync(string message)
         {
-            return await _tcpClient.SendToServerAsync(new Packet
-            {
-                Data = message,
-                Timestamp = DateTime.UtcNow
-            });
+            return await _tcpClient.SendAsync(message);
         }
 
         protected virtual void OnConnectionEvent(object sender, TcpConnectionClientEventArgs args)
@@ -99,25 +76,25 @@ namespace Allie.Chat.Tcp
                 case MessageEventType.Receive:
                     try
                     {
-                        var message = JsonConvert.DeserializeObject<MessageBase>(args.Packet.Data);
+                        var message = JsonConvert.DeserializeObject<MessageBase>(args.Message);
                         IMessageBase messageTyped = null;
 
                         switch (message.ProviderType)
                         {
                             case ProviderType.Twitch:
-                                messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Packet.Data);
+                                messageTyped = JsonConvert.DeserializeObject<MessageTwitch>(args.Message);
                                 MessageTwitchEvent?.Invoke(sender, messageTyped as IMessageTwitch);
                                 break;
                             case ProviderType.Discord:
-                                messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Packet.Data);
+                                messageTyped = JsonConvert.DeserializeObject<MessageDiscord>(args.Message);
                                 MessageDiscordEvent?.Invoke(sender, messageTyped as IMessageDiscord);
                                 break;
                             case ProviderType.Tcp:
-                                messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Packet.Data);
+                                messageTyped = JsonConvert.DeserializeObject<MessageTcp>(args.Message);
                                 MessageTcpEvent?.Invoke(sender, messageTyped as IMessageTcp);
                                 break;
                             case ProviderType.Websocket:
-                                messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Packet.Data);
+                                messageTyped = JsonConvert.DeserializeObject<MessageWS>(args.Message);
                                 MessageWebsocketEvent?.Invoke(sender, messageTyped as IMessageWS);
                                 break;
                             default:
@@ -131,7 +108,7 @@ namespace Allie.Chat.Tcp
                     }
                     catch
                     {
-                        SystemMessageEvent?.Invoke(sender, args.Packet.Data);
+                        SystemMessageEvent?.Invoke(sender, args.Message);
                     }
                     break;
                 default:
