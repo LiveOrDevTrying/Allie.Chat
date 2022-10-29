@@ -17,7 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tcp.NET.Client" Version="6.0.*" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.*" />
+	  <PackageReference Include="Tcp.NET.Client" Version="6.0.*" />
   </ItemGroup>
 
   <ItemGroup>
